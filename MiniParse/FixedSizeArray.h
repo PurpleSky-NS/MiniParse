@@ -14,21 +14,23 @@ public:
 	static FixedSizeArray *GetFixedSizeArray(unsigned size, const std::vector<double> &initialValues);
 
 	static void FreeFixedSizeArray(FixedSizeArray *array);
-	
+
 	inline virtual ArrayItem &operator[](unsigned idx)override;
 	inline virtual const ArrayItem &operator[](unsigned idx)const override;
-	
+
 	inline virtual bool Contains(double value)const override;
-	
+
 	inline virtual unsigned Size()const override;
-	
+
 	inline virtual void Foreach(std::function<void(ArrayItem&)> Func)override;
-	inline virtual void Foreach(std::function<void(ArrayItem&,unsigned)> Func)override;
-	
+	inline virtual void Foreach(std::function<void(ArrayItem&, unsigned)> Func)override;
+
 	inline virtual void Free()override;
-	
-	private:
-	
+
+	inline virtual ArrayType GetArrayType()const override;
+
+private:
+
 	ArrayItem *m_values;
 	unsigned m_size;
 
@@ -42,14 +44,12 @@ public:
 };
 
 FixedSizeArray::FixedSizeArray(unsigned size)
-	:Array()
 {
 	m_values=new ArrayItem[size];
 	m_size=size;
 	memset(m_values,0,sizeof(ArrayItem)*size);
 }
 FixedSizeArray::FixedSizeArray(const std::vector<double> &initialValues)
-	:Array()
 {
 	m_values=new ArrayItem[initialValues.size()];
 	m_size=initialValues.size();
@@ -98,4 +98,9 @@ void FixedSizeArray::Foreach(std::function<void(ArrayItem&,unsigned)> Func)
 void FixedSizeArray::Free()
 {
 	FreeFixedSizeArray(this);
+}
+
+FixedSizeArray::ArrayType FixedSizeArray::GetArrayType() const
+{
+	return FixedSizeArray::ArrayType::FixedSizeArray;
 }

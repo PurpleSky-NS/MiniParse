@@ -11,7 +11,7 @@ public:
 	static DynamicSizeArray *GetDynamicSizeArray(const std::vector<double> &initialValues);
 
 	static void FreeDynamicSizeArray(DynamicSizeArray *array);
-		
+
 	inline virtual ArrayItem & operator[](unsigned idx) override;
 	inline virtual const ArrayItem & operator[](unsigned idx)const override;
 
@@ -23,6 +23,8 @@ public:
 	inline virtual void Foreach(std::function<void(ArrayItem&, unsigned)> Func) override;
 
 	inline virtual void Free() override;
+
+	inline virtual ArrayType GetArrayType()const override;
 
 private:
 
@@ -37,9 +39,10 @@ private:
 DynamicSizeArray::DynamicSizeArray()
 {}
 DynamicSizeArray::DynamicSizeArray(const std::vector<double>& initialValues)
-	: Array()
 {
-	m_values.assign(initialValues.begin(),initialValues.end());
+	m_values.reserve(initialValues.size());
+	for (auto i : initialValues)
+		m_values.push_back({ i });
 }
 DynamicSizeArray::ArrayItem &DynamicSizeArray::operator[](unsigned idx)
 {
@@ -73,4 +76,9 @@ void DynamicSizeArray::Foreach(std::function<void(ArrayItem&, unsigned)> Func)
 void DynamicSizeArray::Free()
 {
 	FreeDynamicSizeArray(this);
+}
+
+DynamicSizeArray::ArrayType DynamicSizeArray::GetArrayType() const
+{
+	return DynamicSizeArray::ArrayType::DynamicSizeArray;
 }
