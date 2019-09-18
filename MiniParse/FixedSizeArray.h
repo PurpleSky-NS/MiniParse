@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <vector>
 #include <memory>
@@ -10,7 +10,7 @@ public:
 
 	static FixedSizeArray *GetFixedSizeArray(unsigned size);
 	static FixedSizeArray *GetFixedSizeArray(const std::vector<double> &initialValues);
-	/*size±ØĞë±È³õÊ¼»¯ÁĞ±íµÄ³¤¶È´ó*/
+	/*sizeå¿…é¡»æ¯”åˆå§‹åŒ–åˆ—è¡¨çš„é•¿åº¦å¤§*/
 	static FixedSizeArray *GetFixedSizeArray(unsigned size, const std::vector<double> &initialValues);
 
 	static void FreeFixedSizeArray(FixedSizeArray *array);

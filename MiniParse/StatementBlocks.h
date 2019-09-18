@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <vector>
 #include "Statement.h"
@@ -12,7 +12,7 @@ public:
 
 	inline void Add(Statement *statement);
 
-	/*²»»áµ÷ÓÃ×Ô¼ºµÄFree£¬Ö»»áµ÷ÓÃ×ÓÓï¾ä¶ÔÏóµÄFree²¢Çå¿Õvector*/
+	/*ä¸ä¼šè°ƒç”¨è‡ªå·±çš„Freeï¼Œåªä¼šè°ƒç”¨å­è¯­å¥å¯¹è±¡çš„Freeå¹¶æ¸…ç©ºvector*/
 	void Clear();
 
 	inline virtual void Excuse() override;

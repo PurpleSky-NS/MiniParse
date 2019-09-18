@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <list>
 #include "VariousBase.h"
@@ -122,5 +122,5 @@ bool Various::operator<=(double constant)const
 }
 void Various::Free()
 {
-	FreeVarious(this);
+	//FreeVarious(this);
 }

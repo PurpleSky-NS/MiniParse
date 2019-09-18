@@ -1,4 +1,4 @@
-#include "Various.h"
+﻿#include "Various.h"
 std::list<Various*> Various::m_variousPool;
 Various *Various::GetVarious(double initialValue)
 {

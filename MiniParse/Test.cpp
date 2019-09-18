@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include "Various.h"
 #include "DynamicSizeArray.h"
 #include "FixedSizeArray.h"
@@ -8,17 +8,17 @@ using namespace std;
 int main()
 {
 	VariousTable table;
-	table.UpdateVarious("²âÊÔ±äÁ¿", Various::GetVarious(520));
-	table.UpdateVarious("²âÊÔ¾²Ì¬Êı×é(1)", FixedSizeArray::GetFixedSizeArray(5));
-	table.UpdateVarious("²âÊÔ¾²Ì¬Êı×é(2)", FixedSizeArray::GetFixedSizeArray({ 1,2,3.3 }));
-	table.UpdateVarious("²âÊÔ¾²Ì¬Êı×é(3)", FixedSizeArray::GetFixedSizeArray(5, { 1,2,3.4,5 }));
+	table.UpdateVarious("æµ‹è¯•å˜é‡", Various::GetVarious(520));
+	table.UpdateVarious("æµ‹è¯•é™æ€æ•°ç»„(1)", FixedSizeArray::GetFixedSizeArray(5));
+	table.UpdateVarious("æµ‹è¯•é™æ€æ•°ç»„(2)", FixedSizeArray::GetFixedSizeArray({ 1,2,3.3 }));
+	table.UpdateVarious("æµ‹è¯•é™æ€æ•°ç»„(3)", FixedSizeArray::GetFixedSizeArray(5, { 1,2,3.4,5 }));
 
-	FixedSizeArray &f = *((FixedSizeArray*)table.GetVarious("²âÊÔ¾²Ì¬Êı×é(1)"));
-	FixedSizeArray &ff = *((FixedSizeArray*)table.GetVarious("²âÊÔ¾²Ì¬Êı×é(2)"));
-	FixedSizeArray &fff = *((FixedSizeArray*)table.GetVarious("²âÊÔ¾²Ì¬Êı×é(3)"));
-	cout << "²âÊÔ±äÁ¿ : " << ((Various*)table.GetVarious("²âÊÔ±äÁ¿"))->GetValue() << endl;
-	cout << "²âÊÔ¾²Ì¬Êı×é(1) : " << f.Size() << "->[3]=" << f[3].value << endl;
-	cout << "²âÊÔ¾²Ì¬Êı×é(2) : " << ff.Size() << "->[3]=" << ff[3].value << endl;
-	cout << "²âÊÔ¾²Ì¬Êı×é(3) : " << fff.Size() << "->[3]=" << fff[3].value << endl;
+	FixedSizeArray &f = *((FixedSizeArray*)table.GetVarious("æµ‹è¯•é™æ€æ•°ç»„(1)"));
+	FixedSizeArray &ff = *((FixedSizeArray*)table.GetVarious("æµ‹è¯•é™æ€æ•°ç»„(2)"));
+	FixedSizeArray &fff = *((FixedSizeArray*)table.GetVarious("æµ‹è¯•é™æ€æ•°ç»„(3)"));
+	cout << "æµ‹è¯•å˜é‡ : " << ((Various*)table.GetVarious("æµ‹è¯•å˜é‡"))->GetValue() << endl;
+	cout << "æµ‹è¯•é™æ€æ•°ç»„(1) : " << f.Size() << "->[3]=" << f[3].value << endl;
+	cout << "æµ‹è¯•é™æ€æ•°ç»„(2) : " << ff.Size() << "->[3]=" << ff[3].value << endl;
+	cout << "æµ‹è¯•é™æ€æ•°ç»„(3) : " << fff.Size() << "->[3]=" << fff[3].value << endl;
 	return 0;
 }

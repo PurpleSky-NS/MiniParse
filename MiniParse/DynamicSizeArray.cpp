@@ -1,4 +1,4 @@
-#include "DynamicSizeArray.h"
+﻿#include "DynamicSizeArray.h"
 DynamicSizeArray *DynamicSizeArray::GetDynamicSizeArray()
 {
 	return new DynamicSizeArray();

@@ -1,4 +1,4 @@
-#include "FixedSizeArray.h"
+﻿#include "FixedSizeArray.h"
 FixedSizeArray *FixedSizeArray::GetFixedSizeArray(unsigned size)
 {
 	return new FixedSizeArray(size);
