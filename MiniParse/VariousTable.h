@@ -27,7 +27,7 @@ void VariousTable::UpdateVarious(const std::string &name, VariousBase *various)
 VariousBase *VariousTable::GetVarious(const std::string &name) const
 {
 	auto fd = m_variousMap.find(name);
-	if (fd != m_variousMap.end())
+	if (fd == m_variousMap.end())
 		return nullptr;
 	return fd->second;
 }
