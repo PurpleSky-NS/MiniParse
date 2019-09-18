@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\StateMent">
+      <UniqueIdentifier>{84d49e84-054d-4994-904c-2f4422241764}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Various">
+      <UniqueIdentifier>{ff61433c-04c4-43b6-a8dc-456c0ea56a33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Various\Array">
+      <UniqueIdentifier>{3a6bb29c-a85c-462f-908e-c6feeab5fbc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Various\Various">
+      <UniqueIdentifier>{7ef64f05-cf74-47ba-801d-8f2a70949f15}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Statement.h">
+      <Filter>头文件\StateMent</Filter>
+    </ClInclude>
+    <ClInclude Include="StatementBlocks.h">
+      <Filter>头文件\StateMent</Filter>
+    </ClInclude>
+    <ClInclude Include="Array.h">
+      <Filter>头文件\Various\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicSizeArray.h">
+      <Filter>头文件\Various\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedSizeArray.h">
+      <Filter>头文件\Various\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="Various.h">
+      <Filter>头文件\Various\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="VariousTable.h">
+      <Filter>头文件\Various</Filter>
+    </ClInclude>
+    <ClInclude Include="VariousBase.h">
+      <Filter>头文件\Various</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Various.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="StatementBlocks.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicSizeArray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedSizeArray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
