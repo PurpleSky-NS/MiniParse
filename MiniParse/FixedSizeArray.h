@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -19,7 +19,11 @@ public:
 	inline virtual const ArrayItem &operator[](unsigned idx)const override;
 
 	inline virtual bool Contains(double value)const override;
+	inline virtual bool ContainsIf(std::function<bool (const ArrayItem &item)> judge)const override;
 
+	inline virtual int IndexOf(double value)const override;
+	inline virtual int IndexOf(std::function<bool (const ArrayItem &item)> judge)const override;
+	
 	inline virtual unsigned Size()const override;
 
 	inline virtual void Foreach(std::function<void(ArrayItem&)> Func)override;
@@ -80,6 +84,27 @@ bool FixedSizeArray::Contains(double value)const
 		if(m_values[i].value==value)
 			return true;
 	return false;
+}
+bool FixedSizeArray::ContainsIf(std::function<bool (const ArrayItem &item)> judge)const
+{
+	for(unsigned i=0;i<m_size;++i)
+		if(judge(m_values[i]))
+			return true;
+	return false;
+}
+int FixedSizeArray::IndexOf(double value)const
+{
+	for(unsigned i=0;i<m_size;++i)
+		if(m_values[i].value==value)
+			return (int)i;
+	return -1;
+}
+int FixedSizeArray::IndexOf(std::function<bool (const ArrayItem &item)> judge)const
+{
+	for(unsigned i=0;i<m_size;++i)
+		if(judge(m_values[i]))
+			return (int)i;
+	return -1;
 }
 unsigned FixedSizeArray::Size()const
 {
