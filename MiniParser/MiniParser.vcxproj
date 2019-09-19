@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
+    <ClInclude Include="AssignStatemen.h" />
     <ClInclude Include="DynamicSizeArray.h" />
     <ClInclude Include="FixedSizeArray.h" />
     <ClInclude Include="Statement.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="VariousTable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AssignStatemen.cpp" />
     <ClCompile Include="DynamicSizeArray.cpp" />
     <ClCompile Include="FixedSizeArray.cpp" />
     <ClCompile Include="StatementBlocks.cpp" />

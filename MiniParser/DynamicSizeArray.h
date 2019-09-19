@@ -23,12 +23,13 @@ public:
 	inline void RemoveLast();
 	/*删任意位置*/
 	inline void Remove(unsigned pos);
+	inline void Remove(unsigned pos, unsigned size);
 	/*删符合条件的*/
-	inline bool RemoveIf(std::function<bool (const ArrayItem &item)> judge);
-	inline bool RemoveRangeIf(std::function<bool (const ArrayItem &item)> judge);
+	inline bool RemoveIf(std::function<bool (const ArrayItem &item)> judge);//删一个
+	inline bool RemoveRangeIf(std::function<bool (const ArrayItem &item)> judge);//删一堆
 
-	inline virtual ArrayItem & operator[](unsigned idx) override;
-	inline virtual const ArrayItem & operator[](unsigned idx)const override;
+	inline virtual ArrayItem &operator[](unsigned idx) override;
+	inline virtual const ArrayItem &operator[](unsigned idx)const override;
 
 	inline virtual bool Contains(double value) const override;
 	inline virtual bool ContainsIf(std::function<bool (const ArrayItem &item)> judge) const override;
@@ -93,6 +94,10 @@ void DynamicSizeArray::RemoveLast()
 void DynamicSizeArray::Remove(unsigned pos)
 {
 	m_values.erase(m_values.begin()+pos);
+}
+void DynamicSizeArray::Remove(unsigned pos, unsigned size)
+{
+	m_values.erase(m_values.begin() + pos, m_values.begin() + pos + size);
 }
 bool DynamicSizeArray::RemoveIf(std::function<bool (const ArrayItem &item)> judge)
 {

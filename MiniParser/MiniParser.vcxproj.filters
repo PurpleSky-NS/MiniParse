@@ -51,6 +51,9 @@
     <ClInclude Include="VariousBase.h">
       <Filter>头文件\Various</Filter>
     </ClInclude>
+    <ClInclude Include="AssignStatemen.h">
+      <Filter>头文件\StateMent</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp">
@@ -66,6 +69,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FixedSizeArray.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AssignStatemen.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
