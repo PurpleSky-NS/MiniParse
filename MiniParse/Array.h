@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <functional>
 #include "VariousBase.h"
@@ -23,7 +23,12 @@ public:
 	virtual const ArrayItem &operator[](unsigned idx)const = 0;
 
 	virtual bool Contains(double value)const = 0;
-
+	virtual bool ContainsIf(std::function<bool (const ArrayItem &item)> judge) const = 0;
+	
+	/*没有返回-1*/
+	virtual int IndexOf(double value)const = 0;
+	virtual int IndexOf(std::function<bool (const ArrayItem &item)> judge)const = 0;
+	
 	/*数组的获取大小要高效*/
 	virtual unsigned Size()const = 0;
 
