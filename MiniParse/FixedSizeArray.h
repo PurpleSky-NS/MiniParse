@@ -9,9 +9,11 @@ class FixedSizeArray : public Array
 public:
 
 	static FixedSizeArray *GetFixedSizeArray(unsigned size);
+	static FixedSizeArray *GetFixedSizeArray(const Array &array);
 	static FixedSizeArray *GetFixedSizeArray(const std::vector<double> &initialValues);
 	/*size必须比初始化列表的长度大*/
 	static FixedSizeArray *GetFixedSizeArray(unsigned size, const std::vector<double> &initialValues);
+	static FixedSizeArray *GetFixedSizeArray(unsigned size, const Array &initialValues);
 
 	static void FreeFixedSizeArray(FixedSizeArray *array);
 
@@ -40,7 +42,9 @@ private:
 
 	inline FixedSizeArray(unsigned size);
 	inline FixedSizeArray(const std::vector<double> &initialValues);
+	inline FixedSizeArray(const Array &array);
 	inline FixedSizeArray(unsigned size, const std::vector<double> &initialValues);
+	inline FixedSizeArray(unsigned size, const Array &array);
 	FixedSizeArray() = delete;
 	FixedSizeArray(const FixedSizeArray &) = delete;
 	FixedSizeArray(FixedSizeArray&&) = delete;
@@ -60,11 +64,24 @@ FixedSizeArray::FixedSizeArray(const std::vector<double> &initialValues)
 	for(unsigned i=0;i<initialValues.size();++i)
 		m_values[i].value=initialValues[i];
 }
+FixedSizeArray::FixedSizeArray(const Array &array)
+{
+	m_values=new ArrayItem[array.Size()];
+	m_size=array.Size();
+	for(unsigned i=0;i<array.Size();++i)
+		m_values[i].value=array[i].value;
+}
 FixedSizeArray::FixedSizeArray(unsigned capacity,const std::vector<double> &initialValues)
 	:FixedSizeArray(capacity)
 {
 	for(unsigned i=0;i<initialValues.size();++i)
 		m_values[i].value=initialValues[i];
+}
+FixedSizeArray::FixedSizeArray(unsigned capacity,const Array &array)
+	:FixedSizeArray(capacity)
+{
+	for(unsigned i=0;i<array.Size();++i)
+		m_values[i].value=array[i].value;
 }
 FixedSizeArray::~FixedSizeArray()
 {
