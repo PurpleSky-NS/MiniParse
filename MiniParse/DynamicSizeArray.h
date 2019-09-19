@@ -9,16 +9,15 @@ class DynamicSizeArray : public Array
 public:
 
 	static DynamicSizeArray *GetDynamicSizeArray();
+	static DynamicSizeArray *GetDynamicSizeArray(const Array &array);
 	static DynamicSizeArray *GetDynamicSizeArray(const std::vector<double> &initialValues);
 
 	static void FreeDynamicSizeArray(DynamicSizeArray *array);
 	
 	/*加末尾*/
 	inline void Add(double value);
-	inline void Add(const ArrayItem &value);
 	/*加任意位置*/
 	inline void Add(double value,unsigned pos);
-	inline void Add(const ArrayItem &value,unsigned pos);
 	
 	/*删末尾*/
 	inline void RemoveLast();
@@ -52,6 +51,7 @@ private:
 
 	inline DynamicSizeArray();
 	inline DynamicSizeArray(const std::vector<double> &initialValues);
+	inline DynamicSizeArray(const Array &array);
 	DynamicSizeArray(const DynamicSizeArray &) = delete;
 	DynamicSizeArray(DynamicSizeArray&&) = delete;
 	~DynamicSizeArray() = default;
@@ -63,6 +63,12 @@ DynamicSizeArray::DynamicSizeArray(const std::vector<double>& initialValues)
 	m_values.reserve(initialValues.size());
 	for (auto i : initialValues)
 		m_values.push_back({ i });
+}
+DynamicSizeArray::DynamicSizeArray(const Array &array)
+{
+	m_values.reserve(array.Size());
+	for (int i=0;i<array.Size();++i)
+		m_values.push_back(array[i]);
 }
 DynamicSizeArray::ArrayItem &DynamicSizeArray::operator[](unsigned idx)
 {
@@ -76,17 +82,9 @@ void DynamicSizeArray::Add(double value)
 {
 	m_values.push_back({value});
 }
-void DynamicSizeArray::Add(const ArrayItem &value)
-{
-	m_values.push_back(value);
-}
 void DynamicSizeArray::Add(double value,unsigned pos)
 {
 	m_values.insert(m_values.begin()+pos,{value});
-}
-void DynamicSizeArray::Add(const ArrayItem &value,unsigned pos)
-{
-	m_values.insert(m_values.begin()+pos,value);
 }
 void DynamicSizeArray::RemoveLast()
 {
@@ -112,7 +110,7 @@ bool DynamicSizeArray::RemoveRangeIf(std::function<bool (const ArrayItem &item)>
 	for(int i=0;i<m_values.size();++i)
 		if(judge(m_values[i]))
 		{
-			m_values.erase(m_values.begin()+i);
+			m_values.erase(m_values.begin()+i--);
 			isDeleted = true;
 		}
 	return isDeleted;
