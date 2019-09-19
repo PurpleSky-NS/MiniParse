@@ -7,7 +7,7 @@ class StatementBlocks : public Statement
 {
 public:
 
-	StatementBlocks();
+	StatementBlocks() = default;
 	~StatementBlocks();
 
 	inline void Add(Statement *statement);

@@ -1,8 +1,4 @@
 ﻿#include "StatementBlocks.h"
-StatementBlocks::StatementBlocks()
-{
-}
-
 StatementBlocks::~StatementBlocks()
 {
 	Clear();
