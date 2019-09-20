@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <iostream>
 
@@ -10,7 +10,7 @@ class Statement
 {
 public:
 
-	virtual void Excuse() = 0;
+	virtual bool Excuse() = 0;
 
 	virtual void Save(std::ostream &out) = 0;
 
