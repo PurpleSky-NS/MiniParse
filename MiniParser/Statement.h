@@ -1,21 +1,14 @@
 #pragma once
 
-#include <iostream>
+#include "ISerialisable.h"
+#include "IFreeable.h"
+#include "InfixExpression.h"
+#include "SuffixExpression.h"
 
-//后缀表达式类,占个位置
-class PostfixExpression
-{};
-
-class Statement
+class Statement : public ISerialisable,public IFreeable
 {
 public:
 
 	virtual bool Excuse() = 0;
-
-	virtual void Save(std::ostream &out) = 0;
-
-	virtual void Load(std::istream &in) = 0;
-
-	virtual void Free() = 0;
 
 };

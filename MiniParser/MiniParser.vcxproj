@@ -116,17 +116,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
-    <ClInclude Include="AssignStatemen.h" />
+    <ClInclude Include="AssignStatement.h" />
+    <ClInclude Include="BinaryOperator.h" />
     <ClInclude Include="DynamicSizeArray.h" />
+    <ClInclude Include="Expression.h" />
     <ClInclude Include="FixedSizeArray.h" />
+    <ClInclude Include="IFreeable.h" />
+    <ClInclude Include="InfixExpression.h" />
+    <ClInclude Include="ISerialisable.h" />
+    <ClInclude Include="ItemBase.h" />
+    <ClInclude Include="OperatorItem.h" />
     <ClInclude Include="Statement.h" />
     <ClInclude Include="StatementBlocks.h" />
+    <ClInclude Include="SuffixExpression.h" />
+    <ClInclude Include="UnarOperatorItem.h" />
+    <ClInclude Include="ValueItem.h" />
     <ClInclude Include="Various.h" />
     <ClInclude Include="VariousBase.h" />
     <ClInclude Include="VariousTable.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssignStatemen.cpp" />
+    <ClCompile Include="AssignStatement.cpp" />
     <ClCompile Include="DynamicSizeArray.cpp" />
     <ClCompile Include="FixedSizeArray.cpp" />
     <ClCompile Include="StatementBlocks.cpp" />

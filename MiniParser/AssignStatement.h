@@ -9,8 +9,8 @@ class AssignStatement :public Statement
 {
 public: 
 
-	inline AssignStatement(const std::string &variousName,PostfixExpression *expression);
-	inline AssignStatement(const std::string &arrayName,unsigned pos,PostfixExpression *expression);
+	inline AssignStatement(const std::string &variousName,SuffixExpression *expression);
+	inline AssignStatement(const std::string &arrayName,unsigned pos, SuffixExpression *expression);
 	AssignStatement(const AssignStatement&)=delete;
 	AssignStatement(AssignStatement&&)=delete;
 	~AssignStatement();
@@ -38,17 +38,17 @@ private:
 			std::string variousName;
 		}variousValue;
 	}m_value;
-	PostfixExpression *m_expression;
+	SuffixExpression *m_expression;
 };
 
-AssignStatement::AssignStatement(const std::string &variousName,PostfixExpression *expression)
+AssignStatement::AssignStatement(const std::string &variousName, SuffixExpression *expression)
 {
 	m_LType=VariousBase::Various;
 	m_value.variousValue.variousName=variousName;
 	m_expression=expression;
 }
 
-AssignStatement::AssignStatement(const std::string &arrayName,unsigned pos,PostfixExpression *expression)
+AssignStatement::AssignStatement(const std::string &arrayName,unsigned pos, SuffixExpression *expression)
 {
 	m_LType=VariousBase::Array;
 	m_value.arrayValue.arrayName=arrayName;

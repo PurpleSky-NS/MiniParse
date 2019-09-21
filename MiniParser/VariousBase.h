@@ -2,7 +2,7 @@
 
 #include <string>
 
-class VariousBase
+class VariousBase :public IFreeable
 {
 public:
 
@@ -13,9 +13,6 @@ public:
 	};
 
 	virtual VariousType GetType()const = 0;
-
-	/*不会进行delete操作，但会使用Free接口表明该对象不会再使用*/
-	virtual void Free() = 0;
 
 protected:
 	VariousBase() = default;
