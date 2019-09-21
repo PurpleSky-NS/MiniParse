@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <functional>
 #include "VariousTable.h"
@@ -10,7 +10,7 @@ class AssignStatement :public Statement
 public: 
 
 	inline AssignStatement(const std::string &variousName,SuffixExpression *expression);
-	inline AssignStatement(const std::string &arrayName,unsigned pos, SuffixExpression *expression);
+	inline AssignStatement(const std::string &arrayName,size_t pos, SuffixExpression *expression);
 	AssignStatement(const AssignStatement&)=delete;
 	AssignStatement(AssignStatement&&)=delete;
 	~AssignStatement();
@@ -26,38 +26,33 @@ public:
 private:
 	
 	VariousBase::VariousType m_LType;
-	union
-	{
-		struct
-		{
-			std::string arrayName;
-			unsigned arrayPos;
-		}arrayValue;
-		struct
-		{
-			std::string variousName;
-		}variousValue;
-	}m_value;
+
+	std::string m_arrayName;
+	size_t m_arrayPos;
+
+	std::string m_variousName;
+
 	SuffixExpression *m_expression;
 };
 
 AssignStatement::AssignStatement(const std::string &variousName, SuffixExpression *expression)
 {
 	m_LType=VariousBase::Various;
-	m_value.variousValue.variousName=variousName;
+	m_variousName=variousName;
 	m_expression=expression;
 }
 
-AssignStatement::AssignStatement(const std::string &arrayName,unsigned pos, SuffixExpression *expression)
+AssignStatement::AssignStatement(const std::string &arrayName,size_t pos, SuffixExpression *expression)
 {
 	m_LType=VariousBase::Array;
-	m_value.arrayValue.arrayName=arrayName;
-	m_value.arrayValue.arrayPos=pos;
+	m_arrayName=arrayName;
+	m_arrayPos=pos;
 	m_expression=expression;
 }
 
 bool AssignStatement::Excuse()
 {
+	return true;
 }
 
 void AssignStatement::Free()

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <string>
+#include "IFreeable.h"
 
 class VariousBase :public IFreeable
 {

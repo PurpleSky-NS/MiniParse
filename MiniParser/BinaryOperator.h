@@ -22,9 +22,9 @@ private:
 
 	virtual inline OperatorType GetOperatorType() const override;
 
-	inline BinaryOperatorType GetBinaryOperatorType()const;
-
 	inline void SetBinaryOperatorType(BinaryOperatorType type);
+
+	inline BinaryOperatorType GetBinaryOperatorType()const;
 
 private:
 
@@ -41,12 +41,13 @@ BinaryOperator::OperatorType BinaryOperator::GetOperatorType() const
 	return OperatorType::BinaryOperator;
 }
 
-BinaryOperator::BinaryOperatorType BinaryOperator::GetBinaryOperatorType() const
-{
-	return m_type;
-}
-
 void BinaryOperator::SetBinaryOperatorType(BinaryOperatorType type)
 {
 	m_type = type;
+}
+
+
+BinaryOperator::BinaryOperatorType BinaryOperator::GetBinaryOperatorType() const
+{
+	return m_type;
 }

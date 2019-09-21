@@ -19,8 +19,8 @@ public:
 	};
 
 	/*数组的随机访问要高效*/
-	virtual ArrayItem &operator[](unsigned idx) = 0;
-	virtual const ArrayItem &operator[](unsigned idx)const = 0;
+	virtual ArrayItem &operator[](size_t idx) = 0;
+	virtual const ArrayItem &operator[](size_t idx)const = 0;
 
 	virtual bool Contains(double value)const = 0;
 	virtual bool ContainsIf(std::function<bool (const ArrayItem &item)> judge) const = 0;
@@ -30,10 +30,10 @@ public:
 	virtual int IndexOf(std::function<bool (const ArrayItem &item)> judge)const = 0;
 	
 	/*数组的获取大小要高效*/
-	virtual unsigned Size()const = 0;
+	virtual size_t Size()const = 0;
 
 	virtual void Foreach(std::function<void(ArrayItem&)> Func) = 0;
-	virtual void Foreach(std::function<void(ArrayItem&, unsigned)> Func) = 0;
+	virtual void Foreach(std::function<void(ArrayItem&, size_t)> Func) = 0;
 
 	/*比较两个数组，当且仅当大小和每个位置对应的变量都相同时才会为true*/
 	inline virtual bool operator==(const Array &array)const;
@@ -53,7 +53,7 @@ bool Array::operator==(const Array &array)const
 {
 	if(Size()!=array.Size())
 		return false;
-	for(unsigned i=0;i<Size();++i)
+	for(size_t i=0;i<Size();++i)
 		if((*this)[i].value!=array[i].value)
 			return false;
 	return true;

@@ -26,9 +26,9 @@ public:
 
 	virtual inline OperatorType GetOperatorType() const override;
 
-	inline UnarOperatorType GetUnarOperatorType()const;
-
 	inline void SetUnarOperatorType(UnarOperatorType type);
+
+	inline UnarOperatorType GetUnarOperatorType()const;
 
 private:
 
@@ -44,12 +44,12 @@ UnarOperator::OperatorType UnarOperator::GetOperatorType() const
 	return OperatorType::UnarOperator;
 }
 
-UnarOperator::UnarOperatorType UnarOperator::GetUnarOperatorType() const
-{
-	return m_type;
-}
-
 void UnarOperator::SetUnarOperatorType(UnarOperatorType type)
 {
 	m_type = type;
+}
+
+UnarOperator::UnarOperatorType UnarOperator::GetUnarOperatorType() const
+{
+	return m_type;
 }
