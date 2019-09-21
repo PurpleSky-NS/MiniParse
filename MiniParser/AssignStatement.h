@@ -7,7 +7,7 @@
 /*基础的赋值语句*/
 class AssignStatement :public Statement
 {
-public:
+public: 
 
 	inline AssignStatement(const std::string &variousName,PostfixExpression *expression);
 	inline AssignStatement(const std::string &arrayName,unsigned pos,PostfixExpression *expression);
