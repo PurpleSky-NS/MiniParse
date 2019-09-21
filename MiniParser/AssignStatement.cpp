@@ -9,4 +9,4 @@ void AssignStatement::Load(std::istream & in)
 
 AssignStatement::~AssignStatement()
 {
-}
+} 
