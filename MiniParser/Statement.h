@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ISerialisable.h"
+#include "ISavable.h"
 #include "IFreeable.h"
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
 
-class Statement : public ISerialisable,public IFreeable
+class Statement : public ISavable,public IFreeable
 {
 public:
 

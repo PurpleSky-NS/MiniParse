@@ -93,17 +93,20 @@
     <ClInclude Include="OperatorItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
     </ClInclude>
-    <ClInclude Include="UnarOperatorItem.h">
-      <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
-    </ClInclude>
     <ClInclude Include="IFreeable.h">
-      <Filter>头文件\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="ISerialisable.h">
       <Filter>头文件\Interface</Filter>
     </ClInclude>
     <ClInclude Include="DynamicSizeArray.h">
       <Filter>头文件\Parser\Various\Array</Filter>
+    </ClInclude>
+    <ClInclude Include="ISavable.h">
+      <Filter>头文件\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemParser.h">
+      <Filter>头文件\Calculator\ExpressionItem</Filter>
+    </ClInclude>
+    <ClInclude Include="UnarOperator.h">
+      <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="AssignStatement.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryOperator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UnarOperator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

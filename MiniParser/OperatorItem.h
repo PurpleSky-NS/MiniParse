@@ -17,8 +17,15 @@ public:
 
 	virtual OperatorType GetOperatorType()const = 0;
 
+	virtual inline void Save(std::ostream& out) override;
+
 };
 OperatorItem::ItemType OperatorItem::GetType() const
 {
 	return Operator;
+}
+
+void OperatorItem::Save(std::ostream& out)
+{
+	out.put(Operator);
 }

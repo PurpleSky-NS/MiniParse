@@ -14,3 +14,6 @@ public:
 	~InfixExpression() = default;
 
 };
+InfixExpression::InfixExpression(const std::string& expression)
+{
+}

@@ -4,7 +4,7 @@
 #include "IFreeable.h"
 #include "ItemBase.h"
 
-class Expression :public IFreeable, public ISerialisable
+class Expression :public IFreeable, public ISavable
 {
 public:
 
@@ -19,6 +19,7 @@ public:
 protected:
 	std::vector<ItemBase*> m_expression;
 };
+
 const std::vector<ItemBase*>& Expression::GetExpression()const
 {
 	return m_expression;
@@ -31,5 +32,7 @@ void Expression::AddItem(ItemBase *item)
 
 void Expression::Free()
 {
+	for (auto i : m_expression)
+		i->Free();
 	delete this;
 }

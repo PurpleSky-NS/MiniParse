@@ -19,8 +19,6 @@ public:
 
 	virtual void Save(std::ostream &out) override;
 
-	virtual void Load(std::istream &in) override;
-
 	inline virtual void Free() override;
 
 private:

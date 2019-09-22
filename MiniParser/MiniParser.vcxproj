@@ -123,13 +123,14 @@
     <ClInclude Include="FixedSizeArray.h" />
     <ClInclude Include="IFreeable.h" />
     <ClInclude Include="InfixExpression.h" />
-    <ClInclude Include="ISerialisable.h" />
+    <ClInclude Include="ISavable.h" />
     <ClInclude Include="ItemBase.h" />
+    <ClInclude Include="ItemParser.h" />
     <ClInclude Include="OperatorItem.h" />
     <ClInclude Include="Statement.h" />
     <ClInclude Include="StatementBlocks.h" />
     <ClInclude Include="SuffixExpression.h" />
-    <ClInclude Include="UnarOperatorItem.h" />
+    <ClInclude Include="UnarOperator.h" />
     <ClInclude Include="ValueItem.h" />
     <ClInclude Include="Various.h" />
     <ClInclude Include="VariousBase.h" />
@@ -137,8 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssignStatement.cpp" />
+    <ClCompile Include="BinaryOperator.cpp" />
     <ClCompile Include="StatementBlocks.cpp" />
     <ClCompile Include="Test.cpp" />
+    <ClCompile Include="UnarOperator.cpp" />
     <ClCompile Include="Various.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

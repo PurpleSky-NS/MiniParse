@@ -19,8 +19,6 @@ public:
 
 	inline virtual void Save(std::ostream & out) override;
 
-	inline virtual void Load(std::istream & in) override;
-
 	inline virtual void Free();
 
 private:
@@ -44,12 +42,6 @@ void StatementBlocks::Save(std::ostream &out)
 {
 	for (auto i : m_statementBlocks)
 		i->Save(out);
-}
-
-void StatementBlocks::Load(std::istream &in)
-{
-	for (auto i : m_statementBlocks)
-		i->Load(in);
 }
 
 void StatementBlocks::Free()

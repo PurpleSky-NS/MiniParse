@@ -7,33 +7,39 @@ class UnarOperator : public OperatorItem
 public:
 	enum UnarOperatorType : char
 	{
-		Factorial = 0,	//!
-		Lg,				//lg
-		Ln,				//ln
-		Sin,			//sin
-		Cos,			//cos
-		Tan,			//tan
-		Arcsin,			//arcsin
-		Arccos,			//arccos
-		Arctan,			//arctan
+		Factorial,	//!
+		Lg,			//lg
+		Ln,			//ln
+		Sin,		//sin
+		Cos,		//cos
+		Tan,		//tan
+		Arcsin,		//arcsin
+		Arccos,		//arccos
+		Arctan,		//arctan
 		Count
 	};
+
+	static UnarOperator* GetUnarOperator(UnarOperatorType type);
+
+	inline void SetUnarOperatorType(UnarOperatorType type);
+
+	inline UnarOperatorType GetUnarOperatorType()const;
+
+	virtual inline OperatorType GetOperatorType() const override;
+
+	virtual inline void Save(std::ostream& out) override;
+
+	virtual void Free()override {}
+
+private:
+
+	static UnarOperator operators[Count];
 
 	inline UnarOperator() = default;
 	inline UnarOperator(UnarOperatorType type);
 	inline UnarOperator(const UnarOperator&) = default;
 	inline UnarOperator(UnarOperator&&) = default;
 	inline ~UnarOperator() = default;
-
-	virtual inline OperatorType GetOperatorType() const override;
-
-	inline void SetUnarOperatorType(UnarOperatorType type);
-
-	inline UnarOperatorType GetUnarOperatorType()const;
-
-	virtual void Save(std::ostream& out) override;
-
-private:
 
 	UnarOperatorType m_type;
 
@@ -59,6 +65,7 @@ UnarOperator::UnarOperatorType UnarOperator::GetUnarOperatorType() const
 
 void UnarOperator::Save(std::ostream& out)
 {
+	OperatorItem::Save(out);
 	out.put(OperatorType::UnarOperator);
 	out.put(m_type);
 }

@@ -1,9 +1,13 @@
 ﻿#pragma once
 
-/*表达式元素基类，不实现IFreeable接口*/
-class ItemBase :public ISerialisable
+#include "IFreeable.h"
+#include "ISavable.h"
+
+/*表达式元素基类*/
+class ItemBase :public ISavable,public IFreeable
 {
 public:
+
 	enum ItemType:char
 	{
 		Operator,
@@ -11,5 +15,4 @@ public:
 	};
 
 	virtual ItemType GetType()const = 0;
-
 };
