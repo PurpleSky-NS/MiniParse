@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "IFreeable.h"
 #include "ISavable.h"
@@ -11,7 +11,8 @@ public:
 	enum ItemType:char
 	{
 		Operator,
-		Value
+		Value,
+		Bracket
 	};
 
 	virtual ItemType GetType()const = 0;
