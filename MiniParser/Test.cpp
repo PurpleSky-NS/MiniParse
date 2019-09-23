@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include "Various.h"
 #include "DynamicSizeArray.h"
 #include "FixedSizeArray.h"
@@ -7,6 +7,7 @@
 #include "UnarOperator.h"
 #include "BracketItem.h"
 #include "ValueItem.h"
+#include "Expression.h"
 using namespace std;
 
 ostream& operator<<(ostream& out, BinaryOperator* v)
@@ -31,6 +32,7 @@ ostream& operator<<(ostream& out, BinaryOperator* v)
 		break;
 	}
 	out << str;
+	return out;
 }
 
 ostream& operator<<(ostream& out, UnarOperator* v)
@@ -67,6 +69,7 @@ ostream& operator<<(ostream& out, UnarOperator* v)
 		break;
 	}
 	out << str;
+	return out;
 }
 
 ostream& operator<<(ostream& out, BracketItem* v)
@@ -82,6 +85,21 @@ ostream& operator<<(ostream& out, BracketItem* v)
 		break;
 	}
 	out << str;
+	return out;
+}
+
+ostream& operator<<(ostream& out, OperatorItem* v)
+{
+	switch (v->GetOperatorType())
+	{
+	case OperatorItem::BinaryOperator:
+		out << ((BinaryOperator*)v);
+		break;
+	case OperatorItem::UnarOperator:
+		out << ((UnarOperator*)v);
+		break;
+	}
+	return out;
 }
 
 ostream& operator<<(ostream& out, ItemBase* v)
@@ -89,7 +107,7 @@ ostream& operator<<(ostream& out, ItemBase* v)
 	switch (v->GetType())
 	{
 	case ItemBase::Value:
-		out << ((ValueItem*)v)->GetValue;
+		out << ((ValueItem*)v)->GetValue();
 		break;
 	case ItemBase::Operator:
 		out << ((OperatorItem*)v);
@@ -98,9 +116,27 @@ ostream& operator<<(ostream& out, ItemBase* v)
 		out << ((BracketItem*)v);
 		break;
 	}
+	return out;
 }
+
+ostream& operator<<(ostream& out, const Expression &v)
+{
+	for(auto i:v.GetExpression())
+		out<<i;
+	return out;
+}
+
 int main()
 {
+	Expression e;
+	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Arcsin));
+	e.AddItem(new ValueItem(1.2));
+	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Factorial));
+	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Multiply));
+	e.AddItem(new ValueItem(158));
+	
+	
+	cout<<e;
 	cin.get();
 	return 0;
 }
