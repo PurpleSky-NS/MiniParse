@@ -1,5 +1,7 @@
-﻿#pragma once
+#pragma once
+
 #include "OperatorItem.h"
+
 class BinaryOperator : public OperatorItem
 {
 public:
