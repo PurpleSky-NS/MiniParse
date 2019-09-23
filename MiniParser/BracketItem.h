@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include "ItemBase.h"
@@ -10,7 +10,7 @@ public:
 	enum BracketType : char
 	{
 		Left = 0,		//(
-		Right,		//)
+		Right,			//)
 		Count
 	};
 

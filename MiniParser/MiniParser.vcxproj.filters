@@ -46,6 +46,9 @@
     <Filter Include="头文件\Interface">
       <UniqueIdentifier>{dd927810-61bf-46ad-a8df-8b7eb70339ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Calculator\ExpressionItem\Bracket">
+      <UniqueIdentifier>{b1368ac6-1d8a-4bea-a498-d29060b428b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Statement.h">
@@ -108,6 +111,9 @@
     <ClInclude Include="UnarOperator.h">
       <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
     </ClInclude>
+    <ClInclude Include="BracketItem.h">
+      <Filter>头文件\Calculator\ExpressionItem\Bracket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp">
@@ -126,6 +132,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="UnarOperator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="BracketItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
