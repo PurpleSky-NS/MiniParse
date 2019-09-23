@@ -23,10 +23,17 @@ public:
 	inline void Clear();
 
 	inline virtual void Free();
+	
+	inline virtual void Save(std::ostream &out) override;
 
 protected:
 	std::vector<ItemBase*> m_expression;
 };
+
+Expression::~Expression()
+{
+	Clear();
+}
 
 const std::vector<ItemBase*>& Expression::GetExpression()const
 {
@@ -50,7 +57,6 @@ void Expression::Free()
 	delete this;
 }
 
-Expression::~Expression()
+void Expression::Save(std::ostream &out)
 {
-	Clear();
 }
