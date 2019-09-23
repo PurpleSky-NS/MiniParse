@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "OperatorItem.h"
 
@@ -7,7 +7,7 @@ class UnarOperator : public OperatorItem
 public:
 	enum UnarOperatorType : char
 	{
-		Factorial,	//!
+		Factorial = 0,	//!
 		Lg,			//lg
 		Ln,			//ln
 		Sin,		//sin
@@ -44,10 +44,12 @@ private:
 	UnarOperatorType m_type;
 
 };
+
 UnarOperator::UnarOperator(UnarOperatorType type)
 {
 	m_type = type;
 }
+
 UnarOperator::OperatorType UnarOperator::GetOperatorType() const
 {
 	return OperatorType::UnarOperator;
