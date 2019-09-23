@@ -119,10 +119,10 @@ ostream& operator<<(ostream& out, ItemBase* v)
 	return out;
 }
 
-ostream& operator<<(ostream& out, const Expression &v)
+ostream& operator<<(ostream& out, const Expression& v)
 {
-	for(auto i:v.GetExpression())
-		out<<i;
+	for (auto i : v.GetExpression())
+		out << i;
 	return out;
 }
 
@@ -134,9 +134,8 @@ int main()
 	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Factorial));
 	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Multiply));
 	e.AddItem(new ValueItem(158));
-	
-	
-	cout<<e;
+
+	cout << e;
 	cin.get();
 	return 0;
 }

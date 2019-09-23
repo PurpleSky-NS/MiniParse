@@ -121,6 +121,7 @@
     <ClInclude Include="BracketItem.h" />
     <ClInclude Include="DynamicSizeArray.h" />
     <ClInclude Include="Expression.h" />
+    <ClInclude Include="ExpressionParser.h" />
     <ClInclude Include="FixedSizeArray.h" />
     <ClInclude Include="IFreeable.h" />
     <ClInclude Include="InfixExpression.h" />

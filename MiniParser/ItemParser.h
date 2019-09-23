@@ -3,12 +3,19 @@
 #include "ValueItem.h"
 #include "BinaryOperator.h"
 #include "UnarOperator.h"
+#include "BracketItem.h"
 
 class ItemParser
 {
 public:
 
 	static inline ItemBase* ParseItem(std::istream& in);
+
+private:
+	ItemParser() = delete;
+	ItemParser(const ItemParser&) = delete;
+	ItemParser(ItemParser&&) = delete;
+	~ItemParser() = delete;
 };
 ItemBase* ItemParser::ParseItem(std::istream& in)
 {
@@ -26,6 +33,9 @@ ItemBase* ItemParser::ParseItem(std::istream& in)
 		case OperatorItem::UnarOperator:
 			return UnarOperator::GetUnarOperator((UnarOperator::UnarOperatorType)in.get());
 		}
+		return nullptr;
+	case ItemBase::Bracket:
+		return BracketItem::GetBracket((BracketItem::BracketType)in.get());
 	}
 	return nullptr;
 }

@@ -114,6 +114,9 @@
     <ClInclude Include="BracketItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Bracket</Filter>
     </ClInclude>
+    <ClInclude Include="ExpressionParser.h">
+      <Filter>头文件\Calculator\Expression</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Test.cpp">
