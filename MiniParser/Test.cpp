@@ -130,10 +130,12 @@ int main()
 {
 	Expression e;
 	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Arcsin));
+	e.AddItem(BracketItem::GetBracket(BracketItem::Left));
 	e.AddItem(new ValueItem(1.2));
 	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Factorial));
 	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Multiply));
 	e.AddItem(new ValueItem(158));
+	e.AddItem(BracketItem::GetBracket(BracketItem::Right));
 
 	cout << e;
 	cin.get();
