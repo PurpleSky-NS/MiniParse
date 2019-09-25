@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include "ItemBase.h"
@@ -17,9 +17,9 @@ public:
 
 	inline double& GetValue();
 
-	virtual void Save(std::ostream& out) override;
+	inline virtual void Save(std::ostream& out) override;
 
-	virtual void Free()override;
+	inline virtual void Free()override;
 
 private:
 	double m_value;
