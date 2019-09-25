@@ -10,22 +10,20 @@ public:
 	StatementBlocks() = default;
 	~StatementBlocks();
 
-	inline void Add(Statement *statement);
+	inline void Add(Statement* statement);
 
 	/*不会调用自己的Free，只会调用子语句对象的Free并清空vector*/
 	void Clear();
 
 	inline virtual bool Excuse() override;
 
-	inline virtual void Save(std::ostream & out) override;
-
-	inline virtual void Free();
+	inline virtual void Save(std::ostream& out) override;
 
 private:
 	std::vector<Statement*> m_statementBlocks;
 };
 
-void StatementBlocks::Add(Statement *statement)
+void StatementBlocks::Add(Statement* statement)
 {
 	m_statementBlocks.push_back(statement);
 }
@@ -33,18 +31,13 @@ void StatementBlocks::Add(Statement *statement)
 bool StatementBlocks::Excuse()
 {
 	for (auto i : m_statementBlocks)
-		if(!i->Excuse())
+		if (!i->Excuse())
 			return false;
 	return true;
 }
 
-void StatementBlocks::Save(std::ostream &out) 
+void StatementBlocks::Save(std::ostream& out)
 {
 	for (auto i : m_statementBlocks)
 		i->Save(out);
-}
-
-void StatementBlocks::Free()
-{
-	delete this;
 }

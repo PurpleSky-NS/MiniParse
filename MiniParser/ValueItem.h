@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include "ItemBase.h"
@@ -7,9 +7,9 @@ class ValueItem :public ItemBase
 {
 public:
 
-	inline ValueItem() = default;
+	ValueItem() = default;
 	inline ValueItem(double value);
-	inline ValueItem(const ValueItem &) = default;
+	inline ValueItem(const ValueItem&) = default;
 	inline ValueItem(ValueItem&&) = default;
 	inline ~ValueItem() = default;
 
@@ -19,7 +19,7 @@ public:
 
 	inline virtual void Save(std::ostream& out) override;
 
-	inline virtual void Free()override;
+	inline virtual void Free() override;
 
 private:
 	double m_value;
@@ -43,7 +43,7 @@ double& ValueItem::GetValue()
 void ValueItem::Save(std::ostream& out)
 {
 	out.put(Value);
-	out.write((const char*)&m_value, sizeof(m_value));
+	out.write((const char*)& m_value, sizeof(m_value));
 }
 
 void ValueItem::Free()

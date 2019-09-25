@@ -9,7 +9,7 @@ public:
 	/*运算符类型*/
 	enum OperatorType : char
 	{
-		UnarOperator,	//单目运算符
+		UnaryOperator,	//单目运算符
 		BinaryOperator	//双目运算符
 	};
 
@@ -18,6 +18,8 @@ public:
 	virtual OperatorType GetOperatorType()const = 0;
 
 	virtual inline void Save(std::ostream& out) override;
+
+	virtual void Free()override {}
 
 };
 OperatorItem::ItemType OperatorItem::GetType() const

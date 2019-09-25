@@ -6,7 +6,5 @@ StatementBlocks::~StatementBlocks()
 
 void StatementBlocks::Clear()
 {
-	for (auto i : m_statementBlocks)
-		i->Free();
 	m_statementBlocks.clear();
 }

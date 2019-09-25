@@ -119,20 +119,21 @@
     <ClInclude Include="AssignStatement.h" />
     <ClInclude Include="BinaryOperator.h" />
     <ClInclude Include="BracketItem.h" />
+    <ClInclude Include="Calculator.h" />
     <ClInclude Include="DynamicSizeArray.h" />
     <ClInclude Include="Expression.h" />
     <ClInclude Include="ExpressionParser.h" />
     <ClInclude Include="FixedSizeArray.h" />
-    <ClInclude Include="IFreeable.h" />
     <ClInclude Include="InfixExpression.h" />
     <ClInclude Include="ISavable.h" />
     <ClInclude Include="ItemBase.h" />
     <ClInclude Include="ItemParser.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OperatorItem.h" />
     <ClInclude Include="Statement.h" />
     <ClInclude Include="StatementBlocks.h" />
     <ClInclude Include="SuffixExpression.h" />
-    <ClInclude Include="UnarOperator.h" />
+    <ClInclude Include="UnaryOperator.h" />
     <ClInclude Include="ValueItem.h" />
     <ClInclude Include="Various.h" />
     <ClInclude Include="VariousBase.h" />
@@ -144,7 +145,7 @@
     <ClCompile Include="BracketItem.cpp" />
     <ClCompile Include="StatementBlocks.cpp" />
     <ClCompile Include="Test.cpp" />
-    <ClCompile Include="UnarOperator.cpp" />
+    <ClCompile Include="UnaryOperator.cpp" />
     <ClCompile Include="Various.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,14 +1,15 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Various.h"
 #include "DynamicSizeArray.h"
 #include "FixedSizeArray.h"
 #include "VariousTable.h"
 #include "BinaryOperator.h"
-#include "UnarOperator.h"
+#include "UnaryOperator.h"
 #include "BracketItem.h"
 #include "ValueItem.h"
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
+#include "Calculator.h"
 using namespace std;
 
 ostream& operator<<(ostream& out, BinaryOperator* v)
@@ -36,36 +37,36 @@ ostream& operator<<(ostream& out, BinaryOperator* v)
 	return out;
 }
 
-ostream& operator<<(ostream& out, UnarOperator* v)
+ostream& operator<<(ostream& out, UnaryOperator* v)
 {
 	string str;
-	switch (v->GetUnarOperatorType())
+	switch (v->GetUnaryOperatorType())
 	{
-	case UnarOperator::Factorial:
+	case UnaryOperator::Factorial:
 		str = "!";
 		break;
-	case UnarOperator::Lg:
+	case UnaryOperator::Lg:
 		str = "lg";
 		break;;
-	case UnarOperator::Ln:
+	case UnaryOperator::Ln:
 		str = "ln";
 		break;;
-	case UnarOperator::Sin:
+	case UnaryOperator::Sin:
 		str = "sin";
 		break;
-	case UnarOperator::Cos:
+	case UnaryOperator::Cos:
 		str = "cos";
 		break;
-	case UnarOperator::Tan:
+	case UnaryOperator::Tan:
 		str = "tan";
 		break;
-	case UnarOperator::Arcsin:
+	case UnaryOperator::Arcsin:
 		str = "arcsin";
 		break;
-	case UnarOperator::Arccos:
+	case UnaryOperator::Arccos:
 		str = "arccos";
 		break;
-	case UnarOperator::Arctan:
+	case UnaryOperator::Arctan:
 		str = "arctan";
 		break;
 	}
@@ -96,8 +97,8 @@ ostream& operator<<(ostream& out, OperatorItem* v)
 	case OperatorItem::BinaryOperator:
 		out << ((BinaryOperator*)v);
 		break;
-	case OperatorItem::UnarOperator:
-		out << ((UnarOperator*)v);
+	case OperatorItem::UnaryOperator:
+		out << ((UnaryOperator*)v);
 		break;
 	}
 	return out;
@@ -126,21 +127,24 @@ ostream& operator<<(ostream& out, const Expression& v)
 		out << i;
 	return out;
 }
-
 int main()
 {
 	InfixExpression e;
-	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Arcsin));
+
+	e.AddItem(new ValueItem(5));
+	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Divide));
 	e.AddItem(BracketItem::GetBracket(BracketItem::Left));
 	e.AddItem(new ValueItem(1.2));
-	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Factorial));
+	e.AddItem(UnaryOperator::GetUnaryOperator(UnaryOperator::Factorial));
 	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Multiply));
 	e.AddItem(new ValueItem(158));
 	e.AddItem(BracketItem::GetBracket(BracketItem::Right));
-	
+
 	SuffixExpression se(e);
+	Calculator calc;
 	cout << e << endl;
 	cout << se << endl;
+	cout << (int)calc.Calculate(se) << " : " << calc.GetResult() << endl;
 	cin.get();
 	return 0;
 }

@@ -1,9 +1,8 @@
 ﻿#pragma once
 
 #include <string>
-#include "IFreeable.h"
 
-class VariousBase :public IFreeable
+class VariousBase
 {
 public:
 
@@ -17,7 +16,7 @@ public:
 
 protected:
 	VariousBase() = default;
-	VariousBase(const VariousBase &) = delete;
-	VariousBase(VariousBase &&) = delete;
+	VariousBase(const VariousBase&) = delete;
+	VariousBase(VariousBase&&) = delete;
 
 };

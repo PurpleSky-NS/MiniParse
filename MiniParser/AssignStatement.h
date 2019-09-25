@@ -7,22 +7,20 @@
 /*基础的赋值语句*/
 class AssignStatement :public Statement
 {
-public: 
+public:
 
-	inline AssignStatement(const std::string &variousName,SuffixExpression *expression);
-	inline AssignStatement(const std::string &arrayName,size_t pos, SuffixExpression *expression);
-	AssignStatement(const AssignStatement&)=delete;
-	AssignStatement(AssignStatement&&)=delete;
+	inline AssignStatement(const std::string& variousName, SuffixExpression* expression);
+	inline AssignStatement(const std::string& arrayName, size_t pos, SuffixExpression* expression);
+	AssignStatement(const AssignStatement&) = delete;
+	AssignStatement(AssignStatement&&) = delete;
 	~AssignStatement();
-	
+
 	inline virtual bool Excuse() override;
 
-	virtual void Save(std::ostream &out) override;
-
-	inline virtual void Free() override;
+	virtual void Save(std::ostream& out) override;
 
 private:
-	
+
 	VariousBase::VariousType m_LType;
 
 	std::string m_arrayName;
@@ -30,29 +28,25 @@ private:
 
 	std::string m_variousName;
 
-	SuffixExpression *m_expression;
+	SuffixExpression* m_expression;
 };
 
-AssignStatement::AssignStatement(const std::string &variousName, SuffixExpression *expression)
+AssignStatement::AssignStatement(const std::string& variousName, SuffixExpression* expression)
 {
-	m_LType=VariousBase::Various;
-	m_variousName=variousName;
-	m_expression=expression;
+	m_LType = VariousBase::Various;
+	m_variousName = variousName;
+	m_expression = expression;
 }
 
-AssignStatement::AssignStatement(const std::string &arrayName,size_t pos, SuffixExpression *expression)
+AssignStatement::AssignStatement(const std::string& arrayName, size_t pos, SuffixExpression* expression)
 {
-	m_LType=VariousBase::Array;
-	m_arrayName=arrayName;
-	m_arrayPos=pos;
-	m_expression=expression;
+	m_LType = VariousBase::Array;
+	m_arrayName = arrayName;
+	m_arrayPos = pos;
+	m_expression = expression;
 }
 
 bool AssignStatement::Excuse()
 {
 	return true;
-}
-
-void AssignStatement::Free()
-{
 }

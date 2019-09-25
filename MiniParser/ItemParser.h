@@ -2,7 +2,7 @@
 
 #include "ValueItem.h"
 #include "BinaryOperator.h"
-#include "UnarOperator.h"
+#include "UnaryOperator.h"
 #include "BracketItem.h"
 
 class ItemParser
@@ -30,8 +30,8 @@ ItemBase* ItemParser::ParseItem(std::istream& in)
 		{
 		case OperatorItem::BinaryOperator:
 			return BinaryOperator::GetBinaryOperator((BinaryOperator::BinaryOperatorType)in.get());
-		case OperatorItem::UnarOperator:
-			return UnarOperator::GetUnarOperator((UnarOperator::UnarOperatorType)in.get());
+		case OperatorItem::UnaryOperator:
+			return UnaryOperator::GetUnaryOperator((UnaryOperator::UnaryOperatorType)in.get());
 		}
 		return nullptr;
 	case ItemBase::Bracket:

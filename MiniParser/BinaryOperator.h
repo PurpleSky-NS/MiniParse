@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "OperatorItem.h"
 
@@ -13,7 +13,7 @@ public:
 		Multiply,		//*
 		Divide,			///
 		Mod,			//%
-		Power,           //^
+		Power,          //^
 		Count
 	};
 
@@ -26,8 +26,6 @@ public:
 	virtual inline OperatorType GetOperatorType() const override;
 
 	virtual inline void Save(std::ostream& out) override;
-
-	virtual void Free()override {}
 
 private:
 

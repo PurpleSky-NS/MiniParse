@@ -1,14 +1,13 @@
-#pragma once
+﻿#pragma once
 
-#include "IFreeable.h"
 #include "ISavable.h"
 
 /*表达式元素基类*/
-class ItemBase :public ISavable,public IFreeable
+class ItemBase :public ISavable
 {
 public:
 
-	enum ItemType:char
+	enum ItemType :char
 	{
 		Operator,
 		Value,
@@ -16,4 +15,7 @@ public:
 	};
 
 	virtual ItemType GetType()const = 0;
+
+	/*该接口用于Expression管理内存*/
+	virtual void Free() = 0;
 };

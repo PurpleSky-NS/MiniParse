@@ -75,16 +75,7 @@
     <ClInclude Include="AssignStatement.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
-    <ClInclude Include="SuffixExpression.h">
-      <Filter>头文件\Calculator\Expression</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemBase.h">
-      <Filter>头文件\Calculator\ExpressionItem</Filter>
-    </ClInclude>
     <ClInclude Include="InfixExpression.h">
-      <Filter>头文件\Calculator\Expression</Filter>
-    </ClInclude>
-    <ClInclude Include="Expression.h">
       <Filter>头文件\Calculator\Expression</Filter>
     </ClInclude>
     <ClInclude Include="ValueItem.h">
@@ -96,9 +87,6 @@
     <ClInclude Include="OperatorItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
     </ClInclude>
-    <ClInclude Include="IFreeable.h">
-      <Filter>头文件\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="DynamicSizeArray.h">
       <Filter>头文件\Parser\Various\Array</Filter>
     </ClInclude>
@@ -108,20 +96,32 @@
     <ClInclude Include="ItemParser.h">
       <Filter>头文件\Calculator\ExpressionItem</Filter>
     </ClInclude>
-    <ClInclude Include="UnarOperator.h">
-      <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
-    </ClInclude>
     <ClInclude Include="BracketItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Bracket</Filter>
     </ClInclude>
     <ClInclude Include="ExpressionParser.h">
       <Filter>头文件\Calculator\Expression</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>头文件\Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="Expression.h">
+      <Filter>头文件\Calculator\Expression</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBase.h">
+      <Filter>头文件\Calculator\ExpressionItem</Filter>
+    </ClInclude>
+    <ClInclude Include="SuffixExpression.h">
+      <Filter>头文件\Calculator\Expression</Filter>
+    </ClInclude>
+    <ClInclude Include="UnaryOperator.h">
+      <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
+    </ClInclude>
+    <ClInclude Include="Calculator.h">
+      <Filter>头文件\Calculator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Various.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -134,10 +134,13 @@
     <ClCompile Include="BinaryOperator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="UnarOperator.cpp">
+    <ClCompile Include="BracketItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="BracketItem.cpp">
+    <ClCompile Include="UnaryOperator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

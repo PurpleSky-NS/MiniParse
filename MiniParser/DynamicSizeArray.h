@@ -43,8 +43,6 @@ public:
 	inline virtual void Foreach(std::function<void(ArrayItem&)> Func) override;
 	inline virtual void Foreach(std::function<void(ArrayItem&, size_t)> Func) override;
 
-	inline virtual void Free() override;
-
 	inline virtual ArrayType GetArrayType()const override;
 
 private:
@@ -155,10 +153,6 @@ void DynamicSizeArray::Foreach(std::function<void(ArrayItem&, size_t)> Func)
 {
 	for (size_t i = 0; i < m_values.size(); ++i)
 		Func(m_values[i], i);
-}
-void DynamicSizeArray::Free()
-{
-	delete this;
 }
 
 DynamicSizeArray::ArrayType DynamicSizeArray::GetArrayType() const

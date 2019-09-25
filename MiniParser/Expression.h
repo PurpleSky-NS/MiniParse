@@ -1,10 +1,9 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
-#include "IFreeable.h"
 #include "ItemBase.h"
 
-class Expression :public IFreeable, public ISavable
+class Expression : public ISavable
 {
 public:
 
@@ -12,7 +11,7 @@ public:
 	inline Expression(unsigned capacity);
 	inline Expression(const Expression&) = delete;
 	inline Expression(Expression&&) = delete;
-	inline ~Expression();
+	inline ~Expression() = default;
 
 	/*获取表达式元素序列*/
 	inline const std::vector<ItemBase*>& GetExpression()const;
@@ -20,10 +19,8 @@ public:
 	/*添加元素*/
 	inline void AddItem(ItemBase* item);
 
-	/*清空表达式*/
-	inline void Clear();
-
-	inline virtual void Free();
+	/*清空表达式，是否释放Value的内存*/
+	inline void Clear(bool free);
 
 	inline virtual void Save(std::ostream& out) override;
 
@@ -31,14 +28,9 @@ protected:
 	std::vector<ItemBase*> m_expression;
 };
 
-Expression::Expression(unsigned capacity):
-    m_expression(capacity)
+Expression::Expression(unsigned capacity) :
+	m_expression(capacity)
 {}
-
-Expression::~Expression()
-{
-	Clear();
-}
 
 const std::vector<ItemBase*>& Expression::GetExpression()const
 {
@@ -50,21 +42,17 @@ void Expression::AddItem(ItemBase* item)
 	m_expression.push_back(item);
 }
 
-void Expression::Clear()
+void Expression::Clear(bool free)
 {
-	for (auto i : m_expression)
-		i->Free();
+	if (free)
+		for (auto i : m_expression)
+			i->Free();
 	m_expression.clear();
-}
-
-void Expression::Free()
-{
-	delete this;
 }
 
 void Expression::Save(std::ostream& out)
 {
-	uint32_t size = m_expression.size();
+	uint32_t size = (uint32_t)m_expression.size();
 	out.write((const char*)& size, sizeof(size));
 	for (auto i : m_expression)
 		i->Save(out);
