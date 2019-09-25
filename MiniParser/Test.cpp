@@ -7,7 +7,8 @@
 #include "UnarOperator.h"
 #include "BracketItem.h"
 #include "ValueItem.h"
-#include "Expression.h"
+#include "InfixExpression.h"
+#include "SuffixExpression.h"
 using namespace std;
 
 ostream& operator<<(ostream& out, BinaryOperator* v)
@@ -128,7 +129,7 @@ ostream& operator<<(ostream& out, const Expression& v)
 
 int main()
 {
-	Expression e;
+	InfixExpression e;
 	e.AddItem(UnarOperator::GetUnarOperator(UnarOperator::Arcsin));
 	e.AddItem(BracketItem::GetBracket(BracketItem::Left));
 	e.AddItem(new ValueItem(1.2));
@@ -136,8 +137,10 @@ int main()
 	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Multiply));
 	e.AddItem(new ValueItem(158));
 	e.AddItem(BracketItem::GetBracket(BracketItem::Right));
-
-	cout << e;
+	
+	SuffixExpression se(e);
+	cout << e << endl;
+	cout << se << endl;
 	cin.get();
 	return 0;
 }
