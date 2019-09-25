@@ -7,7 +7,7 @@ class UnarOperator : public OperatorItem
 public:
 	enum UnarOperatorType : char
 	{
-		Factorial = 0,	//!
+		Factorial = 0,	//!，本来就是后缀表达
 		Lg,			//lg
 		Ln,			//ln
 		Sin,		//sin
