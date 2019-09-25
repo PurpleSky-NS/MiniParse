@@ -144,7 +144,8 @@ int main()
 	Calculator calc;
 	cout << e << endl;
 	cout << se << endl;
-	cout << (int)calc.Calculate(se) << " : " << calc.GetResult() << endl;
+	cout << (int)calc.Calculate(se) << " : ";
+	cout << calc.GetResult() << endl;
 	cin.get();
 	return 0;
 }

@@ -30,7 +30,7 @@ public:
 
 private:
 
-	double m_prevResult;
+	double m_prevResult = 0.0;
 	CalculateResult m_occurResult = Succeed;
 
 	inline double CalculateBinaryOperator(BinaryOperator::BinaryOperatorType type, double left, double right);
@@ -39,7 +39,6 @@ private:
 
 	inline bool IsZero(double value)const;
 
-	inline double Factorial(double value);
 };
 
 Calculator::CalculateResult Calculator::Calculate(const std::string& expression)
@@ -142,7 +141,7 @@ double Calculator::CalculateUnaryOperator(UnaryOperator::UnaryOperatorType type,
 	switch (type)
 	{
 	case UnaryOperator::Factorial:
-		return tgamma(value);
+		return tgamma(value + 1);
 	case UnaryOperator::Lg:
 		return log10(value);
 	case UnaryOperator::Ln:

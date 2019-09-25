@@ -115,5 +115,10 @@ bool SuffixExpression::ParseExpression(const InfixExpression& expression)
 		}
 
 	}
+	while (!operatorStack.empty())
+	{
+		m_expression.push_back(operatorStack.top());
+		operatorStack.pop();
+	}
 	return true;
 }
