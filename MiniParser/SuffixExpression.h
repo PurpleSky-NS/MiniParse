@@ -2,7 +2,8 @@
 
 #include <stack>
 #include "BracketItem.h"
-#include "OperatorItem.h"
+#include "BinaryOperator.h"
+#include "UnarOperator.h"
 #include "ValueItem.h"
 #include "InfixExpression.h"
 
@@ -40,7 +41,8 @@ SuffixExpression::SuffixExpression(const InfixExpression& expression)
 SuffixExpression::ParseResult SuffixExpression::ParseExpression(const InfixExpression& expression)
 {
 	//静态优先级表，按二元运算符的优先级来
-	static const unsigned char operatorPriority[]={1,1,2,2,2,3};
+	//+ - * / ^
+	static const unsigned char binOpPriority[]={1,1,2,2,2,3};
 	
 	std::stack<ItemBase*> operatorStack;//建立符号栈
 	
@@ -53,7 +55,7 @@ SuffixExpression::ParseResult SuffixExpression::ParseExpression(const InfixExpre
 			case ItemBase::Value:
 				m_expression.push_back(i);
 			break;
-			case ItemBase::BracketItem:
+			case ItemBase::Bracket:
 				if(((BracketItem*)i)->GetBracketType()==BracketItem::Left)
 					operatorStack.push(i);
 				else
@@ -61,7 +63,7 @@ SuffixExpression::ParseResult SuffixExpression::ParseExpression(const InfixExpre
 					auto op=operatorStack.top();
 					operatorStack.pop();
 					/*当取出符号是左括号结束循环*/
-					while(!(op->GetType()==BaseItem::Bracket&&((BracketItem)op)->GetBracketType()==BracketItem::Left))
+					while(!(op->GetType()==ItemBase::Bracket&&((BracketItem*)op)->GetBracketType()==BracketItem::Left))
 					{
 						if(operatorStack.empty())
 							return BracketsMatchError;//括号不匹配
@@ -71,8 +73,49 @@ SuffixExpression::ParseResult SuffixExpression::ParseExpression(const InfixExpre
 					}
 				}
 			break;
-			case ItemBase::OperatorItem:
-				
+			case ItemBase::Operator:
+				if(((OperatorItem*)i)->GetOperatorType()==OperatorItem::BinaryOperator)
+				{
+					BinaryOperator *thisOp=(BinaryOperator*)i;
+					ItemBase *preOp;//栈顶运算符
+					while(!operatorStack.empty())
+					{
+						preOp=operatorStack.top();
+						if(preOp->GetType()==ItemBase::Bracket)
+						{
+							operatorStack.push(thisOp);//栈顶是左括号就直接入栈
+							break;
+						}
+						else //否则就是运算符
+						{
+							//一元运算符优先级最大
+							if(((OperatorItem*)preOp)->GetOperatorType()==OperatorItem::UnarOperator)
+							{
+								operatorStack.pop();//把栈顶一元运算符弹出
+								m_expression.push_back(preOp);//加到表达式里
+							}
+							else //二元比较优先级
+							{
+								//当前运算符优先级比之前的高，压栈
+								if(binOpPriority[(unsigned)((BinaryOperator*)thisOp)->GetBinaryOperatorType()]>binOpPriority[(unsigned)((BinaryOperator*)preOp)->GetBinaryOperatorType()])
+								{
+									operatorStack.push(thisOp);
+									break;
+								}
+								else //小于等于的话，弹出之前的运算符
+								{
+									operatorStack.pop();//把栈顶一元运算符弹出
+									m_expression.push_back(preOp);//加到表达式里
+								}
+							}
+						}
+					}
+					//空栈了，说明该运算符优先级最低，把运算符压入
+					if(operatorStack.empty())
+						operatorStack.push(thisOp);
+				}
+				else
+					operatorStack.push(i);
 			break;
 		}
 			
