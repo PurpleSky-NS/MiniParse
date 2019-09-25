@@ -13,7 +13,7 @@ public:
 		Multiply,		//*
 		Divide,			///
 		Mod,			//%
-		Power           //^
+		Power,           //^
 		Count
 	};
 
