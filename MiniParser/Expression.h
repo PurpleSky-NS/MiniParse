@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include "ItemBase.h"
@@ -12,6 +12,9 @@ public:
 	inline Expression(const Expression&) = delete;
 	inline Expression(Expression&&) = delete;
 	inline ~Expression() = default;
+
+	/*获取表达式元素序列*/
+	inline std::vector<ItemBase*>& GetExpression();
 
 	/*获取表达式元素序列*/
 	inline const std::vector<ItemBase*>& GetExpression()const;
@@ -31,6 +34,11 @@ protected:
 Expression::Expression(unsigned capacity) :
 	m_expression(capacity)
 {}
+
+std::vector<ItemBase*>& Expression::GetExpression()
+{
+	return m_expression;
+}
 
 const std::vector<ItemBase*>& Expression::GetExpression()const
 {
