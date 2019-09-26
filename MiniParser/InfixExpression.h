@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include <cctype>
@@ -38,8 +38,8 @@ public:
 	inline bool ParseExpression(const std::string& expression);
 
 private:
-
-	bool m_isNumber = false;
+	
+	ItemBase *m_prevItem=nullptr;
 
 	/*去除空白字符*/
 	inline std::string RemoveSpace(const std::string& exp)const;
@@ -66,17 +66,17 @@ InfixExpression::InfixExpression(const std::string& exp)
 
 bool InfixExpression::ParseExpression(const std::string& srcExp)
 {
-	ItemBase* item;
+	m_prevItem=nullptr;
 	std::string exp = RemoveSpace(srcExp);
 	for (size_t i = 0; i < exp.size();)
 	{
-		item = GetItem(exp, i);
-		if (item == nullptr)
+		m_prevItem = GetItem(exp, i);
+		if (m_prevItem == nullptr)
 		{
 			Clear(true);
 			return false;
 		}
-		m_expression.push_back(item);
+		m_expression.push_back(m_prevItem);
 	}
 	return true;
 }
@@ -104,6 +104,9 @@ bool InfixExpression::IsDivOperator(char ch)
 
 ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 {
+	static bool hasSignedOp=false;//读入数字/变量是否带符号位
+	static bool isNegOp=true;//是否是-
+	/*当+-在表达式的开头，'('的后面或者二元运算符的后面时，就是符号位*/
 	switch (exp[pos])
 	{
 	case '(':
@@ -113,9 +116,25 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 		++pos;
 		return BracketItem::GetBracket(BracketItem::Right);
 	case '+':
+		if(pos==0||m_prevItem!=nullptr&&
+		(m_prevItem->GetType()==ItemBase::Bracket&&((BracketItem*)m_prevItem)->GetBracketType()==BracketItem::Left
+		||m_prevItem->GetType()==ItemBase::Operator&&((OperatorItem*)m_prevItem)->GetOperatorType()==OperatorItem::BinaryOperator))//说明是符号位
+		{
+			hasSignedOp=true;
+			isNegOp=false;
+			return GetItem(exp,++pos);
+		}
 		++pos;
 		return BinaryOperator::GetOperator(BinaryOperator::Add);
 	case '-':
+		if(pos==0||m_prevItem!=nullptr&&
+		(m_prevItem->GetType()==ItemBase::Bracket&&((BracketItem*)m_prevItem)->GetBracketType()==BracketItem::Left
+		||m_prevItem->GetType()==ItemBase::Operator&&((OperatorItem*)m_prevItem)->GetOperatorType()==OperatorItem::BinaryOperator))//说明是符号位
+		{
+			hasSignedOp=true;
+			isNegOp=true;
+			return GetItem(exp,++pos);
+		}
 		++pos;
 		return BinaryOperator::GetOperator(BinaryOperator::Subtract);
 	case '*':
@@ -137,10 +156,26 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 		std::string itemStr;
 		if (isdigit(exp[pos])) //数字开头有可能是数字或者标识符
 			if (GetNumber(exp, pos, itemStr))//如果能取出来数字的话
+			{
+				if(hasSignedOp)//带符号位
+				{
+					hasSignedOp=false;
+					return new ValueItem((isNegOp?-stod(itemStr):stod(itemStr)));
+				}
 				return new ValueItem(stod(itemStr));
+			}
 		//取不出来就继续按标识符解析
 		if (GetIdentification(exp, pos, itemStr) == IdentificationItem::VariousIDF)//如果是变量
-			return new VariousIDF(itemStr);
+		{
+			VariousIDF *vidf=new VariousIDF(itemStr);
+			if(hasSignedOp)
+			{
+				hasSignedOp=false;
+				if(isNegOp)
+					vidf->NegSigned()=true;//设置符号位
+			}
+			return vidf;
+		}
 		else //否则就是函数名
 		{
 			//先判断是不是系统自带函数
