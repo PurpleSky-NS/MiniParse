@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include "Various.h"
 #include "DynamicSizeArray.h"
 #include "FixedSizeArray.h"
@@ -137,25 +137,9 @@ ostream& operator<<(ostream& out, const Expression& v)
 }
 int main()
 {
-	/*InfixExpression e;
-
-	e.AddItem(new ValueItem(5));
-	e.AddItem(BinaryOperator::GetOperator(BinaryOperator::Divide));
-	e.AddItem(BracketItem::GetBracket(BracketItem::Left));
-	e.AddItem(new ValueItem(1.2));
-	e.AddItem(UnaryOperator::GetOperator(UnaryOperator::Factorial));
-	e.AddItem(BinaryOperator::GetOperator(BinaryOperator::Multiply));
-	e.AddItem(new ValueItem(158));
-	e.AddItem(BracketItem::GetBracket(BracketItem::Right));
-
-	SuffixExpression se(e);
-	Calculator calc;
-	cout << e << endl;
-	cout << se << endl;
-	cout << (int)calc.Calculate(se) << " : ";
-	cout << calc.GetResult() << endl;*/
-
-	InfixExpression e("lg(10)+2.6*5");
+	std::string exp;
+	cin>>exp;
+	InfixExpression e(exp);
 	SuffixExpression se(e);
 	Calculator calc;
 	switch (calc.Calculate(se))
