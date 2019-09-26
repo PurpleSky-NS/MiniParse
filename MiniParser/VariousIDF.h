@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "IdentificationItem.h"
 
@@ -12,18 +12,29 @@ public:
 	inline VariousIDF(const VariousIDF&) = delete;
 	inline VariousIDF(VariousIDF&&) = delete;
 	inline ~VariousIDF() = default;
+	
+	inline bool &NegSigned();
 
 	inline virtual IdentificationType GetIdentificationType()const override;
 
 	inline virtual void Save(std::ostream& out) override;
 
 	inline virtual void Free() override;
-
+	
+private:
+	
+	/*是否是相反数*/
+	bool m_isNegSigned=false;
 };
 
 VariousIDF::VariousIDF(const std::string& name) :
 	IdentificationItem(name)
 {}
+
+bool &VariousIDF::NegSigned()
+{
+	return m_isNegSigned;
+}
 
 VariousIDF::IdentificationType VariousIDF::GetIdentificationType() const
 {
