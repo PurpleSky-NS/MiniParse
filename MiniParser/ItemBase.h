@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "ISavable.h"
 
@@ -11,7 +11,8 @@ public:
 	{
 		Operator,
 		Value,
-		Bracket
+		Bracket,
+		Identification
 	};
 
 	virtual ItemType GetType()const = 0;
