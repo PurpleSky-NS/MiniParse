@@ -29,9 +29,9 @@ ItemBase* ItemParser::ParseItem(std::istream& in)
 		switch ((OperatorItem::OperatorType)in.get())
 		{
 		case OperatorItem::BinaryOperator:
-			return BinaryOperator::GetBinaryOperator((BinaryOperator::BinaryOperatorType)in.get());
+			return BinaryOperator::GetOperator((BinaryOperator::BinaryOperatorType)in.get());
 		case OperatorItem::UnaryOperator:
-			return UnaryOperator::GetUnaryOperator((UnaryOperator::UnaryOperatorType)in.get());
+			return UnaryOperator::GetOperator((UnaryOperator::UnaryOperatorType)in.get());
 		}
 		return nullptr;
 	case ItemBase::Bracket:

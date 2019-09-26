@@ -49,6 +49,9 @@
     <Filter Include="头文件\Calculator\ExpressionItem\Bracket">
       <UniqueIdentifier>{b1368ac6-1d8a-4bea-a498-d29060b428b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Calculator\ExpressionItem\Identification">
+      <UniqueIdentifier>{ccda1b02-f57b-46ac-89ca-860512754fb4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Statement.h">
@@ -119,6 +122,15 @@
     </ClInclude>
     <ClInclude Include="Calculator.h">
       <Filter>头文件\Calculator</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionIDF.h">
+      <Filter>头文件\Calculator\ExpressionItem\Identification</Filter>
+    </ClInclude>
+    <ClInclude Include="IdentificationItem.h">
+      <Filter>头文件\Calculator\ExpressionItem\Identification</Filter>
+    </ClInclude>
+    <ClInclude Include="VariousIDF.h">
+      <Filter>头文件\Calculator\ExpressionItem\Identification</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

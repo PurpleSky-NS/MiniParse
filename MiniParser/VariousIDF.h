@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "IdentificationItem.h"
 
@@ -8,21 +8,21 @@ class VariousIDF : public IdentificationItem
 public:
 
 	VariousIDF() = delete;
-	inline VariousIDF(const std::string &name);
+	inline VariousIDF(const std::string& name);
 	inline VariousIDF(const VariousIDF&) = delete;
 	inline VariousIDF(VariousIDF&&) = delete;
 	inline ~VariousIDF() = default;
-	
-	inline virtual IdentificationType GetIdentificationType()const;
+
+	inline virtual IdentificationType GetIdentificationType()const override;
 
 	inline virtual void Save(std::ostream& out) override;
 
 	inline virtual void Free() override;
-	
+
 };
 
-VariousIDF::VariousIDF(const std::string &name):
-    IdentificationItem(name)
+VariousIDF::VariousIDF(const std::string& name) :
+	IdentificationItem(name)
 {}
 
 VariousIDF::IdentificationType VariousIDF::GetIdentificationType() const

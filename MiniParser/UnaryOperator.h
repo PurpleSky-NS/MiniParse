@@ -21,7 +21,11 @@ public:
 		Count
 	};
 
-	static UnaryOperator* GetUnaryOperator(UnaryOperatorType type);
+	static UnaryOperator* GetOperator(UnaryOperatorType type);
+
+	static UnaryOperator* GetOperator(const std::string& typeStr);
+
+	static std::string GetName(UnaryOperatorType type);
 
 	inline void SetUnaryOperatorType(UnaryOperatorType type);
 

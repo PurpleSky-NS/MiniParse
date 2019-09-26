@@ -1,12 +1,14 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <cctype>
 #include "Expression.h"
 #include "ValueItem.h"
+#include "BracketItem.h"
 #include "BinaryOperator.h"
 #include "UnaryOperator.h"
-#include "IdentificationItem.h"
+#include "VariousIDF.h"
+#include "FunctionIDF.h"
 
 class InfixExpression : public Expression
 {
@@ -17,7 +19,7 @@ public:
 	InfixExpression(const InfixExpression&) = delete;
 	InfixExpression(InfixExpression&&) = delete;
 	~InfixExpression() = default;
-	
+
 	/*大长说明：
 	分离字符串表达式
 	操作符(一元，二元)全用对应的字母表示，会用到对应操作符类获取，获取不到就塞Identification里
@@ -34,65 +36,181 @@ public:
 	Fun函数标识符
 	*/
 	inline bool ParseExpression(const std::string& expression);
-	
+
 private:
-	
+
+	bool m_isNumber = false;
+
+	/*去除空白字符*/
+	inline std::string RemoveSpace(const std::string& exp)const;
+
 	inline bool IsNumber(char ch);
-	
-	/* 是否是分隔符，+ - * / % ^ ! , */
+
+	/* 是否是分隔符，+ - * / % ^ ! , ( ) */
 	inline bool IsDivOperator(char ch);
-	
+
 	/*获得一个元素*/
-	inline ItemBase *GetItem(const std::string &exp,size_t &bgPos);
-	
-	/*若碰到非数字或者重复小数点(不是纯数字) 或者 正常分隔符会停下*/
-	inline std::string GetNumber(const std::string &exp,size_t &bgPos);
-	
-	inline std::string GetIdentification(const std::string &exp,size_t &bgPos,const std::string &appendStr="");
+	inline ItemBase* GetItem(const std::string& exp, size_t& bgPos);
+
+	/*若碰到非数字或者重复小数点(不是纯数字) 或者 正常分隔符会停下,返回是否是数字*/
+	inline bool GetNumber(const std::string& exp, size_t& bgPos, std::string& itemStr);
+
+	/*获取标识符*/
+	inline IdentificationItem::IdentificationType GetIdentification(const std::string& exp, size_t& bgPos, std::string& itemStr);
 };
 
 InfixExpression::InfixExpression(const std::string& exp)
 {
-	ParseExpression(expression);
+	ParseExpression(exp);
 }
 
-bool InfixExpression::ParseExpression(const std::string& exp)
+bool InfixExpression::ParseExpression(const std::string& srcExp)
 {
-	std::string buf;
-	for(size_t i=0;i<exp.size();)
+	ItemBase* item;
+	std::string exp = RemoveSpace(srcExp);
+	for (size_t i = 0; i < exp.size();)
 	{
-		
-	}
-}
-
-bool IsNumber(char ch)
-{
-	return exp[pos]=='.'||isdigit(exp[pos]);
-}
-
-bool IsDivOperator(char ch)
-{
-	return ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='%'||ch=='^'||ch=='!'||ch==',';
-}
-
-std::string InfixExpression::GetNumber(const std::string &exp,size_t &pos)
-{
-	bool meetDot=false;
-	std::string item;
-	for(;IsNumber(ch);++pos)
-		if(ch[i]=='.')
+		item = GetItem(exp, i);
+		if (item == nullptr)
 		{
-			if(meetDot)
-				return item;
-			else
-				meetDot=true;
-			item+=exp[pos];
+			Clear(true);
+			return false;
 		}
-	return item;
+		m_expression.push_back(item);
+	}
+	return true;
 }
 
-std::string GetIdentification(const std::string &exp,size_t &bgPos,const std::string &appendStr)
+std::string InfixExpression::RemoveSpace(const std::string& exp) const
 {
-	std::string item=appendStr;
-	
+	std::string newExp;
+	newExp.reserve(exp.size());
+	for (auto i : exp)
+		if (!isspace(i))
+			newExp += i;
+	return newExp;
+}
+
+bool InfixExpression::IsNumber(char ch)
+{
+	return ch == '.' || isdigit(ch);
+}
+
+bool InfixExpression::IsDivOperator(char ch)
+{
+	return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%' ||
+		ch == '^' || ch == '!' || ch == ',' || ch == '(' || ch == ')';
+}
+
+ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
+{
+	switch (exp[pos])
+	{
+	case '(':
+		++pos;
+		return BracketItem::GetBracket(BracketItem::Left);
+	case ')':
+		++pos;
+		return BracketItem::GetBracket(BracketItem::Right);
+	case '+':
+		++pos;
+		return BinaryOperator::GetOperator(BinaryOperator::Add);
+	case '-':
+		++pos;
+		return BinaryOperator::GetOperator(BinaryOperator::Subtract);
+	case '*':
+		++pos;
+		return BinaryOperator::GetOperator(BinaryOperator::Multiply);
+	case '/':
+		++pos;
+		return BinaryOperator::GetOperator(BinaryOperator::Divide);
+	case '%':
+		++pos;
+		return BinaryOperator::GetOperator(BinaryOperator::Mod);
+	case '^':
+		++pos;
+		return BinaryOperator::GetOperator(BinaryOperator::Power);
+	case '!':
+		++pos;
+		return UnaryOperator::GetOperator(UnaryOperator::Factorial);
+	default:
+		std::string itemStr;
+		if (isdigit(exp[pos])) //数字开头有可能是数字或者标识符
+			if (GetNumber(exp, pos, itemStr))//如果能取出来数字的话
+				return new ValueItem(stod(itemStr));
+		//取不出来就继续按标识符解析
+		if (GetIdentification(exp, pos, itemStr) == IdentificationItem::VariousIDF)//如果是变量
+			return new VariousIDF(itemStr);
+		else //否则就是函数名
+		{
+			//先判断是不是系统自带函数
+			UnaryOperator* sysOp = UnaryOperator::GetOperator(itemStr);
+			if (sysOp != nullptr)//是系统自带函数
+				return sysOp;
+			//否则就是自定义函数
+			//函数是长这个样子的Func(a,b,a+b,5.2)或者Func(fc(1,2,3),s3)...
+			++pos;//跳过左括号
+			FunctionIDF* func = new FunctionIDF(itemStr);
+			/*获取他的参数*/
+			while (pos < exp.size() && exp[pos] != ')')
+			{
+				FunctionIDF::ParamType param;
+				while (pos < exp.size() && exp[pos] != ',' && exp[pos] != ')')//获取一个一个的参数
+					param.push_back(GetItem(exp, pos));//一个递归
+				if (pos < exp.size())
+					func->Params().push_back(param);
+				else //没遇到右括号，读取失败
+				{
+					func->Free();
+					return nullptr;
+				}
+				if (exp[pos] == ',')//跳过逗号继续读下个参数
+					++pos;
+			}
+			if (pos < exp.size())
+				++pos;//跳过括号
+			else //没有遇到右括号强行退出循环
+			{
+				func->Free();
+				return nullptr;
+			}
+			return func;
+		}
+	}
+	return nullptr;
+}
+
+bool InfixExpression::GetNumber(const std::string& exp, size_t& bgPos, std::string& itemStr)
+{
+	bool isMeetDot = false;
+	bool isBad = false;
+	size_t pos = bgPos;
+	for (; pos < exp.size() && IsNumber(exp[pos]); ++pos)
+		if (exp[pos] == '.')
+		{
+			if (isMeetDot)
+			{
+				isBad = true;
+				break;
+			}
+			else
+				isMeetDot = true;
+		}
+
+	itemStr = exp.substr(bgPos, pos - bgPos);
+	bgPos = pos;
+	if (pos == exp.size())//如果读到底了
+		return true;
+	return !isBad && IsDivOperator(exp[pos]);//如果没有重复小数点并且遇到分隔符说明是数字
+}
+
+IdentificationItem::IdentificationType InfixExpression::GetIdentification(const std::string& exp, size_t& pos, std::string& itemStr)
+{
+	while (pos < exp.size() && !IsDivOperator(exp[pos]))//直到遇到分隔符停止
+		itemStr += exp[pos++];
+	if (pos == exp.size())//如果读到底了，说明是变量
+		return IdentificationItem::VariousIDF;//否则是变量
+	if (exp[pos] == '(') //遇到右括号说明是函数
+		return IdentificationItem::FunctionIDF;
+	return IdentificationItem::VariousIDF;//否则是变量
 }

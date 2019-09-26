@@ -17,7 +17,7 @@ public:
 		Count
 	};
 
-	static BinaryOperator* GetBinaryOperator(BinaryOperatorType type);
+	static BinaryOperator* GetOperator(BinaryOperatorType type);
 
 	inline void SetBinaryOperatorType(BinaryOperatorType type);
 

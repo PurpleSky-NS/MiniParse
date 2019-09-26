@@ -7,6 +7,8 @@
 #include "UnaryOperator.h"
 #include "BracketItem.h"
 #include "ValueItem.h"
+#include "VariousIDF.h"
+#include "FunctionIDF.h"
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
 #include "Calculator.h"
@@ -18,16 +20,16 @@ ostream& operator<<(ostream& out, BinaryOperator* v)
 	switch (v->GetBinaryOperatorType())
 	{
 	case BinaryOperator::Add:
-		str = "＋";
+		str = "+";
 		break;
 	case BinaryOperator::Subtract:
-		str = "－";
+		str = "-";
 		break;
 	case BinaryOperator::Multiply:
-		str = "×";
+		str = "*";
 		break;
 	case BinaryOperator::Divide:
-		str = "÷";
+		str = "/";
 		break;
 	case BinaryOperator::Mod:
 		str = "%";
@@ -39,38 +41,7 @@ ostream& operator<<(ostream& out, BinaryOperator* v)
 
 ostream& operator<<(ostream& out, UnaryOperator* v)
 {
-	string str;
-	switch (v->GetUnaryOperatorType())
-	{
-	case UnaryOperator::Factorial:
-		str = "!";
-		break;
-	case UnaryOperator::Lg:
-		str = "lg";
-		break;;
-	case UnaryOperator::Ln:
-		str = "ln";
-		break;;
-	case UnaryOperator::Sin:
-		str = "sin";
-		break;
-	case UnaryOperator::Cos:
-		str = "cos";
-		break;
-	case UnaryOperator::Tan:
-		str = "tan";
-		break;
-	case UnaryOperator::Arcsin:
-		str = "arcsin";
-		break;
-	case UnaryOperator::Arccos:
-		str = "arccos";
-		break;
-	case UnaryOperator::Arctan:
-		str = "arctan";
-		break;
-	}
-	out << str;
+	out << UnaryOperator::GetName(v->GetUnaryOperatorType());
 	return out;
 }
 
@@ -80,10 +51,10 @@ ostream& operator<<(ostream& out, BracketItem* v)
 	switch (v->GetBracketType())
 	{
 	case BracketItem::Left:
-		str = "（";
+		str = "(";
 		break;
 	case BracketItem::Right:
-		str = "）";
+		str = ")";
 		break;
 	}
 	out << str;
@@ -104,6 +75,40 @@ ostream& operator<<(ostream& out, OperatorItem* v)
 	return out;
 }
 
+ostream& operator<<(ostream& out, VariousIDF* v)
+{
+	out << '$' << v->GetName();
+	return out;
+}
+
+ostream& operator<<(ostream& out, ItemBase* v);
+ostream& operator<<(ostream& out, FunctionIDF* v)
+{
+	out << '&' << v->GetName() << "(";
+	for (int pos = 0; pos < v->Params().size(); ++pos)
+	{
+		for (auto i : v->Params()[pos])
+			out << i;
+		out << (pos == v->Params().size() - 1 ? '\0' : ',');
+	}
+	out << ')';
+	return out;
+}
+
+ostream& operator<<(ostream& out, IdentificationItem* v)
+{
+	switch (v->GetIdentificationType())
+	{
+	case IdentificationItem::VariousIDF:
+		out << (VariousIDF*)v;
+		break;
+	case IdentificationItem::FunctionIDF:
+		out << (FunctionIDF*)v;
+		break;
+	}
+	return out;
+}
+
 ostream& operator<<(ostream& out, ItemBase* v)
 {
 	switch (v->GetType())
@@ -117,6 +122,9 @@ ostream& operator<<(ostream& out, ItemBase* v)
 	case ItemBase::Bracket:
 		out << ((BracketItem*)v);
 		break;
+	case ItemBase::Identification:
+		out << ((IdentificationItem*)v);
+		break;
 	}
 	return out;
 }
@@ -124,19 +132,19 @@ ostream& operator<<(ostream& out, ItemBase* v)
 ostream& operator<<(ostream& out, const Expression& v)
 {
 	for (auto i : v.GetExpression())
-		out << i;
+		out << i << " ";
 	return out;
 }
 int main()
 {
-	InfixExpression e;
+	/*InfixExpression e;
 
 	e.AddItem(new ValueItem(5));
-	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Divide));
+	e.AddItem(BinaryOperator::GetOperator(BinaryOperator::Divide));
 	e.AddItem(BracketItem::GetBracket(BracketItem::Left));
 	e.AddItem(new ValueItem(1.2));
-	e.AddItem(UnaryOperator::GetUnaryOperator(UnaryOperator::Factorial));
-	e.AddItem(BinaryOperator::GetBinaryOperator(BinaryOperator::Multiply));
+	e.AddItem(UnaryOperator::GetOperator(UnaryOperator::Factorial));
+	e.AddItem(BinaryOperator::GetOperator(BinaryOperator::Multiply));
 	e.AddItem(new ValueItem(158));
 	e.AddItem(BracketItem::GetBracket(BracketItem::Right));
 
@@ -145,7 +153,23 @@ int main()
 	cout << e << endl;
 	cout << se << endl;
 	cout << (int)calc.Calculate(se) << " : ";
-	cout << calc.GetResult() << endl;
+	cout << calc.GetResult() << endl;*/
+
+	InfixExpression e("lg(10)+2.6*5");
+	SuffixExpression se(e);
+	Calculator calc;
+	switch (calc.Calculate(se))
+	{
+	case Calculator::Succeed:
+		cout << "结果是：" << calc.GetResult() << endl;
+		break;
+	case Calculator::MathError:
+		cout << "表达式错误！" << endl;
+		break;
+	case Calculator::ExpressionError:
+		cout << "数学错误！" << endl;
+		break;
+	}
 	cin.get();
 	return 0;
 }

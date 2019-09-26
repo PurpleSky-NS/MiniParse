@@ -124,6 +124,8 @@
     <ClInclude Include="Expression.h" />
     <ClInclude Include="ExpressionParser.h" />
     <ClInclude Include="FixedSizeArray.h" />
+    <ClInclude Include="FunctionIDF.h" />
+    <ClInclude Include="IdentificationItem.h" />
     <ClInclude Include="InfixExpression.h" />
     <ClInclude Include="ISavable.h" />
     <ClInclude Include="ItemBase.h" />
@@ -137,6 +139,7 @@
     <ClInclude Include="ValueItem.h" />
     <ClInclude Include="Various.h" />
     <ClInclude Include="VariousBase.h" />
+    <ClInclude Include="VariousIDF.h" />
     <ClInclude Include="VariousTable.h" />
   </ItemGroup>
   <ItemGroup>
