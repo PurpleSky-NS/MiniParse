@@ -167,6 +167,11 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 		//取不出来就继续按标识符解析
 		if (GetIdentification(exp, pos, itemStr) == IdentificationItem::VariousIDF)//如果是变量
 		{
+			/*可能是常量pi和e*/
+			if(itemStr=="pi")
+				return new ValueItem(M_PI);
+			else if(itemStr=="e")
+				return new ValueIten(M_E);
 			VariousIDF *vidf=new VariousIDF(itemStr);
 			if(hasSignedOp)
 			{
