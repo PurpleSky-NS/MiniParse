@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cmath>
 #include "SuffixExpression.h"
@@ -126,7 +126,10 @@ double Calculator::CalculateBinaryOperator(BinaryOperator::BinaryOperatorType ty
 		return left * right;
 	case BinaryOperator::Divide:
 		if (IsZero(right))
+		{
 			m_occurResult = MathError;
+			return 0.0;
+		}
 		return left / right;
 	case BinaryOperator::Mod:
 		return fmod(left, right);
@@ -141,6 +144,11 @@ double Calculator::CalculateUnaryOperator(UnaryOperator::UnaryOperatorType type,
 	switch (type)
 	{
 	case UnaryOperator::Factorial:
+		if(value<-1)
+		{
+			m_occurResult=MathError;
+			return 0.0;
+		}
 		return tgamma(value + 1);
 	case UnaryOperator::Lg:
 		return log10(value);
