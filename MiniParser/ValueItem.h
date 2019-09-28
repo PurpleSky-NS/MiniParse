@@ -7,6 +7,9 @@ class ValueItem :public ItemBase
 {
 public:
 
+	static const double VALUE_PI;
+	static const double VALUE_E;
+
 	ValueItem() = default;
 	inline ValueItem(double value);
 	inline ValueItem(const ValueItem&) = default;
@@ -15,9 +18,7 @@ public:
 
 	virtual inline ItemType GetType() const override;
 
-	inline double& GetValue();
-
-	inline virtual void Save(std::ostream& out) override;
+	inline double& Value();
 
 	inline virtual void Free() override;
 
@@ -32,18 +33,12 @@ ValueItem::ValueItem(double value)
 
 ValueItem::ItemType ValueItem::GetType() const
 {
-	return Value;
+	return ItemType::Value;
 }
 
-double& ValueItem::GetValue()
+double& ValueItem::Value()
 {
 	return m_value;
-}
-
-void ValueItem::Save(std::ostream& out)
-{
-	out.put(Value);
-	out.write((const char*)& m_value, sizeof(m_value));
 }
 
 void ValueItem::Free()

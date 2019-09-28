@@ -3,7 +3,7 @@
 #include <vector>
 #include "ItemBase.h"
 
-class Expression : public ISavable
+class Expression
 {
 public:
 
@@ -24,8 +24,6 @@ public:
 
 	/*清空表达式，是否释放Value的内存*/
 	inline void Clear(bool free);
-
-	inline virtual void Save(std::ostream& out) override;
 
 protected:
 	std::vector<ItemBase*> m_expression;
@@ -56,12 +54,4 @@ void Expression::Clear(bool free)
 		for (auto i : m_expression)
 			i->Free();
 	m_expression.clear();
-}
-
-void Expression::Save(std::ostream& out)
-{
-	uint32_t size = (uint32_t)m_expression.size();
-	out.write((const char*)& size, sizeof(size));
-	for (auto i : m_expression)
-		i->Save(out);
 }

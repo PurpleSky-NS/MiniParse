@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <string>
 #include "OperatorItem.h"
 
 class UnaryOperator : public OperatorItem
@@ -27,19 +28,14 @@ public:
 
 	static std::string GetName(UnaryOperatorType type);
 
-	inline void SetUnaryOperatorType(UnaryOperatorType type);
-
 	inline UnaryOperatorType GetUnaryOperatorType()const;
 
 	virtual inline OperatorType GetOperatorType() const override;
-
-	virtual inline void Save(std::ostream& out) override;
 
 private:
 
 	static UnaryOperator operators[Count];
 
-	inline UnaryOperator() = default;
 	inline UnaryOperator(UnaryOperatorType type);
 	inline UnaryOperator(const UnaryOperator&) = default;
 	inline UnaryOperator(UnaryOperator&&) = default;
@@ -59,19 +55,7 @@ UnaryOperator::OperatorType UnaryOperator::GetOperatorType() const
 	return OperatorType::UnaryOperator;
 }
 
-void UnaryOperator::SetUnaryOperatorType(UnaryOperatorType type)
-{
-	m_type = type;
-}
-
 UnaryOperator::UnaryOperatorType UnaryOperator::GetUnaryOperatorType() const
 {
 	return m_type;
-}
-
-void UnaryOperator::Save(std::ostream& out)
-{
-	OperatorItem::Save(out);
-	out.put(OperatorType::UnaryOperator);
-	out.put(m_type);
 }

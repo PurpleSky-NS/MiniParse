@@ -10,7 +10,6 @@ public:
 
 	typedef std::vector<ItemBase*> ParamType;
 
-	FunctionIDF() = delete;
 	inline FunctionIDF(const std::string& name);
 	inline FunctionIDF(const FunctionIDF&) = delete;
 	inline FunctionIDF(FunctionIDF&&) = delete;
@@ -20,8 +19,6 @@ public:
 	inline const std::vector<ParamType>& Params()const;
 
 	inline virtual IdentificationType GetIdentificationType()const override;
-
-	inline virtual void Save(std::ostream& out) override;
 
 	inline virtual void Free() override;
 
@@ -48,12 +45,6 @@ const std::vector<FunctionIDF::ParamType>& FunctionIDF::Params()const
 FunctionIDF::IdentificationType FunctionIDF::GetIdentificationType() const
 {
 	return IdentificationType::FunctionIDF;
-}
-
-void FunctionIDF::Save(std::ostream& out)
-{
-	out.put(IdentificationType::FunctionIDF);
-	//Save
 }
 
 void FunctionIDF::Free()

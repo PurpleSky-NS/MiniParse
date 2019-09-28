@@ -43,9 +43,6 @@
     <Filter Include="头文件\Parser\Various\Various">
       <UniqueIdentifier>{7ef64f05-cf74-47ba-801d-8f2a70949f15}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\Interface">
-      <UniqueIdentifier>{dd927810-61bf-46ad-a8df-8b7eb70339ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="头文件\Calculator\ExpressionItem\Bracket">
       <UniqueIdentifier>{b1368ac6-1d8a-4bea-a498-d29060b428b1}</UniqueIdentifier>
     </Filter>
@@ -93,17 +90,8 @@
     <ClInclude Include="DynamicSizeArray.h">
       <Filter>头文件\Parser\Various\Array</Filter>
     </ClInclude>
-    <ClInclude Include="ISavable.h">
-      <Filter>头文件\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemParser.h">
-      <Filter>头文件\Calculator\ExpressionItem</Filter>
-    </ClInclude>
     <ClInclude Include="BracketItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Bracket</Filter>
-    </ClInclude>
-    <ClInclude Include="ExpressionParser.h">
-      <Filter>头文件\Calculator\Expression</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>头文件\Calculator</Filter>
@@ -132,15 +120,12 @@
     <ClInclude Include="VariousIDF.h">
       <Filter>头文件\Calculator\ExpressionItem\Identification</Filter>
     </ClInclude>
+    <ClInclude Include="CalculatorParser.h">
+      <Filter>头文件\Calculator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Various.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="StatementBlocks.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="AssignStatement.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="BinaryOperator.cpp">
@@ -153,6 +138,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ValueItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

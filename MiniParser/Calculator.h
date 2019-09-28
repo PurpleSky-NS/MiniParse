@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <cmath>
 #include "SuffixExpression.h"
@@ -64,7 +64,7 @@ Calculator::CalculateResult Calculator::Calculate(const SuffixExpression& expres
 		case ItemBase::Value:
 			ValueItem* cpValue;
 			cpValue = valuePool.GetObject();
-			cpValue->GetValue() = ((ValueItem*)i)->GetValue();
+			cpValue->Value() = ((ValueItem*)i)->Value();
 			calcStack.push(cpValue);
 			break;
 		case ItemBase::Operator:
@@ -81,7 +81,7 @@ Calculator::CalculateResult Calculator::Calculate(const SuffixExpression& expres
 					return ExpressionError;
 				ValueItem* leftValue = (ValueItem*)leftItem, * rightValue = (ValueItem*)rightItem;
 				/*左操作数还在栈里，不取出来了*/
-				leftValue->GetValue() = CalculateBinaryOperator(((BinaryOperator*)i)->GetBinaryOperatorType(), leftValue->GetValue(), rightValue->GetValue());
+				leftValue->Value() = CalculateBinaryOperator(((BinaryOperator*)i)->GetBinaryOperatorType(), leftValue->Value(), rightValue->Value());
 				if (m_occurResult != Succeed)
 					return m_occurResult;
 				valuePool.FreeObject(rightValue);
@@ -95,7 +95,7 @@ Calculator::CalculateResult Calculator::Calculate(const SuffixExpression& expres
 				if (item->GetType() != ItemBase::Value)
 					return ExpressionError;
 				ValueItem* value = (ValueItem*)item;
-				value->GetValue() = CalculateUnaryOperator(((UnaryOperator*)i)->GetUnaryOperatorType(), value->GetValue());
+				value->Value() = CalculateUnaryOperator(((UnaryOperator*)i)->GetUnaryOperatorType(), value->Value());
 				if (m_occurResult != Succeed)
 					return m_occurResult;
 			}
@@ -103,7 +103,7 @@ Calculator::CalculateResult Calculator::Calculate(const SuffixExpression& expres
 		}
 	}
 	if (calcStack.size() == 1 && calcStack.top()->GetType() == ItemBase::Value)
-		m_prevResult = ((ValueItem*)calcStack.top())->GetValue();
+		m_prevResult = ((ValueItem*)calcStack.top())->Value();
 	else
 		m_occurResult = ExpressionError;
 	return m_occurResult;
@@ -144,9 +144,9 @@ double Calculator::CalculateUnaryOperator(UnaryOperator::UnaryOperatorType type,
 	switch (type)
 	{
 	case UnaryOperator::Factorial:
-		if(value<-1)
+		if (value < -1)
 		{
-			m_occurResult=MathError;
+			m_occurResult = MathError;
 			return 0.0;
 		}
 		return tgamma(value + 1);

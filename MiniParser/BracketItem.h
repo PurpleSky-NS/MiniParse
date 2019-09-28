@@ -22,8 +22,6 @@ public:
 
 	virtual inline ItemType GetType() const override;
 
-	virtual inline void Save(std::ostream& out) override;
-
 	virtual void Free()override {}
 
 private:
@@ -56,10 +54,4 @@ BracketItem::BracketType BracketItem::GetBracketType() const
 BracketItem::ItemType BracketItem::GetType() const
 {
 	return ItemBase::Bracket;
-}
-
-void BracketItem::Save(std::ostream& out)
-{
-	out.put(ItemBase::Bracket);
-	out.put(m_type);
 }

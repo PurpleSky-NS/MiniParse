@@ -1,9 +1,7 @@
 ﻿#pragma once
 
-#include "ISavable.h"
-
 /*表达式元素基类*/
-class ItemBase :public ISavable
+class ItemBase
 {
 public:
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "Statement.h"
@@ -7,21 +7,22 @@ class StatementBlocks : public Statement
 {
 public:
 
-	StatementBlocks() = default;
-	~StatementBlocks();
+	inline ~StatementBlocks();
 
 	inline void Add(Statement* statement);
 
-	/*不会调用自己的Free，只会调用子语句对象的Free并清空vector*/
-	void Clear();
+	inline void Clear();
 
 	inline virtual bool Excuse() override;
-
-	inline virtual void Save(std::ostream& out) override;
 
 private:
 	std::vector<Statement*> m_statementBlocks;
 };
+
+StatementBlocks::~StatementBlocks()
+{
+	Clear();
+}
 
 void StatementBlocks::Add(Statement* statement)
 {
@@ -36,8 +37,7 @@ bool StatementBlocks::Excuse()
 	return true;
 }
 
-void StatementBlocks::Save(std::ostream& out)
+void StatementBlocks::Clear()
 {
-	for (auto i : m_statementBlocks)
-		i->Save(out);
+	m_statementBlocks.clear();
 }

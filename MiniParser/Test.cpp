@@ -1,4 +1,5 @@
-#include <iostream>
+﻿#include <iostream>
+#include <fstream>
 #include "Various.h"
 #include "DynamicSizeArray.h"
 #include "FixedSizeArray.h"
@@ -12,6 +13,7 @@
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
 #include "Calculator.h"
+#include "CalculatorParser.h"
 using namespace std;
 
 ostream& operator<<(ostream& out, BinaryOperator* v)
@@ -114,7 +116,7 @@ ostream& operator<<(ostream& out, ItemBase* v)
 	switch (v->GetType())
 	{
 	case ItemBase::Value:
-		out << ((ValueItem*)v)->GetValue();
+		out << ((ValueItem*)v)->Value();
 		break;
 	case ItemBase::Operator:
 		out << ((OperatorItem*)v);
@@ -137,12 +139,17 @@ ostream& operator<<(ostream& out, const Expression& v)
 }
 int main()
 {
-	std::string exp;
-	cin>>exp;
-	InfixExpression e(exp);
+	std::string exp;/*
+	InfixExpression e("(1+2+3!/sin(5))*56/25");
 	SuffixExpression se(e);
+	cout << se << endl;*/
+	//ofstream o("1.txt");
+	//CalculatorParser::Save(o,&e);
+	ifstream i("1.txt");
 	Calculator calc;
-	switch (calc.Calculate(se))
+	InfixExpression& see = *CalculatorParser::LoadInfixExpression(i);
+	cout << see << endl;
+	switch (calc.Calculate(see))
 	{
 	case Calculator::Succeed:
 		cout << "结果是：" << calc.GetResult() << endl;
@@ -154,6 +161,7 @@ int main()
 		cout << "数学错误！" << endl;
 		break;
 	}
+	cin.get();
 	cin.get();
 	return 0;
 }

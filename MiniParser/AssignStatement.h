@@ -17,8 +17,6 @@ public:
 
 	inline virtual bool Excuse() override;
 
-	virtual void Save(std::ostream& out) override;
-
 private:
 
 	VariousBase::VariousType m_LType;

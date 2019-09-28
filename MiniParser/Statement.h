@@ -1,10 +1,9 @@
 ﻿#pragma once
 
-#include "ISavable.h"
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
 
-class Statement : public ISavable
+class Statement
 {
 public:
 

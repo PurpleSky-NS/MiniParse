@@ -19,19 +19,14 @@ public:
 
 	static BinaryOperator* GetOperator(BinaryOperatorType type);
 
-	inline void SetBinaryOperatorType(BinaryOperatorType type);
-
 	inline BinaryOperatorType GetBinaryOperatorType()const;
 
 	virtual inline OperatorType GetOperatorType() const override;
-
-	virtual inline void Save(std::ostream& out) override;
 
 private:
 
 	static BinaryOperator operators[Count];
 
-	inline BinaryOperator() = default;
 	inline BinaryOperator(BinaryOperatorType type);
 	inline BinaryOperator(const BinaryOperator&) = default;
 	inline BinaryOperator(BinaryOperator&&) = default;
@@ -50,19 +45,7 @@ BinaryOperator::OperatorType BinaryOperator::GetOperatorType() const
 	return OperatorType::BinaryOperator;
 }
 
-void BinaryOperator::SetBinaryOperatorType(BinaryOperatorType type)
-{
-	m_type = type;
-}
-
 BinaryOperator::BinaryOperatorType BinaryOperator::GetBinaryOperatorType() const
 {
 	return m_type;
-}
-
-void BinaryOperator::Save(std::ostream& out)
-{
-	OperatorItem::Save(out);
-	out.put(OperatorType::BinaryOperator);
-	out.put(m_type);
 }

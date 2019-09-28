@@ -122,14 +122,12 @@
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="DynamicSizeArray.h" />
     <ClInclude Include="Expression.h" />
-    <ClInclude Include="ExpressionParser.h" />
     <ClInclude Include="FixedSizeArray.h" />
     <ClInclude Include="FunctionIDF.h" />
     <ClInclude Include="IdentificationItem.h" />
     <ClInclude Include="InfixExpression.h" />
-    <ClInclude Include="ISavable.h" />
     <ClInclude Include="ItemBase.h" />
-    <ClInclude Include="ItemParser.h" />
+    <ClInclude Include="CalculatorParser.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OperatorItem.h" />
     <ClInclude Include="Statement.h" />
@@ -143,12 +141,11 @@
     <ClInclude Include="VariousTable.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AssignStatement.cpp" />
     <ClCompile Include="BinaryOperator.cpp" />
     <ClCompile Include="BracketItem.cpp" />
-    <ClCompile Include="StatementBlocks.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="UnaryOperator.cpp" />
+    <ClCompile Include="ValueItem.cpp" />
     <ClCompile Include="Various.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
