@@ -8,7 +8,7 @@ class Expression
 public:
 
 	inline Expression() = default;
-	inline Expression(const Expression&) = delete;
+	inline Expression(const Expression&) = default;
 	inline Expression(Expression&&) = delete;
 	inline ~Expression() = default;
 

@@ -39,5 +39,7 @@ bool StatementBlocks::Excuse()
 
 void StatementBlocks::Clear()
 {
+	for (auto i : m_statementBlocks)
+		delete i;
 	m_statementBlocks.clear();
 }

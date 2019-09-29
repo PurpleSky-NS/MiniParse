@@ -14,7 +14,7 @@ public:
 	inline SuffixExpression() = default;
 	/*中缀表达式类构造*/
 	inline SuffixExpression(const InfixExpression& expression);
-	SuffixExpression(const SuffixExpression&) = delete;
+	SuffixExpression(const SuffixExpression&) = default;
 	SuffixExpression(SuffixExpression&&) = delete;
 	~SuffixExpression() = default;
 

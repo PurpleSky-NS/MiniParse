@@ -18,7 +18,7 @@ public:
 	inline InfixExpression() = default;
 	/*中缀表达式字符串构造*/;
 	inline InfixExpression(const std::string& exp);
-	InfixExpression(const InfixExpression&) = delete;
+	InfixExpression(const InfixExpression&) = default;
 	InfixExpression(InfixExpression&&) = delete;
 	~InfixExpression() = default;
 
