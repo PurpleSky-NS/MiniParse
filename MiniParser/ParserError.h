@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include <vector>
@@ -11,7 +11,7 @@ public:
 	{
 		std::string msg;
 		unsigned line;
-	};
+	}empty_msg{"",0};
 
 	inline ParserError& GetParserError();
 
@@ -52,7 +52,7 @@ void ParserError::AddMessage(const std::string& msg, unsigned line)
 const ParserError::Message& ParserError::GetMessage() const
 {
 	if (m_msgs.empty())
-		return { "",0 };
+		return empty_msg;
 	return m_msgs.front();
 }
 
