@@ -13,7 +13,6 @@ public:
 
 	inline SuffixExpression() = default;
 	/*中缀表达式类构造*/
-	inline SuffixExpression(unsigned capacity);
 	inline SuffixExpression(const InfixExpression& expression);
 	SuffixExpression(const SuffixExpression&) = delete;
 	SuffixExpression(SuffixExpression&&) = delete;
@@ -23,10 +22,6 @@ public:
 	inline bool ParseExpression(const InfixExpression& expression);
 
 };
-
-SuffixExpression::SuffixExpression(unsigned capacity) :
-	Expression(capacity)
-{}
 
 SuffixExpression::SuffixExpression(const InfixExpression& expression)
 {

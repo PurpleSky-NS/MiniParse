@@ -16,8 +16,7 @@ class InfixExpression : public Expression
 public:
 
 	inline InfixExpression() = default;
-	/*中缀表达式字符串构造*/
-	inline InfixExpression(unsigned capacity);
+	/*中缀表达式字符串构造*/;
 	inline InfixExpression(const std::string& exp);
 	InfixExpression(const InfixExpression&) = delete;
 	InfixExpression(InfixExpression&&) = delete;
@@ -61,10 +60,6 @@ private:
 	/*获取标识符*/
 	inline IdentificationItem::IdentificationType GetIdentification(const std::string& exp, size_t& bgPos, std::string& itemStr);
 };
-
-InfixExpression::InfixExpression(unsigned capacity) :
-	Expression(capacity)
-{}
 
 InfixExpression::InfixExpression(const std::string& exp)
 {

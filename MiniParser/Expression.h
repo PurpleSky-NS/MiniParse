@@ -8,7 +8,6 @@ class Expression
 public:
 
 	inline Expression() = default;
-	inline Expression(unsigned capacity);
 	inline Expression(const Expression&) = delete;
 	inline Expression(Expression&&) = delete;
 	inline ~Expression() = default;
@@ -28,10 +27,6 @@ public:
 protected:
 	std::vector<ItemBase*> m_expression;
 };
-
-Expression::Expression(unsigned capacity) :
-	m_expression(capacity)
-{}
 
 std::vector<ItemBase*>& Expression::GetExpression()
 {

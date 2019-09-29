@@ -79,7 +79,7 @@ ostream& operator<<(ostream& out, OperatorItem* v)
 
 ostream& operator<<(ostream& out, VariousIDF* v)
 {
-	out << '$' << v->GetName();
+	out << '$' << (v->NegSigned() ? "-" : "") << v->GetName();
 	return out;
 }
 
@@ -139,17 +139,18 @@ ostream& operator<<(ostream& out, const Expression& v)
 }
 int main()
 {
-	std::string exp;/*
-	InfixExpression e("(1+2+3!/sin(5))*56/25");
-	SuffixExpression se(e);
-	cout << se << endl;*/
-	//ofstream o("1.txt");
-	//CalculatorParser::Save(o,&e);
-	ifstream i("1.txt");
+	std::string exp;
+	InfixExpression e("Func(2.2+sda+Func(3.2+5!,Fun()),5+6)!-sd--ss");
+	cout << e << endl;
+	ofstream o("1.txt");
+	CalculatorParser::Save(o, &e);
+	o.close();
 	Calculator calc;
+	ifstream i("1.txt");
 	InfixExpression& see = *CalculatorParser::LoadInfixExpression(i);
+	i.close();
 	cout << see << endl;
-	switch (calc.Calculate(see))
+	/*switch (calc.Calculate(see))
 	{
 	case Calculator::Succeed:
 		cout << "结果是：" << calc.GetResult() << endl;
@@ -160,7 +161,7 @@ int main()
 	case Calculator::ExpressionError:
 		cout << "数学错误！" << endl;
 		break;
-	}
+	}*/
 	cin.get();
 	cin.get();
 	return 0;
