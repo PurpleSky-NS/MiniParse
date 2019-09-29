@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -8,37 +8,24 @@ class VariousTable
 {
 public:
 
-	static inline void ClearTable();
-	static inline VariousTable& GetTable();
+	VariousTable() = default;
+	VariousTable(const VariousTable&) = delete;
+	VariousTable(VariousTable&&) = delete;
+	~VariousTable() = default;
 
 	inline void UpdateVarious(const std::string& name, VariousBase* various);
 
 	inline VariousBase* GetVarious(const std::string& name)const;
 
 	inline void RemoveVarious(const std::string& name);
-	
+
 	inline bool ExistVarious(const std::string& name);
 
 private:
 
-	static VariousTable m_varTable;
-
-	VariousTable() = default;
-	VariousTable(const VariousTable&) = delete;
-	VariousTable(VariousTable&&) = delete;
-	~VariousTable() = default;
-
 	std::unordered_map<std::string, VariousBase*> m_variousMap;
 
 };
-void VariousTable::ClearTable()
-{
-	m_varTable.m_variousMap.clear();
-}
-VariousTable& VariousTable::GetTable()
-{
-	return m_varTable;
-}
 void VariousTable::UpdateVarious(const std::string& name, VariousBase* various)
 {
 	m_variousMap.insert({ name, various });
@@ -59,5 +46,5 @@ void VariousTable::RemoveVarious(const std::string& name)
 
 bool VariousTable::ExistVarious(const std::string& name)
 {
-	return m_variousMap.find(name)!=m_variousMap.end();
+	return m_variousMap.find(name) != m_variousMap.end();
 }

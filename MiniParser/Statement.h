@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <iostream>
 #include "ParserError.h"
@@ -12,10 +12,6 @@ public:
 		AssignStatement
 	};
 
-	inline const std::string& GetErrorMsg()const;
-
-	inline void ClearErrorMsg();
-	
 	virtual bool Check() = 0;
 
 	virtual bool Excuse() = 0;
@@ -28,24 +24,6 @@ public:
 
 protected:
 
-	inline void SetErrorMsg(const std::string& msg);
 
-private:
 
-	std::string m_errMsg;
 };
-
-void Statement::SetErrorMsg(const std::string& msg)
-{
-	m_errMsg = msg;
-}
-
-const std::string& Statement::GetErrorMsg()const
-{
-	return m_errMsg;
-}
-
-void Statement::ClearErrorMsg()
-{
-	m_errMsg.clear();
-}

@@ -52,6 +52,9 @@
     <Filter Include="头文件\Parser\Error">
       <UniqueIdentifier>{dd231190-f9e4-40a9-a3e5-6da998ffc0c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Parser\Program">
+      <UniqueIdentifier>{ba5cc075-7e90-482a-9d35-01b0822cbc9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Statement.h">
@@ -147,12 +150,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ValueItem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="VariousTable.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ParserError.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

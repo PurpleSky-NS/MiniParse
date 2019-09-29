@@ -144,12 +144,10 @@
   <ItemGroup>
     <ClCompile Include="BinaryOperator.cpp" />
     <ClCompile Include="BracketItem.cpp" />
-    <ClCompile Include="ParserError.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="UnaryOperator.cpp" />
     <ClCompile Include="ValueItem.cpp" />
     <ClCompile Include="Various.cpp" />
-    <ClCompile Include="VariousTable.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
