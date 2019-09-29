@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -16,6 +16,8 @@ public:
 	inline VariousBase* GetVarious(const std::string& name)const;
 
 	inline void RemoveVarious(const std::string& name);
+	
+	inline bool ExistVarious(const std::string& name);
 
 private:
 
@@ -53,4 +55,9 @@ VariousBase* VariousTable::GetVarious(const std::string& name) const
 void VariousTable::RemoveVarious(const std::string& name)
 {
 	m_variousMap.erase(name);
+}
+
+bool VariousTable::ExistVarious(const std::string& name)
+{
+	return m_variousMap.find(name)!=m_variousMap.end();
 }
