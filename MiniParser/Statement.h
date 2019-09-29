@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <iostream>
 #include "ParserError.h"
@@ -15,6 +15,8 @@ public:
 	inline const std::string& GetErrorMsg()const;
 
 	inline void ClearErrorMsg();
+	
+	virtual bool Check() = 0;
 
 	virtual bool Excuse() = 0;
 
