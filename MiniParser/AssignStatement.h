@@ -2,12 +2,13 @@
 
 #include <functional>
 #include "VariousTable.h"
-#include "Statement.h"
+#include "Program.h"
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
+#include "Calculator.h"
 
 /*基础的赋值语句*/
-class AssignStatement :public Statement
+const class AssignStatement :public Statement
 {
 public:
 
@@ -20,6 +21,9 @@ public:
 	inline bool SetStatement(const std::string& arrayName, size_t pos, const InfixExpression& expression);
 	inline bool SetStatement(const std::string& variousName, const SuffixExpression& expression);
 	inline bool SetStatement(const std::string& arrayName, size_t pos, const SuffixExpression& expression);
+
+	/*静态检查语句错误*/
+	inline virtual bool Check() override;
 
 	inline virtual bool Excuse() override;
 
@@ -39,14 +43,6 @@ private:
 	size_t m_arrayPos = 0;
 
 	SuffixExpression* m_expression;
-
-	inline bool ParseExpression(const InfixExpression& expression);
-
-	/*设置变量的值*/
-	inline void Excuse(VariousIDF* item);
-	/*设置变量的值/执行函数*/
-	inline void Excuse(FunctionIDF* item);
-
 };
 
 AssignStatement::AssignStatement()
@@ -64,7 +60,7 @@ bool AssignStatement::SetStatement(const std::string& variousName, const InfixEx
 {
 	m_LType = VariousBase::Various;
 	m_variousName = variousName;
-	return ParseExpression(expression);
+	return m_expression->ParseExpression(expression);
 }
 
 bool AssignStatement::SetStatement(const std::string& arrayName, size_t pos, const InfixExpression& expression)
@@ -72,7 +68,7 @@ bool AssignStatement::SetStatement(const std::string& arrayName, size_t pos, con
 	m_LType = VariousBase::Array;
 	m_arrayName = arrayName;
 	m_arrayPos = pos;
-	return ParseExpression(expression);
+	return m_expression->ParseExpression(expression);
 }
 
 bool AssignStatement::SetStatement(const std::string& variousName, const SuffixExpression& expression)
@@ -88,6 +84,16 @@ bool AssignStatement::SetStatement(const std::string& arrayName, size_t pos, con
 	m_arrayName = arrayName;
 	m_arrayPos = pos;
 	m_expression->GetExpression() = expression.GetExpression();
+}
+
+bool AssignStatement::Check()
+{
+	if (!Calculator::CheckExpression(*m_expression))
+	{
+		m_program->err_log.AddMessage("Compile : 表达式结构错误", GetLine());
+		return false;
+	}
+	return true;
 }
 
 bool AssignStatement::Excuse()
@@ -114,14 +120,4 @@ void AssignStatement::Save(std::ostream* o) const
 
 bool AssignStatement::Load(std::istream* o)
 {
-}
-
-bool AssignStatement::ParseExpression(const InfixExpression& expression)
-{
-	if (!m_expression->ParseExpression(expression))
-	{
-		SetErrorMsg("表达式不合规范");
-		return false;
-	}
-	return true;
 }

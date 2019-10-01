@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
 
+#include <fstream>
 #include <string>
 #include <vector>
 
-class ParserError
+class ErrorLog
 {
 public:
 
@@ -13,10 +14,10 @@ public:
 		unsigned line;
 	};
 
-	ParserError() = default;
-	ParserError(const ParserError&) = delete;
-	ParserError(ParserError&&) = delete;
-	~ParserError() = default;
+	ErrorLog() = default;
+	ErrorLog(const ErrorLog&) = delete;
+	ErrorLog(ErrorLog&&) = delete;
+	~ErrorLog() = default;
 
 	inline void AddMessage(const std::string& msg, unsigned line);
 
@@ -24,6 +25,9 @@ public:
 	inline const std::vector<Message>& GetMessages()const;
 	/*将所有信息组合，用换行符分割*/
 	inline std::string ToString()const;
+
+	/*保存至指定文件*/
+	inline void Save(const std::string& path)const;
 
 	inline void Clear();
 
@@ -33,17 +37,17 @@ private:
 
 };
 
-void ParserError::AddMessage(const std::string& msg, unsigned line)
+void ErrorLog::AddMessage(const std::string& msg, unsigned line)
 {
 	m_msgs.push_back({ msg,line });
 }
 
-const std::vector<ParserError::Message>& ParserError::GetMessages() const
+const std::vector<ErrorLog::Message>& ErrorLog::GetMessages() const
 {
 	return m_msgs;
 }
 
-std::string ParserError::ToString() const
+std::string ErrorLog::ToString() const
 {
 	std::string msgs;
 	for (auto i : m_msgs)
@@ -53,7 +57,14 @@ std::string ParserError::ToString() const
 	return msgs;
 }
 
-void ParserError::Clear()
+void ErrorLog::Save(const std::string& path) const
+{
+	std::ofstream o(path);
+	o << ToString() << std::flush;
+	o.close();
+}
+
+void ErrorLog::Clear()
 {
 	m_msgs.clear();
 }

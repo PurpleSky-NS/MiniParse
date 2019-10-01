@@ -16,6 +16,7 @@
 #include "CalculatorParser.h"
 using namespace std;
 
+ostream& operator<<(ostream& out, ItemBase* v);
 ostream& operator<<(ostream& out, BinaryOperator* v)
 {
 	string str;
@@ -80,17 +81,23 @@ ostream& operator<<(ostream& out, OperatorItem* v)
 ostream& operator<<(ostream& out, VariousIDF* v)
 {
 	out << '$' << (v->NegSigned() ? "-" : "") << v->GetName();
+	if (v->IsArrayItem())
+	{
+		out << '[';
+		for (auto i : v->ArrayPosExpression())
+			out << i << ' ';
+		out << ']';
+	}
 	return out;
 }
 
-ostream& operator<<(ostream& out, ItemBase* v);
 ostream& operator<<(ostream& out, FunctionIDF* v)
 {
 	out << '&' << v->GetName() << "(";
 	for (int pos = 0; pos < v->Params().size(); ++pos)
 	{
 		for (auto i : v->Params()[pos])
-			out << i;
+			out << i << " ";
 		out << (pos == v->Params().size() - 1 ? '\0' : ',');
 	}
 	out << ')';
@@ -140,16 +147,12 @@ ostream& operator<<(ostream& out, const Expression& v)
 int main()
 {
 	std::string exp;
-	InfixExpression e("Func(2.2+sda+Func(3.2+5!,Fun()),5+6)!-sd--ss");
+	InfixExpression e("Func(2.2+sda[1+2+3]+Func(3.2+5!,Fun()),5+6)!-sd--ss");
+	//e.ParseExpression("Func(1+23+6+asd)");
 	cout << e << endl;
-	ofstream o("1.txt");
-	CalculatorParser::Save(o, &e);
-	o.close();
-	Calculator calc;
-	ifstream i("1.txt");
-	InfixExpression& see = *CalculatorParser::LoadInfixExpression(i);
-	i.close();
-	cout << see << endl;
+	SuffixExpression se(e);
+	cout << se << endl;
+	cout << Calculator::CheckExpression(se);
 	/*switch (calc.Calculate(see))
 	{
 	case Calculator::Succeed:

@@ -69,6 +69,7 @@ InfixExpression::InfixExpression(const std::string& exp)
 bool InfixExpression::ParseExpression(const std::string& srcExp)
 {
 	m_prevItem = nullptr;
+	m_expression.clear();
 	std::string exp = RemoveSpace(srcExp);
 	for (size_t i = 0; i < exp.size();)
 	{
@@ -100,8 +101,8 @@ bool InfixExpression::IsNumber(char ch)
 
 bool InfixExpression::IsDivOperator(char ch)
 {
-	return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%' ||
-		ch == '^' || ch == '!' || ch == ',' || ch == '(' || ch == ')';
+	return !(ch != '+' && ch != '-' && ch != '*' && ch != '/' && ch != '%' &&
+		ch != '^' && ch != '!' && ch != ',' && ch != '(' && ch != ')' && ch != '[' && ch != ']');
 }
 
 ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
@@ -169,12 +170,28 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 		//取不出来就继续按标识符解析
 		if (GetIdentification(exp, pos, itemStr) == IdentificationItem::VariousIDF)//如果是变量
 		{
+			std::string arrPosStr;
+			bool isArrayItem = false;
 			/*可能是常量pi和e*/
 			if (itemStr == "pi")
 				return new ValueItem(ValueItem::VALUE_PI);
 			else if (itemStr == "e")
 				return new ValueItem(ValueItem::VALUE_E);
+			if (exp[pos] == '[')//遇到'['则说明是数组元素
+			{
+				for (++pos; pos < exp.size() && exp[pos] != ']'; ++pos)
+					arrPosStr += exp[pos];
+				if (pos == exp.size())//读到底说明没有遇到右括号
+					return nullptr;
+				isArrayItem = true;
+				++pos;//跳过']'
+			}
 			VariousIDF* vidf = new VariousIDF(itemStr);
+			if (isArrayItem)//数组元素
+			{
+				vidf->SetToArrayItem(true);
+				vidf->ArrayPosExpression() = std::move(InfixExpression(arrPosStr).GetExpression());//设置数组下标表达式
+			}
 			if (hasSignedOp)
 			{
 				hasSignedOp = false;
@@ -196,7 +213,7 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 			/*获取他的参数*/
 			while (pos < exp.size() && exp[pos] != ')')
 			{
-				FunctionIDF::ParamType param;
+				ExpressionType param;
 				while (pos < exp.size() && exp[pos] != ',' && exp[pos] != ')')//获取一个一个的参数
 					param.push_back(GetItem(exp, pos));//一个递归
 				if (pos < exp.size())

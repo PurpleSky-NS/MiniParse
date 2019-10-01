@@ -13,10 +13,10 @@ public:
 	inline ~Expression() = default;
 
 	/*获取表达式元素序列*/
-	inline std::vector<ItemBase*>& GetExpression();
+	inline ExpressionType& GetExpression();
 
 	/*获取表达式元素序列*/
-	inline const std::vector<ItemBase*>& GetExpression()const;
+	inline const ExpressionType& GetExpression()const;
 
 	/*添加元素*/
 	inline void AddItem(ItemBase* item);
@@ -25,15 +25,15 @@ public:
 	inline void Clear(bool free);
 
 protected:
-	std::vector<ItemBase*> m_expression;
+	ExpressionType m_expression;
 };
 
-std::vector<ItemBase*>& Expression::GetExpression()
+ExpressionType& Expression::GetExpression()
 {
 	return m_expression;
 }
 
-const std::vector<ItemBase*>& Expression::GetExpression()const
+const ExpressionType& Expression::GetExpression()const
 {
 	return m_expression;
 }

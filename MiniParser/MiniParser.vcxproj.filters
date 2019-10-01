@@ -129,8 +129,11 @@
     <ClInclude Include="CalculatorParser.h">
       <Filter>头文件\Calculator</Filter>
     </ClInclude>
-    <ClInclude Include="ParserError.h">
+    <ClInclude Include="ErrorLog.h">
       <Filter>头文件\Parser\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>头文件\Parser\Program</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +153,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ValueItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,15 +8,13 @@ class FunctionIDF : public IdentificationItem
 {
 public:
 
-	typedef std::vector<ItemBase*> ParamType;
-
 	inline FunctionIDF(const std::string& name);
 	inline FunctionIDF(const FunctionIDF&) = delete;
 	inline FunctionIDF(FunctionIDF&&) = delete;
 	inline ~FunctionIDF() = default;
 
-	inline std::vector<ParamType>& Params();
-	inline const std::vector<ParamType>& Params()const;
+	inline std::vector<ExpressionType>& Params();
+	inline const std::vector<ExpressionType>& Params()const;
 
 	inline virtual IdentificationType GetIdentificationType()const override;
 
@@ -24,7 +22,7 @@ public:
 
 private:
 
-	std::vector<ParamType> m_params;
+	std::vector<ExpressionType> m_params;
 
 };
 
@@ -32,12 +30,12 @@ FunctionIDF::FunctionIDF(const std::string& name) :
 	IdentificationItem(name)
 {}
 
-std::vector<FunctionIDF::ParamType>& FunctionIDF::Params()
+std::vector<ExpressionType>& FunctionIDF::Params()
 {
 	return m_params;
 }
 
-const std::vector<FunctionIDF::ParamType>& FunctionIDF::Params()const
+const std::vector<ExpressionType>& FunctionIDF::Params()const
 {
 	return m_params;
 }

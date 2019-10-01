@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <vector>
+
 /*表达式元素基类*/
 class ItemBase
 {
@@ -18,3 +20,4 @@ public:
 	/*该接口用于Expression管理内存*/
 	virtual void Free() = 0;
 };
+typedef std::vector<ItemBase*> ExpressionType;

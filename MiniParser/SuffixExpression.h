@@ -5,6 +5,7 @@
 #include "BinaryOperator.h"
 #include "UnaryOperator.h"
 #include "ValueItem.h"
+#include "FunctionIDF.h"
 #include "InfixExpression.h"
 
 class SuffixExpression :public Expression
@@ -21,6 +22,11 @@ public:
 	/*若失败，多半是因为括号不匹配*/
 	inline bool ParseExpression(const InfixExpression& expression);
 
+private:
+
+	inline bool ParseExpression(const ExpressionType& expression, ExpressionType& outExpression);
+
+	inline bool ParseFunction(FunctionIDF* func);
 };
 
 SuffixExpression::SuffixExpression(const InfixExpression& expression)
@@ -30,20 +36,37 @@ SuffixExpression::SuffixExpression(const InfixExpression& expression)
 
 bool SuffixExpression::ParseExpression(const InfixExpression& expression)
 {
+	return ParseExpression(expression.GetExpression(), m_expression);
+}
+
+bool SuffixExpression::ParseExpression(const ExpressionType& expression, ExpressionType& outExpression)
+{
 	//静态优先级表，按二元运算符的优先级来
 	//+ - * / % ^
 	static const unsigned char binOpPriority[] = { 1,1,2,2,2,3 };
 
+	ExpressionType sufExp;
 	std::stack<ItemBase*> operatorStack;//建立符号栈
+	sufExp.reserve(expression.size());//为vector预留空间
 
-	m_expression.reserve(expression.GetExpression().size());//为vector预留空间
-
-	for (auto i : expression.GetExpression())
+	for (auto i : expression)
 	{
 		switch (i->GetType())
 		{
+		case ItemBase::Identification:
+			if (((IdentificationItem*)i)->GetIdentificationType() == IdentificationItem::FunctionIDF)
+			{
+				if (!ParseFunction((FunctionIDF*)i))
+					return false;
+			}
+			else
+			{
+				VariousIDF* varIDF = (VariousIDF*)i;
+				if (varIDF->IsArrayItem())
+					ParseExpression(varIDF->ArrayPosExpression(), varIDF->ArrayPosExpression());
+			}
 		case ItemBase::Value:
-			m_expression.push_back(i);
+			sufExp.push_back(i);
 			break;
 		case ItemBase::Bracket:
 			if (((BracketItem*)i)->GetBracketType() == BracketItem::Left)
@@ -57,7 +80,7 @@ bool SuffixExpression::ParseExpression(const InfixExpression& expression)
 				{
 					if (operatorStack.empty())
 						return false;//括号不匹配
-					m_expression.push_back(op);//将括号内运算符加入表达式
+					sufExp.push_back(op);//将括号内运算符加入表达式
 					op = operatorStack.top();//取出下一个符号
 					operatorStack.pop();
 				}
@@ -82,7 +105,7 @@ bool SuffixExpression::ParseExpression(const InfixExpression& expression)
 						if (((OperatorItem*)preOp)->GetOperatorType() == OperatorItem::UnaryOperator)
 						{
 							operatorStack.pop();//把栈顶一元运算符弹出
-							m_expression.push_back(preOp);//加到表达式里
+							sufExp.push_back(preOp);//加到表达式里
 						}
 						else //二元比较优先级
 						{
@@ -95,7 +118,7 @@ bool SuffixExpression::ParseExpression(const InfixExpression& expression)
 							else //小于等于的话，弹出之前的运算符
 							{
 								operatorStack.pop();//把栈顶一元运算符弹出
-								m_expression.push_back(preOp);//加到表达式里
+								sufExp.push_back(preOp);//加到表达式里
 							}
 						}
 					}
@@ -108,12 +131,20 @@ bool SuffixExpression::ParseExpression(const InfixExpression& expression)
 				operatorStack.push(i);
 			break;
 		}
-
 	}
 	while (!operatorStack.empty())
 	{
-		m_expression.push_back(operatorStack.top());
+		sufExp.push_back(operatorStack.top());
 		operatorStack.pop();
 	}
+	outExpression = std::move(sufExp);
+	return true;
+}
+
+bool SuffixExpression::ParseFunction(FunctionIDF* func)
+{
+	for (auto& i : func->Params())
+		if (!ParseExpression(i, i))
+			return false;
 	return true;
 }

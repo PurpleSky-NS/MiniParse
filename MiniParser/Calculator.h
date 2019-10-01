@@ -20,22 +20,25 @@ public:
 	Calculator(Calculator&&) = delete;
 	~Calculator() = default;
 
+	/*对表达式模拟运算，只对表达式正确性做检查*/
+	static inline bool CheckExpression(const std::string& expression);
+
+	static inline bool CheckExpression(const InfixExpression& expression);
+
+	static inline bool CheckExpression(const SuffixExpression& expression);
+
 	inline CalculateResult Calculate(const std::string& expression);
 
 	inline CalculateResult Calculate(const InfixExpression& expression);
 
 	inline CalculateResult Calculate(const SuffixExpression& expression);
 
-	/*对表达式模拟运算，只对表达式正确性做检查，不能检查函数内部是否符合*/
-	inline CalculateResult CheckExpression(const std::string& expression);
-
-	inline CalculateResult CheckExpression(const InfixExpression& expression);
-
-	inline CalculateResult CheckExpression(const SuffixExpression& expression);
-
 	inline double GetResult()const;
 
 private:
+
+	static inline bool CheckExpression(const ExpressionType& exp);
+	static inline bool CheckFunction(FunctionIDF* item);
 
 	double m_prevResult = 0.0;
 	CalculateResult m_occurResult = Succeed;
@@ -116,24 +119,33 @@ Calculator::CalculateResult Calculator::Calculate(const SuffixExpression& expres
 	return m_occurResult;
 }
 
-Calculator::CalculateResult Calculator::CheckExpression(const std::string& expression)
+bool Calculator::CheckExpression(const std::string& expression)
 {
 	return CheckExpression(InfixExpression(expression));
 }
 
-Calculator::CalculateResult Calculator::CheckExpression(const InfixExpression& expression)
+bool Calculator::CheckExpression(const InfixExpression& expression)
 {
 	return CheckExpression(SuffixExpression(expression));
 }
 
-Calculator::CalculateResult Calculator::CheckExpression(const SuffixExpression& expression)
+bool Calculator::CheckExpression(const SuffixExpression& expression)
 {
-	std::stack<ItemBase::ItemType> calcStack;//为计算栈预留空间
-	for (auto i : expression.GetExpression())
+	return CheckExpression(expression.GetExpression());
+}
+
+bool Calculator::CheckExpression(const ExpressionType& expression)
+{
+	std::stack<ItemBase::ItemType> calcStack;
+	for (auto i : expression)
 	{
 		switch (i->GetType())
 		{
 		case ItemBase::Identification:
+			/*如果是函数，检查成功后当成普通数值处理*/
+			if (((IdentificationItem*)i)->GetIdentificationType() == IdentificationItem::FunctionIDF)
+				if (!CheckFunction((FunctionIDF*)i))
+					return false;
 		case ItemBase::Value:
 			calcStack.push(ItemBase::Value);
 			break;
@@ -142,30 +154,38 @@ Calculator::CalculateResult Calculator::CheckExpression(const SuffixExpression& 
 			{
 				/*二元运算符*/
 				if (calcStack.size() < 2)//操作数不够
-					return ExpressionError;
+					return false;
 				ItemBase::ItemType rightItem = calcStack.top();
 				calcStack.pop();
 				/*左操作数还在栈里，不取出来了*/
 				ItemBase::ItemType leftItem = calcStack.top();
 				/*做类型检查*/
 				if (rightItem != ItemBase::Value || leftItem != ItemBase::Value)
-					return ExpressionError;
+					return false;
 			}
 			else
 			{
 				/*一元运算符*/
 				if (calcStack.empty())//操作数不够
-					return ExpressionError;
+					return false;
 				ItemBase::ItemType item = calcStack.top();
 				if (item != ItemBase::Value)
-					return ExpressionError;
+					return false;
 			}
 			break;
 		}
 	}
 	if (calcStack.size() == 1 && calcStack.top() == ItemBase::Value)
-		return Succeed;
-	return ExpressionError;
+		return true;
+	return false;
+}
+
+bool Calculator::CheckFunction(FunctionIDF* item)
+{
+	for (auto i : item->Params())
+		if (!CheckExpression(i))
+			return false;
+	return true;
 }
 
 double Calculator::GetResult() const

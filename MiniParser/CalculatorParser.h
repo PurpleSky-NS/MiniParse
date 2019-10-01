@@ -182,7 +182,7 @@ ItemBase* CalculatorParser::LoadItem(std::istream& in)
 		for (size_t i = 0; i < paramsSize; ++i)
 		{
 			size_t itemsSize = LoadSize(in);
-			FunctionIDF::ParamType param;
+			ExpressionType param;
 			param.reserve(itemsSize);
 			for (size_t j = 0; j < itemsSize; ++j)
 				param.push_back(LoadItem(in));
