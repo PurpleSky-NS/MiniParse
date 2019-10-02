@@ -57,9 +57,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Statement.h">
-      <Filter>头文件\Parser\Statement</Filter>
-    </ClInclude>
     <ClInclude Include="StatementBlocks.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
@@ -134,6 +131,12 @@
     </ClInclude>
     <ClInclude Include="Program.h">
       <Filter>头文件\Parser\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="StatementBase.h">
+      <Filter>头文件\Parser\Statement</Filter>
+    </ClInclude>
+    <ClInclude Include="Statement.h">
+      <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

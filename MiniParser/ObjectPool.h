@@ -18,32 +18,39 @@ public:
 	ObjectPool(const ObjectPool&) = delete;
 
 	/*获取一个对象*/
-	T* GetObject();
+	inline T* GetObject();
 
 	/*释放一个对象*/
-	void FreeObject(T* obj);
+	inline void FreeObject(T* obj);
+
+	/*获取一个对象并记录*/
+	inline T* GetRecordObject();
+
+	/*释放所有记录的对象*/
+	inline void FreeRecordObject();
 
 	/*根据设置的allocationSize，再构造一定数目对象*/
-	void AllocObjects();
+	inline void AllocObjects();
 	/*再构造一定数目对象*/
-	void AllocObjects(unsigned capacity);
+	inline void AllocObjects(unsigned capacity);
 
 	/*设置每次再构造对象数量*/
-	void SetAllocationSize(unsigned allocationSize);
+	inline void SetAllocationSize(unsigned allocationSize);
 
 	/*获取每次再构造对象数量*/
-	unsigned GetAllocationSize()const;
+	inline unsigned GetAllocationSize()const;
 
 	/*清空所有对象*/
-	void ClearObjects();
+	inline void ClearObjects();
 
 	/*获取对象数量*/
-	unsigned Size()const;
+	inline unsigned Size()const;
 
 private:
 
 	std::vector<T*> m_arrayStoragePool;
 	std::list<T*> m_objectPool;
+	std::vector<T*> m_recordObjects;
 	unsigned m_size;
 	unsigned m_allocationSize;
 };
@@ -92,6 +99,22 @@ template<class T>
 void ObjectPool<T>::FreeObject(T* obj)
 {
 	m_objectPool.push_back(obj);
+}
+
+template<class T>
+T* ObjectPool<T>::GetRecordObject()
+{
+	T* obj = GetObject();
+	m_recordObjects.push_back(obj);
+	return obj;
+}
+
+template<class T>
+void ObjectPool<T>::FreeRecordObject()
+{
+	for (auto i : m_recordObjects)
+		FreeObject(i);
+	m_recordObjects.clear();
 }
 
 template<class T>

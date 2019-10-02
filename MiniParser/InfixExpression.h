@@ -76,7 +76,7 @@ bool InfixExpression::ParseExpression(const std::string& srcExp)
 		m_prevItem = GetItem(exp, i);
 		if (m_prevItem == nullptr)
 		{
-			Clear(true);
+			Clear();
 			return false;
 		}
 		m_expression.push_back(m_prevItem);

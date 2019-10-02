@@ -1,31 +1,30 @@
 ﻿#pragma once
 
 #include <functional>
-#include "VariousTable.h"
-#include "Program.h"
+#include "Statement.h"
 #include "InfixExpression.h"
 #include "SuffixExpression.h"
 #include "Calculator.h"
+#include "Various.h"
 
 /*基础的赋值语句*/
 const class AssignStatement :public Statement
 {
 public:
 
-	inline AssignStatement();
+	AssignStatement() = default;
 	AssignStatement(const AssignStatement&) = delete;
 	AssignStatement(AssignStatement&&) = delete;
-	inline ~AssignStatement();
+	~AssignStatement() = default;
 
 	inline bool SetStatement(const std::string& variousName, const InfixExpression& expression);
-	inline bool SetStatement(const std::string& arrayName, size_t pos, const InfixExpression& expression);
-	inline bool SetStatement(const std::string& variousName, const SuffixExpression& expression);
-	inline bool SetStatement(const std::string& arrayName, size_t pos, const SuffixExpression& expression);
 
 	/*静态检查语句错误*/
 	inline virtual bool Check() override;
 
-	inline virtual bool Excuse() override;
+	inline virtual bool DynamicCheck() override;
+
+	inline virtual bool Execute() override;
 
 	inline virtual StatementType GetType()const;
 
@@ -35,77 +34,26 @@ public:
 
 private:
 
-	VariousBase::VariousType m_LType = VariousBase::Various;
-
-	std::string m_variousName;
-
-	std::string m_arrayName;
-	size_t m_arrayPos = 0;
-
-	SuffixExpression* m_expression;
+	VariousIDF m_leftVar;
+	SuffixExpression m_rightExpression;
 };
-
-AssignStatement::AssignStatement()
-{
-	m_expression = new SuffixExpression;
-}
-
-AssignStatement::~AssignStatement()
-{
-	if (m_expression != nullptr)
-		delete m_expression;
-}
-
-bool AssignStatement::SetStatement(const std::string& variousName, const InfixExpression& expression)
-{
-	m_LType = VariousBase::Various;
-	m_variousName = variousName;
-	return m_expression->ParseExpression(expression);
-}
-
-bool AssignStatement::SetStatement(const std::string& arrayName, size_t pos, const InfixExpression& expression)
-{
-	m_LType = VariousBase::Array;
-	m_arrayName = arrayName;
-	m_arrayPos = pos;
-	return m_expression->ParseExpression(expression);
-}
-
-bool AssignStatement::SetStatement(const std::string& variousName, const SuffixExpression& expression)
-{
-	m_LType = VariousBase::Various;
-	m_variousName = variousName;
-	m_expression->GetExpression() = expression.GetExpression();
-}
-
-bool AssignStatement::SetStatement(const std::string& arrayName, size_t pos, const SuffixExpression& expression)
-{
-	m_LType = VariousBase::Array;
-	m_arrayName = arrayName;
-	m_arrayPos = pos;
-	m_expression->GetExpression() = expression.GetExpression();
-}
 
 bool AssignStatement::Check()
 {
-	if (!Calculator::CheckExpression(*m_expression))
-	{
-		m_program->err_log.AddMessage("Compile : 表达式结构错误", GetLine());
+	if (!CheckExpression(m_rightExpression.GetExpression()))
 		return false;
-	}
+	if (m_leftVar.IsArrayItem() && !CheckExpression(m_leftVar.ArrayPosExpression()))
+		return false;
 	return true;
 }
 
-bool AssignStatement::Excuse()
+bool AssignStatement::DynamicCheck()
 {
-	SuffixExpression exp(*m_expression);
-	for (size_t i = 0; i < exp.GetExpression().size(); ++i)
-	{
-		if (exp.GetExpression()[i]->GetType() == ItemBase::Identification)
-		{
+	return true;
+}
 
-		}
-	}
+bool AssignStatement::Execute()
+{
 	return true;
 }
 

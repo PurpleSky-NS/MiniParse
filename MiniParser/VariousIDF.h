@@ -51,7 +51,7 @@ bool& VariousIDF::NegSigned()
 	return m_isNegSigned;
 }
 
-inline bool VariousIDF::IsArrayItem() const
+bool VariousIDF::IsArrayItem() const
 {
 	return m_isArrayItem;
 }

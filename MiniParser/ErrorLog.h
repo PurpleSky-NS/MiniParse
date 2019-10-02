@@ -19,7 +19,11 @@ public:
 	ErrorLog(ErrorLog&&) = delete;
 	~ErrorLog() = default;
 
-	inline void AddMessage(const std::string& msg, unsigned line);
+	inline void AddError(const std::string& msg, unsigned line);
+
+	inline void AddCompileError(const std::string& msg, unsigned line);
+	inline void AddDynCompileError(const std::string& msg, unsigned line);
+	inline void AddRuntimeError(const std::string& msg, unsigned line);
 
 	/*返回所有信息*/
 	inline const std::vector<Message>& GetMessages()const;
@@ -37,9 +41,24 @@ private:
 
 };
 
-void ErrorLog::AddMessage(const std::string& msg, unsigned line)
+void ErrorLog::AddError(const std::string& msg, unsigned line)
 {
 	m_msgs.push_back({ msg,line });
+}
+
+void ErrorLog::AddCompileError(const std::string& msg, unsigned line)
+{
+	m_msgs.push_back({ "Compile : " + msg,line });
+}
+
+void ErrorLog::AddDynCompileError(const std::string& msg, unsigned line)
+{
+	m_msgs.push_back({ "Dyn Compile : " + msg,line });
+}
+
+void ErrorLog::AddRuntimeError(const std::string& msg, unsigned line)
+{
+	m_msgs.push_back({ "Runtime : " + msg,line });
 }
 
 const std::vector<ErrorLog::Message>& ErrorLog::GetMessages() const

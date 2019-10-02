@@ -23,7 +23,7 @@ public:
 	inline virtual void Free() override;
 
 private:
-	double m_value;
+	double m_value = 0.0;
 
 };
 ValueItem::ValueItem(double value)
@@ -45,3 +45,17 @@ void ValueItem::Free()
 {
 	delete this;
 }
+
+class NoFreeValueItem :public ValueItem
+{
+	NoFreeValueItem() = default;
+	inline NoFreeValueItem(double value);
+	inline NoFreeValueItem(const NoFreeValueItem&) = default;
+	inline NoFreeValueItem(NoFreeValueItem&&) = default;
+	inline ~NoFreeValueItem() = default;
+
+	virtual void Free() override {}
+};
+NoFreeValueItem::NoFreeValueItem(double value) :
+	ValueItem(value)
+{}

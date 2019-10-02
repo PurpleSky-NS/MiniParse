@@ -1,7 +1,9 @@
 ﻿#pragma once
 
-#include "VariousTable.h"
 #include "ErrorLog.h"
+#include "ValueItem.h"
+#include "ObjectPool.h"
+#include "VariousTable.h"
 #include "StatementBlocks.h"
 
 class Program
@@ -17,9 +19,14 @@ public:
 	/*从文件中获取程序，若没有返回nullptr*/
 	static Program* LoadProgram(const std::string& name);
 
+	/*查找程序，若没有返回false*/
+	static bool ExistProgram(const std::string& name);
 
+
+	/*in-class*/
 	ErrorLog err_log;
 	VariousTable var_table;
+	ObjectPool<NoFreeValueItem> val_pool;
 
 	inline const std::string& GetName()const;
 

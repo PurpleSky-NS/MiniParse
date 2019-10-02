@@ -1,22 +1,22 @@
 ﻿#pragma once
 
 #include <vector>
-#include "Statement.h"
+#include "StatementBase.h"
 
-class StatementBlocks : public Statement
+class StatementBlocks : public StatementBase
 {
 public:
 
 	inline ~StatementBlocks();
 
-	inline void Add(Statement* statement);
+	inline void Add(StatementBase* statement);
 
 	inline void Clear();
 
-	inline virtual bool Excuse() override;
+	inline virtual bool Execute() override;
 
 private:
-	std::vector<Statement*> m_statementBlocks;
+	std::vector<StatementBase*> m_statementBlocks;
 };
 
 StatementBlocks::~StatementBlocks()
@@ -24,15 +24,15 @@ StatementBlocks::~StatementBlocks()
 	Clear();
 }
 
-void StatementBlocks::Add(Statement* statement)
+void StatementBlocks::Add(StatementBase* statement)
 {
 	m_statementBlocks.push_back(statement);
 }
 
-bool StatementBlocks::Excuse()
+bool StatementBlocks::Execute()
 {
 	for (auto i : m_statementBlocks)
-		if (!i->Excuse())
+		if (!i->Execute())
 			return false;
 	return true;
 }

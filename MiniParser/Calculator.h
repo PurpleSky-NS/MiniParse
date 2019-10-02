@@ -27,17 +27,24 @@ public:
 
 	static inline bool CheckExpression(const SuffixExpression& expression);
 
+	/*后缀表达式*/
+	static inline bool CheckExpression(const ExpressionType& exp);
+
+	static inline bool IsDigit(double v);
+
 	inline CalculateResult Calculate(const std::string& expression);
 
 	inline CalculateResult Calculate(const InfixExpression& expression);
 
+	/*执行计算，使用内置的变量池*/
 	inline CalculateResult Calculate(const SuffixExpression& expression);
+
+	/*执行计算，不使用变量池，会使表达式的数字值改变*/
+	inline CalculateResult CalculateExpUnsafe(SuffixExpression& expression);
 
 	inline double GetResult()const;
 
 private:
-
-	static inline bool CheckExpression(const ExpressionType& exp);
 	static inline bool CheckFunction(FunctionIDF* item);
 
 	double m_prevResult = 0.0;
@@ -95,6 +102,58 @@ Calculator::CalculateResult Calculator::Calculate(const SuffixExpression& expres
 				if (m_occurResult != Succeed)
 					return m_occurResult;
 				valuePool.FreeObject(rightValue);
+			}
+			else
+			{
+				/*一元运算符*/
+				if (calcStack.empty())//操作数不够
+					return ExpressionError;
+				ItemBase* item = calcStack.top();
+				if (item->GetType() != ItemBase::Value)
+					return ExpressionError;
+				ValueItem* value = (ValueItem*)item;
+				value->Value() = CalculateUnaryOperator(((UnaryOperator*)i)->GetUnaryOperatorType(), value->Value());
+				if (m_occurResult != Succeed)
+					return m_occurResult;
+			}
+			break;
+		}
+	}
+	if (calcStack.size() == 1 && calcStack.top()->GetType() == ItemBase::Value)
+		m_prevResult = ((ValueItem*)calcStack.top())->Value();
+	else
+		m_occurResult = ExpressionError;
+	return m_occurResult;
+}
+
+Calculator::CalculateResult Calculator::CalculateExpUnsafe(SuffixExpression& expression)
+{
+	std::stack<ItemBase*> calcStack;//为计算栈预留空间
+	m_occurResult = Succeed;
+	for (auto i : expression.GetExpression())
+	{
+		switch (i->GetType())
+		{
+		case ItemBase::Value:
+			calcStack.push(i);
+			break;
+		case ItemBase::Operator:
+			if (((OperatorItem*)i)->GetOperatorType() == OperatorItem::BinaryOperator)
+			{
+				/*二元运算符*/
+				if (calcStack.size() < 2)//操作数不够
+					return ExpressionError;
+				ItemBase* rightItem = calcStack.top();
+				calcStack.pop();
+				ItemBase* leftItem = calcStack.top();
+				/*做类型检查*/
+				if (rightItem->GetType() != ItemBase::Value || leftItem->GetType() != ItemBase::Value)
+					return ExpressionError;
+				ValueItem* leftValue = (ValueItem*)leftItem, * rightValue = (ValueItem*)rightItem;
+				/*左操作数还在栈里，不取出来了*/
+				leftValue->Value() = CalculateBinaryOperator(((BinaryOperator*)i)->GetBinaryOperatorType(), leftValue->Value(), rightValue->Value());
+				if (m_occurResult != Succeed)
+					return m_occurResult;
 			}
 			else
 			{
@@ -178,6 +237,11 @@ bool Calculator::CheckExpression(const ExpressionType& expression)
 	if (calcStack.size() == 1 && calcStack.top() == ItemBase::Value)
 		return true;
 	return false;
+}
+
+bool Calculator::IsDigit(double v)
+{
+	return v - (int)v == 0.0;
 }
 
 bool Calculator::CheckFunction(FunctionIDF* item)

@@ -133,6 +133,7 @@
     <ClInclude Include="ErrorLog.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="Statement.h" />
+    <ClInclude Include="StatementBase.h" />
     <ClInclude Include="StatementBlocks.h" />
     <ClInclude Include="SuffixExpression.h" />
     <ClInclude Include="UnaryOperator.h" />

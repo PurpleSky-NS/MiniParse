@@ -10,7 +10,7 @@ public:
 	inline Expression() = default;
 	inline Expression(const Expression&) = default;
 	inline Expression(Expression&&) = delete;
-	inline ~Expression() = default;
+	inline ~Expression();
 
 	/*获取表达式元素序列*/
 	inline ExpressionType& GetExpression();
@@ -21,12 +21,17 @@ public:
 	/*添加元素*/
 	inline void AddItem(ItemBase* item);
 
-	/*清空表达式，是否释放Value的内存*/
-	inline void Clear(bool free);
+	/*清空表达式*/
+	inline void Clear();
 
 protected:
 	ExpressionType m_expression;
 };
+
+Expression::~Expression()
+{
+	Clear();
+}
 
 ExpressionType& Expression::GetExpression()
 {
@@ -43,10 +48,9 @@ void Expression::AddItem(ItemBase* item)
 	m_expression.push_back(item);
 }
 
-void Expression::Clear(bool free)
+void Expression::Clear()
 {
-	if (free)
-		for (auto i : m_expression)
-			i->Free();
+	for (auto i : m_expression)
+		i->Free();
 	m_expression.clear();
 }

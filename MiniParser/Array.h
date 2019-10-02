@@ -42,12 +42,6 @@ public:
 
 	virtual ArrayType GetArrayType()const = 0;
 
-protected:
-
-	Array() = default;
-	Array(const Array&) = delete;
-	Array(Array&&) = delete;
-
 };
 bool Array::operator==(const Array& array)const
 {
