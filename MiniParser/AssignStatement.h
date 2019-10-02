@@ -17,7 +17,7 @@ public:
 	AssignStatement(AssignStatement&&) = delete;
 	~AssignStatement() = default;
 
-	inline bool SetStatement(const std::string& variousName, const InfixExpression& expression);
+	inline bool SetStatement(const std::string& leftStr, const std::string& rightStr);
 
 	/*静态检查语句错误*/
 	inline virtual bool Check() override;

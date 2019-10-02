@@ -131,6 +131,28 @@ bool Statement::DynamicCheck(VariousIDF* var)const
 	return true;
 }
 
+bool Statement::Replace(ExpressionType& exp)
+{
+	for (auto& i : exp)//替换非数值的元素
+	{
+		if (i->GetType() == ItemBase::Identification)//如果是变量或者函数则进行替换
+		{
+			if (((IdentificationItem*)i)->GetIdentificationType() == IdentificationItem::VariousIDF)
+			{
+				if ((i = Replace((VariousIDF*)i)) == nullptr)
+					return false;
+			}
+			else
+			{
+				if ((i = Replace((FunctionIDF*)i)) == nullptr)
+					return false;
+			}
+		}
+	}
+	return true;
+}
+
+
 ValueItem* Statement::Replace(FunctionIDF* func)
 {
 	/*执行变量数值替换*/
@@ -140,6 +162,8 @@ ValueItem* Statement::Replace(FunctionIDF* func)
 			RuntimeError("函数[" + func->GetName() + "]的参数的表达式无法计算...");
 			return nullptr;
 		}
+	func->Free();
+	return nullptr;//请替换
 }
 
 ValueItem* Statement::Replace(VariousIDF* var)
@@ -175,7 +199,7 @@ ValueItem* Statement::Replace(VariousIDF* var)
 		if (!Calculator::IsDigit(pos))
 		{
 			RuntimeError("数组[" + var->GetName() + "]下标都算出来小数了...");
-			return false;
+			return nullptr;
 		}
 		val->Value() = (var->NegSigned() ? (*arr)[(int)pos].value : -(*arr)[(int)pos].value);//给返回出去的值赋值
 	}
@@ -189,26 +213,6 @@ ValueItem* Statement::Replace(VariousIDF* var)
 		}
 		val->Value() = (var->NegSigned() ? various->GetValue() : -various->GetValue());//给返回出去的值赋值
 	}
+	var->Free();
 	return val;
-}
-
-bool Statement::Replace(ExpressionType& exp)
-{
-	for (auto& i : exp)//替换非数值的元素
-	{
-		if (i->GetType() == ItemBase::Identification)//如果是变量或者函数则进行替换
-		{
-			if (((IdentificationItem*)i)->GetIdentificationType() == IdentificationItem::VariousIDF)
-			{
-				if ((i = Replace((VariousIDF*)i)) == nullptr)
-					return false;
-			}
-			else
-			{
-				if ((i = Replace((FunctionIDF*)i)) == nullptr)
-					return false;
-			}
-		}
-	}
-	return true;
 }
