@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Array.h" />
+    <ClInclude Include="ArrayInitStatement.h" />
     <ClInclude Include="AssignStatement.h" />
     <ClInclude Include="BinaryOperator.h" />
     <ClInclude Include="BracketItem.h" />
@@ -150,7 +151,9 @@
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="UnaryOperator.cpp" />
     <ClCompile Include="ValueItem.cpp" />
-    <ClCompile Include="Various.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="idea_lg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

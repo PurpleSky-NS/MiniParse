@@ -12,13 +12,14 @@ public:
 
 	ValueItem() = default;
 	inline ValueItem(double value);
-	inline ValueItem(const ValueItem&) = default;
-	inline ValueItem(ValueItem&&) = default;
-	inline ~ValueItem() = default;
+	ValueItem(const ValueItem&) = default;
+	ValueItem(ValueItem&&) = default;
+	~ValueItem() = default;
 
 	virtual inline ItemType GetType() const override;
 
 	inline double& Value();
+	inline const double& Value()const;
 
 	inline virtual void Free() override;
 
@@ -41,6 +42,11 @@ double& ValueItem::Value()
 	return m_value;
 }
 
+const double& ValueItem::Value()const
+{
+	return m_value;
+}
+
 void ValueItem::Free()
 {
 	delete this;
@@ -48,14 +54,12 @@ void ValueItem::Free()
 
 class NoFreeValueItem :public ValueItem
 {
+public:
 	NoFreeValueItem() = default;
-	inline NoFreeValueItem(double value);
-	inline NoFreeValueItem(const NoFreeValueItem&) = default;
-	inline NoFreeValueItem(NoFreeValueItem&&) = default;
-	inline ~NoFreeValueItem() = default;
+	NoFreeValueItem(double value) :ValueItem(value) {}
+	NoFreeValueItem(const NoFreeValueItem&) = default;
+	NoFreeValueItem(NoFreeValueItem&&) = default;
+	~NoFreeValueItem() = default;
 
 	virtual void Free() override {}
 };
-NoFreeValueItem::NoFreeValueItem(double value) :
-	ValueItem(value)
-{}

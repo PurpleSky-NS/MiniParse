@@ -13,6 +13,7 @@ public:
 		VariousIDF
 	};
 
+	IdentificationItem() = default;
 	inline IdentificationItem(const std::string& name);
 	IdentificationItem(const IdentificationItem&) = default;
 	IdentificationItem(IdentificationItem&&) = default;
@@ -22,11 +23,12 @@ public:
 
 	virtual inline ItemType GetType() const override;
 
+	inline std::string& GetName();
 	inline const std::string& GetName()const;
 
 	inline virtual void Free() override;
 
-private:
+protected:
 
 	std::string m_name;
 
@@ -39,6 +41,11 @@ IdentificationItem::IdentificationItem(const std::string& name) :
 IdentificationItem::ItemType IdentificationItem::GetType() const
 {
 	return Identification;
+}
+
+std::string& IdentificationItem::GetName()
+{
+	return m_name;
 }
 
 const std::string& IdentificationItem::GetName()const

@@ -138,11 +138,11 @@
     <ClInclude Include="Statement.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
+    <ClInclude Include="ArrayInitStatement.h">
+      <Filter>头文件\Parser\Statement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Various.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="BinaryOperator.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -161,5 +161,10 @@
     <ClCompile Include="Program.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="idea_lg">
+      <Filter>资源文件</Filter>
+    </None>
   </ItemGroup>
 </Project>

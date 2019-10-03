@@ -14,32 +14,43 @@ public:
 
 	inline SuffixExpression() = default;
 	/*中缀表达式类构造*/
-	inline SuffixExpression(const InfixExpression& expression);
-	SuffixExpression(const SuffixExpression&) = default;
-	SuffixExpression(SuffixExpression&&) = delete;
+	inline SuffixExpression(InfixExpression& expression);
+	SuffixExpression(const SuffixExpression&) = delete;
+	SuffixExpression(SuffixExpression&&) = default;
 	~SuffixExpression() = default;
 
 	/*若失败，多半是因为括号不匹配*/
-	inline bool ParseExpression(const InfixExpression& expression);
+	/*成功进行转化的中值表达式会被清空，否则会发生重复Free*/
+	inline bool ParseExpression(InfixExpression& expression);
+	/*成功进行转化的中值表达式会被清空*/
+	inline bool ParseExpression(ExpressionType& expression);
 
 private:
 
-	inline bool ParseExpression(const ExpressionType& expression, ExpressionType& outExpression);
+	inline bool ParseExpression(ExpressionType& expression, ExpressionType& outExpression);
 
 	inline bool ParseFunction(FunctionIDF* func);
 };
 
-SuffixExpression::SuffixExpression(const InfixExpression& expression)
+SuffixExpression::SuffixExpression(InfixExpression& expression)
 {
 	ParseExpression(expression);
 }
 
-bool SuffixExpression::ParseExpression(const InfixExpression& expression)
+bool SuffixExpression::ParseExpression(InfixExpression& expression)
 {
-	return ParseExpression(expression.GetExpression(), m_expression);
+	return ParseExpression(expression.GetExpression());
 }
 
-bool SuffixExpression::ParseExpression(const ExpressionType& expression, ExpressionType& outExpression)
+bool SuffixExpression::ParseExpression(ExpressionType& expression)
+{
+	bool res = ParseExpression(expression, m_expression);
+	if (res)
+		expression.clear();
+	return res;
+}
+
+bool SuffixExpression::ParseExpression(ExpressionType& expression, ExpressionType& outExpression)
 {
 	//静态优先级表，按二元运算符的优先级来
 	//+ - * / % ^
@@ -47,6 +58,7 @@ bool SuffixExpression::ParseExpression(const ExpressionType& expression, Express
 
 	ExpressionType sufExp;
 	std::stack<ItemBase*> operatorStack;//建立符号栈
+	Clear();
 	sufExp.reserve(expression.size());//为vector预留空间
 
 	for (auto i : expression)

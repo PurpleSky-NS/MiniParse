@@ -15,6 +15,7 @@ public:
 
 	inline void UpdateVarious(const std::string& name, VariousBase* various);
 
+	/*没找到返回nullptr*/
 	inline VariousBase* GetVarious(const std::string& name)const;
 
 	inline void RemoveVarious(const std::string& name);

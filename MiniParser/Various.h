@@ -7,12 +7,11 @@ class Various : public VariousBase
 {
 public:
 
-	/*获取一个变量对象*/
-	static Various* GetVarious(double initialValue);
-	/*释放一个变量对象*/
-	static void FreeVarious(Various* various);
-	/*在程序结束时调用，清空变量池*/
-	static void ClearVariousPool();
+	Various() = default;
+	inline Various(double initialValue);
+	Various(const Various& various) = delete;
+	Various(Various&&) = delete;
+	~Various() = default;
 
 	inline double& GetValue();
 
@@ -34,15 +33,8 @@ public:
 	inline bool operator<=(double constant)const;
 
 private:
-	static std::list<Various*> m_variousPool;
 
 	double m_value;
-
-	inline Various(double initialValue);
-	Various() = delete;
-	Various(const Various& various) = delete;
-	Various(Various&&) = delete;
-	~Various() = default;
 
 };
 Various::Various(double initialValue)

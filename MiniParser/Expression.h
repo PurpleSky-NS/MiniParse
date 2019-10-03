@@ -3,14 +3,15 @@
 #include <vector>
 #include "ItemBase.h"
 
+typedef std::vector<ItemBase*> ExpressionType;
 class Expression
 {
 public:
 
 	inline Expression() = default;
-	inline Expression(const Expression&) = default;
-	inline Expression(Expression&&) = delete;
-	inline ~Expression();
+	inline Expression(const Expression&) = delete;
+	inline Expression(Expression&&) = default;
+	virtual inline ~Expression();
 
 	/*获取表达式元素序列*/
 	inline ExpressionType& GetExpression();
@@ -21,8 +22,13 @@ public:
 	/*添加元素*/
 	inline void AddItem(ItemBase* item);
 
-	/*清空表达式*/
+	/*清空表达式，调用元素的Free方法*/
 	inline void Clear();
+	/*清空表达式，不调用元素的Free方法*/
+	inline void ClearNoFree();
+
+	inline operator ExpressionType& ();
+	inline operator const ExpressionType& ()const;
 
 protected:
 	ExpressionType m_expression;
@@ -53,4 +59,19 @@ void Expression::Clear()
 	for (auto i : m_expression)
 		i->Free();
 	m_expression.clear();
+}
+
+void Expression::ClearNoFree()
+{
+	m_expression.clear();
+}
+
+Expression::operator ExpressionType& ()
+{
+	return m_expression;
+}
+
+Expression::operator const ExpressionType& () const
+{
+	return m_expression;
 }

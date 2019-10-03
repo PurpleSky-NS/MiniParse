@@ -5,6 +5,8 @@
 #include "ObjectPool.h"
 #include "VariousTable.h"
 #include "StatementBlocks.h"
+#include "DynamicSizeArray.h"
+#include "Various.h"
 
 class Program
 {
@@ -27,6 +29,8 @@ public:
 	ErrorLog err_log;
 	VariousTable var_table;
 	ObjectPool<NoFreeValueItem> val_pool;
+	ObjectPool<DynamicSizeArray> dsa_pool;
+	ObjectPool<Various> var_pool;
 
 	inline const std::string& GetName()const;
 

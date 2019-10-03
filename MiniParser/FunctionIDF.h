@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include "Expression.h"
 #include "IdentificationItem.h"
 
 /*作为函数的标识符*/
@@ -8,10 +8,11 @@ class FunctionIDF : public IdentificationItem
 {
 public:
 
+	FunctionIDF() = default;
 	inline FunctionIDF(const std::string& name);
-	inline FunctionIDF(const FunctionIDF&) = delete;
-	inline FunctionIDF(FunctionIDF&&) = delete;
-	inline ~FunctionIDF() = default;
+	FunctionIDF(const FunctionIDF&) = delete;
+	FunctionIDF(FunctionIDF&&) = delete;
+	~FunctionIDF() = default;
 
 	inline std::vector<ExpressionType>& Params();
 	inline const std::vector<ExpressionType>& Params()const;

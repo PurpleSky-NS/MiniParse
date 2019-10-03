@@ -16,8 +16,6 @@ public:
 
 	static BracketItem* GetBracket(BracketType type);
 
-	inline void SetBracketType(BracketType type);
-
 	inline BracketType GetBracketType()const;
 
 	virtual inline ItemType GetType() const override;
@@ -37,11 +35,6 @@ private:
 	BracketType m_type;
 };
 BracketItem::BracketItem(BracketType type)
-{
-	m_type = type;
-}
-
-void BracketItem::SetBracketType(BracketType type)
 {
 	m_type = type;
 }

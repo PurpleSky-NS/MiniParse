@@ -18,8 +18,8 @@ public:
 	inline InfixExpression() = default;
 	/*中缀表达式字符串构造*/;
 	inline InfixExpression(const std::string& exp);
-	InfixExpression(const InfixExpression&) = default;
-	InfixExpression(InfixExpression&&) = delete;
+	InfixExpression(const InfixExpression&) = delete;
+	InfixExpression(InfixExpression&&) = default;
 	~InfixExpression() = default;
 
 	/*大长说明：
@@ -69,7 +69,7 @@ InfixExpression::InfixExpression(const std::string& exp)
 bool InfixExpression::ParseExpression(const std::string& srcExp)
 {
 	m_prevItem = nullptr;
-	m_expression.clear();
+	Clear();
 	std::string exp = RemoveSpace(srcExp);
 	for (size_t i = 0; i < exp.size();)
 	{
@@ -179,12 +179,12 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 				return new ValueItem(ValueItem::VALUE_E);
 			if (exp[pos] == '[')//遇到'['则说明是数组元素
 			{
-				for (++pos; pos < exp.size() && exp[pos] != ']'; ++pos)
-					arrPosStr += exp[pos];
-				if (pos == exp.size())//读到底说明没有遇到右括号
+				size_t fd = exp.find(']', ++pos);
+				if (pos == exp.npos)//没找到右括号
 					return nullptr;
+				arrPosStr = exp.substr(pos, fd - pos);
+				pos = fd + 1;//跳过']'
 				isArrayItem = true;
-				++pos;//跳过']'
 			}
 			VariousIDF* vidf = new VariousIDF(itemStr);
 			if (isArrayItem)//数组元素

@@ -148,11 +148,14 @@ int main()
 {
 	std::string exp;
 	InfixExpression e("Func(2.2+sda[1+2+3]+Func(3.2+5!,Fun()),5+6)!-sd--ss");
-	//e.ParseExpression("Func(1+23+6+asd)");
+	InfixExpression ee(std::move(e));
 	cout << e << endl;
-	SuffixExpression se(e);
-	cout << se << endl;
-	cout << Calculator::CheckExpression(se);
+	cout << ee << endl;
+	//e.ParseExpression("Func(1+23+6+asd)");
+	//SuffixExpression se(e);
+	//cout << se << endl;
+	//cout << Calculator::CheckExpression(se);
+
 	/*switch (calc.Calculate(see))
 	{
 	case Calculator::Succeed:

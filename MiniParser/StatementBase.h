@@ -10,6 +10,7 @@ public:
 
 	enum StatementType :char
 	{
+		ArrayInitStatement,
 		AssignStatement
 	};
 
@@ -28,13 +29,12 @@ public:
 
 	virtual StatementType GetType()const = 0;
 
-	virtual void Save(std::ostream* o)const = 0;
+	virtual void Save(std::ostream& out)const = 0;
 
-	virtual bool Load(std::istream* o) = 0;
+	virtual bool Load(std::istream& in) = 0;
 
 protected:
 
-	Calculator m_calc;
 	Program* m_program;
 	unsigned m_line;
 
