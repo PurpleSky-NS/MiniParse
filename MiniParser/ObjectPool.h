@@ -8,14 +8,14 @@ class ObjectPool
 {
 public:
 
+	ObjectPool() = default;
+	ObjectPool(const ObjectPool&) = delete;
 	/*对象池基础容量，默认用该容量作为allocationSize*/
 	inline ObjectPool(unsigned capacity);//建议使用
 	/*对象池基础容量以及若是基础容量使用完，在构建新对象的数量*/
 	inline ObjectPool(unsigned capacity, unsigned allocationSize);//建议使用
 	inline ObjectPool(ObjectPool&& objectPool);
 	inline ~ObjectPool();
-	ObjectPool() = delete;
-	ObjectPool(const ObjectPool&) = delete;
 
 	/*获取一个对象*/
 	inline T* GetObject();
@@ -81,7 +81,7 @@ ObjectPool<T>::ObjectPool(ObjectPool&& objectPool)
 template<class T>
 ObjectPool<T>::~ObjectPool()
 {
-	for (auto i : m_arrayStoragePool)
+	for (auto& i : m_arrayStoragePool)
 		delete[] i;
 }
 
@@ -112,7 +112,7 @@ T* ObjectPool<T>::GetRecordObject()
 template<class T>
 void ObjectPool<T>::FreeRecordObject()
 {
-	for (auto i : m_recordObjects)
+	for (auto& i : m_recordObjects)
 		FreeObject(i);
 	m_recordObjects.clear();
 }
@@ -151,7 +151,7 @@ unsigned ObjectPool<T>::GetAllocationSize() const
 template<class T>
 void ObjectPool<T>::ClearObjects()
 {
-	for (auto i : m_arrayStoragePool)
+	for (auto& i : m_arrayStoragePool)
 		delete[] i;
 	m_arrayStoragePool.clear();
 	m_objectPool.clear();

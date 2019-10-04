@@ -141,6 +141,9 @@
     <ClInclude Include="ArrayInitStatement.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
+    <ClInclude Include="ProgramParser.h">
+      <Filter>头文件\Parser\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryOperator.cpp">
@@ -156,6 +159,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ValueItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgramParser.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Program.cpp">

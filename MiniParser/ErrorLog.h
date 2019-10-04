@@ -69,8 +69,8 @@ const std::vector<ErrorLog::Message>& ErrorLog::GetMessages() const
 std::string ErrorLog::ToString() const
 {
 	std::string msgs;
-	for (auto i : m_msgs)
-		msgs += "in " + std::to_string(i.line) + " : " + i.msg + "\n";
+	for (auto& i : m_msgs)
+		msgs += "in " + std::to_string(i.line) + " line " + i.msg + "\n";
 	if (!msgs.empty())
 		msgs.pop_back();
 	return msgs;

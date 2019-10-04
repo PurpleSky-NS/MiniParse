@@ -53,7 +53,7 @@ bool Statement::CheckExpression(const SuffixExpression& expression)const
 
 bool Statement::DynamicCheck(const ExpressionType& exp) const
 {
-	for (auto i : exp)
+	for (auto& i : exp)
 		if (i->GetType() == ItemBase::Identification && !DynamicCheck((IdentificationItem*)i))
 			return false;
 	return true;
@@ -83,8 +83,8 @@ bool Statement::DynamicCheck(FunctionIDF* func)const
 		CompileError("[" + func->GetName() + "]这调用的啥，原谅我智商低识别不出来...");
 		return false;
 	}
-	for (auto i : func->Params())//查参数
-		for (auto j : i)
+	for (auto& i : func->Params())//查参数
+		for (auto& j : i)
 			if (j->GetType() == ItemBase::Identification)
 			{
 				if (((IdentificationItem*)j)->GetIdentificationType() == IdentificationItem::VariousIDF)

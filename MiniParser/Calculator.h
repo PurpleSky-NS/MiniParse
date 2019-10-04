@@ -52,7 +52,7 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<dou
 {
 	std::stack<ItemBase*> calcStack;//为计算栈预留空间
 	res = Succeed;
-	for (auto i : expression)
+	for (auto& i : expression)
 	{
 		switch (i->GetType())
 		{
@@ -126,7 +126,7 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<dou
 bool Calculator::CheckExpression(const ExpressionType& expression)
 {
 	std::stack<ItemBase::ItemType> calcStack;
-	for (auto i : expression)
+	for (auto& i : expression)
 	{
 		switch (i->GetType())
 		{
@@ -176,7 +176,7 @@ bool Calculator::IsDigit(double v)
 
 bool Calculator::CheckFunction(FunctionIDF* item)
 {
-	for (auto i : item->Params())
+	for (auto& i : item->Params())
 		if (!CheckExpression(i))
 			return false;
 	return true;

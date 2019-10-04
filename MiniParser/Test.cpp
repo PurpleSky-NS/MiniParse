@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <regex>
 #include "Various.h"
 #include "DynamicSizeArray.h"
 #include "FixedSizeArray.h"
@@ -84,7 +85,7 @@ ostream& operator<<(ostream& out, VariousIDF* v)
 	if (v->IsArrayItem())
 	{
 		out << '[';
-		for (auto i : v->ArrayPosExpression())
+		for (auto& i : v->ArrayPosExpression())
 			out << i << ' ';
 		out << ']';
 	}
@@ -96,7 +97,7 @@ ostream& operator<<(ostream& out, FunctionIDF* v)
 	out << '&' << v->GetName() << "(";
 	for (int pos = 0; pos < v->Params().size(); ++pos)
 	{
-		for (auto i : v->Params()[pos])
+		for (auto& i : v->Params()[pos])
 			out << i << " ";
 		out << (pos == v->Params().size() - 1 ? '\0' : ',');
 	}
@@ -140,17 +141,34 @@ ostream& operator<<(ostream& out, ItemBase* v)
 
 ostream& operator<<(ostream& out, const Expression& v)
 {
-	for (auto i : v.GetExpression())
+	for (auto& i : v.GetExpression())
 		out << i << " ";
 	return out;
 }
 int main()
 {
-	std::string exp;
+	static const std::string assignPattern = "(.*)\\[(.*)\\]=\\[((?:.*,)*(?:.*))\\]";
+
+	string tst = "sd[ds]=[a,,,f,g,4]";
+
+	std::regex r(assignPattern);
+
+	std::smatch sm;
+	if (std::regex_search(tst, sm, r))
+	{
+		cout << "SU" << endl;
+		for (int i = 0; i < sm.size(); ++i)
+			cout << sm[i] << endl;
+		cout << sm.size() << endl;
+	}
+	else
+		cout << "FA" << endl;
+
+	/*std::string exp;
 	InfixExpression e("Func(2.2+sda[1+2+3]+Func(3.2+5!,Fun()),5+6)!-sd--ss");
 	InfixExpression ee(std::move(e));
 	cout << e << endl;
-	cout << ee << endl;
+	cout << ee << endl;*/
 	//e.ParseExpression("Func(1+23+6+asd)");
 	//SuffixExpression se(e);
 	//cout << se << endl;

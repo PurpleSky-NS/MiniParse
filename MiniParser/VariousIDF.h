@@ -13,7 +13,7 @@ public:
 	inline VariousIDF(const std::string& name, bool isNegSigned);
 	VariousIDF(const VariousIDF&) = delete;
 	VariousIDF(VariousIDF&&) = delete;
-	~VariousIDF() = default;
+	inline ~VariousIDF();
 
 	inline bool& NegSigned();
 	inline const bool& NegSigned()const;
@@ -28,6 +28,8 @@ public:
 	inline const ExpressionType& ArrayPosExpression()const;
 
 	inline virtual IdentificationType GetIdentificationType()const override;
+
+	inline virtual void Clear() override;
 
 	inline virtual void Free() override;
 
@@ -48,6 +50,11 @@ VariousIDF::VariousIDF(const std::string& name, bool isNegSigned) :
 	VariousIDF(name)
 {
 	m_isNegSigned = isNegSigned;
+}
+
+VariousIDF::~VariousIDF()
+{
+	Clear();
 }
 
 bool& VariousIDF::NegSigned()
@@ -85,7 +92,15 @@ VariousIDF::IdentificationType VariousIDF::GetIdentificationType() const
 	return IdentificationType::VariousIDF;
 }
 
+void VariousIDF::Clear()
+{
+	IdentificationItem::Clear();
+	for (auto& i : m_arrPosExp)
+		i->Free();
+}
+
 void VariousIDF::Free()
 {
+	Clear();
 	delete this;
 }

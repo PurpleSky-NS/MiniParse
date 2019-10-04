@@ -61,7 +61,7 @@ bool SuffixExpression::ParseExpression(ExpressionType& expression, ExpressionTyp
 	Clear();
 	sufExp.reserve(expression.size());//为vector预留空间
 
-	for (auto i : expression)
+	for (auto& i : expression)
 	{
 		switch (i->GetType())
 		{

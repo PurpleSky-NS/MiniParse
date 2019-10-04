@@ -27,11 +27,13 @@ public:
 
 	inline virtual bool Execute() override;
 
+	inline virtual void Clear();
+
 	inline virtual StatementType GetType()const;
 
 	inline virtual void Save(std::ostream& out)const;
 
-	inline virtual bool Load(std::istream& in);
+	inline virtual void Load(std::istream& in);
 
 private:
 
@@ -85,6 +87,12 @@ bool AssignStatement::Execute()
 	return true;
 }
 
+void AssignStatement::Clear()
+{
+	m_leftVar.Clear();
+	m_rightExpression.Clear();
+}
+
 AssignStatement::StatementType AssignStatement::GetType() const
 {
 	return StatementType::AssignStatement;
@@ -96,7 +104,7 @@ void AssignStatement::Save(std::ostream& out) const
 	CalculatorParser::Save(out, m_rightExpression.GetExpression());
 }
 
-bool AssignStatement::Load(std::istream& in)
+void AssignStatement::Load(std::istream& in)
 {
 	CalculatorParser::Load(in, m_leftVar);
 	CalculatorParser::Load(in, m_rightExpression.GetExpression());

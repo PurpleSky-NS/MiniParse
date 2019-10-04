@@ -54,7 +54,7 @@ DynamicSizeArray::DynamicSizeArray()
 DynamicSizeArray::DynamicSizeArray(const std::vector<double>& initialValues)
 {
 	m_values.reserve(initialValues.size());
-	for (auto i : initialValues)
+	for (auto& i : initialValues)
 		m_values.push_back({ i });
 }
 DynamicSizeArray::DynamicSizeArray(const Array& array)
@@ -114,14 +114,14 @@ bool DynamicSizeArray::RemoveRangeIf(std::function<bool(const ArrayItem& item)> 
 }
 bool DynamicSizeArray::Contains(double value) const
 {
-	for (auto i : m_values)
+	for (auto& i : m_values)
 		if (i.value == value)
 			return true;
 	return false;
 }
 bool DynamicSizeArray::ContainsIf(std::function<bool(const ArrayItem& item)> judge) const
 {
-	for (auto i : m_values)
+	for (auto& i : m_values)
 		if (judge(i))
 			return true;
 	return false;
@@ -146,7 +146,7 @@ size_t DynamicSizeArray::Size() const
 }
 void DynamicSizeArray::Foreach(std::function<void(ArrayItem&)> Func)
 {
-	for (auto i : m_values)
+	for (auto& i : m_values)
 		Func(i);
 }
 void DynamicSizeArray::Foreach(std::function<void(ArrayItem&, size_t)> Func)

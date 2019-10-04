@@ -26,10 +26,11 @@ public:
 	inline std::string& GetName();
 	inline const std::string& GetName()const;
 
+	inline virtual void Clear();
+
 	inline virtual void Free() override;
 
 protected:
-
 	std::string m_name;
 
 };
@@ -51,6 +52,11 @@ std::string& IdentificationItem::GetName()
 const std::string& IdentificationItem::GetName()const
 {
 	return m_name;
+}
+
+void IdentificationItem::Clear()
+{
+	m_name.clear();
 }
 
 void IdentificationItem::Free()

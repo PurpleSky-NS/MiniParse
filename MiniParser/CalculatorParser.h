@@ -65,7 +65,7 @@ private:
 void CalculatorParser::Save(std::ostream& out, const ExpressionType& v)
 {
 	Save(out, v.size());
-	for (auto i : v)
+	for (auto& i : v)
 		Save(out, i);
 }
 void CalculatorParser::Save(std::ostream& out, const BracketItem& v)

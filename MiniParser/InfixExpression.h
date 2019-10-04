@@ -88,7 +88,7 @@ std::string InfixExpression::RemoveSpace(const std::string& exp) const
 {
 	std::string newExp;
 	newExp.reserve(exp.size());
-	for (auto i : exp)
+	for (auto& i : exp)
 		if (!isspace(i))
 			newExp += i;
 	return newExp;

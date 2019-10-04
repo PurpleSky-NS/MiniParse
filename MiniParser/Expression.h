@@ -56,7 +56,7 @@ void Expression::AddItem(ItemBase* item)
 
 void Expression::Clear()
 {
-	for (auto i : m_expression)
+	for (auto& i : m_expression)
 		i->Free();
 	m_expression.clear();
 }
