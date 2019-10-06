@@ -115,15 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Array.h" />
     <ClInclude Include="ArrayInitStatement.h" />
     <ClInclude Include="AssignStatement.h" />
     <ClInclude Include="BinaryOperator.h" />
     <ClInclude Include="BracketItem.h" />
     <ClInclude Include="Calculator.h" />
-    <ClInclude Include="DynamicSizeArray.h" />
+    <ClInclude Include="Array.h" />
     <ClInclude Include="Expression.h" />
-    <ClInclude Include="FixedSizeArray.h" />
     <ClInclude Include="FunctionIDF.h" />
     <ClInclude Include="IdentificationItem.h" />
     <ClInclude Include="InfixExpression.h" />
@@ -134,6 +132,7 @@
     <ClInclude Include="ErrorLog.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="ProgramParser.h" />
+    <ClInclude Include="ReturnStatement.h" />
     <ClInclude Include="Statement.h" />
     <ClInclude Include="StatementBase.h" />
     <ClInclude Include="StatementBlocks.h" />
@@ -155,6 +154,7 @@
     <ClCompile Include="ValueItem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Code.psrc" />
     <None Include="idea_lg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

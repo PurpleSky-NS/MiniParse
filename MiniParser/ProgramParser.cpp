@@ -8,11 +8,8 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 	StatementBase* statement;
 	while (std::getline(in, data))
 	{
-		if ((statement = Compile(data, cxt, line)) == nullptr)
-		{
-			delete cxt;
-			return nullptr;
-		}
+		if ((statement = Compile(data, cxt, line++)) == nullptr)
+			return cxt;
 		cxt->m_baseBlocks->Add(statement);
 	}
 	return cxt;
@@ -20,8 +17,9 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 
 StatementBase* ProgramParser::Compile(const std::string& data, Program* cxt, unsigned line)
 {
-	const std::regex arrayInitRegex("(.*)\\[(.*)\\] = \\[((? : .*, ) * (? : .*))\\]");
+	const std::regex arrayInitRegex("(.*)\\[(.*)\\]=\\[((?:.*,)*(?:.*))\\]");
 	const std::regex assignRegex("(.*)=(.*)");
+	const std::regex returnRegex("@(.*)");
 	std::smatch match;
 	StatementBase* statement = nullptr;
 
@@ -29,12 +27,19 @@ StatementBase* ProgramParser::Compile(const std::string& data, Program* cxt, uns
 		statement = new ArrayInitStatement;
 	else if (std::regex_match(data, match, assignRegex))
 		statement = new AssignStatement;
+	else if (std::regex_match(data, match, returnRegex))
+		statement = new ReturnStatement;
+	else
+	{
+		cxt->err_log.AddCompileError("无法识别的语句...", line);
+		return nullptr;
+	}
 
 	/*SetStatement方法内部调用了err_log，需要cxt和line*/
 	statement->SetContext(cxt);
 	statement->SetLine(line);
 
-	bool res;
+	bool res = false;
 	switch (statement->GetType())
 	{
 	case StatementBase::ArrayInitStatement:
@@ -42,6 +47,9 @@ StatementBase* ProgramParser::Compile(const std::string& data, Program* cxt, uns
 		break;
 	case StatementBase::AssignStatement:
 		res = ((AssignStatement*)statement)->SetStatement(match[1], match[2]);
+		break;
+	case StatementBase::ReturnStatement:
+		res = ((ReturnStatement*)statement)->SetStatement(match[1]);
 		break;
 	}
 	if (!res)

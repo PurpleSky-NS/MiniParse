@@ -2,8 +2,7 @@
 #include <fstream>
 #include <regex>
 #include "Various.h"
-#include "DynamicSizeArray.h"
-#include "FixedSizeArray.h"
+#include "Array.h"
 #include "VariousTable.h"
 #include "BinaryOperator.h"
 #include "UnaryOperator.h"
@@ -15,6 +14,8 @@
 #include "SuffixExpression.h"
 #include "Calculator.h"
 #include "CalculatorParser.h"
+#include "ProgramParser.h"
+#include "Program.h"
 using namespace std;
 
 ostream& operator<<(ostream& out, ItemBase* v);
@@ -146,7 +147,7 @@ ostream& operator<<(ostream& out, const Expression& v)
 	return out;
 }
 int main()
-{
+{/*
 	static const std::string assignPattern = "(.*)\\[(.*)\\]=\\[((?:.*,)*(?:.*))\\]";
 
 	string tst = "sd[ds]=[a,,,f,g,4]";
@@ -162,30 +163,24 @@ int main()
 		cout << sm.size() << endl;
 	}
 	else
-		cout << "FA" << endl;
+		cout << "FA" << endl;*/
 
-	/*std::string exp;
-	InfixExpression e("Func(2.2+sda[1+2+3]+Func(3.2+5!,Fun()),5+6)!-sd--ss");
-	InfixExpression ee(std::move(e));
-	cout << e << endl;
-	cout << ee << endl;*/
-	//e.ParseExpression("Func(1+23+6+asd)");
-	//SuffixExpression se(e);
-	//cout << se << endl;
-	//cout << Calculator::CheckExpression(se);
+		/*Calculator::CalculateResult res;
+		cout << Calculator::Calculate(SuffixExpression(InfixExpression("1+52+2.28*(2.35%2-2/5)+5!+cos(3.14)")), res) << endl;*/
 
-	/*switch (calc.Calculate(see))
+	ifstream in("Code.psrc");
+	Program* program = ProgramParser::Compile("Test", in);
+	if (!program->Execute({}))
 	{
-	case Calculator::Succeed:
-		cout << "结果是：" << calc.GetResult() << endl;
-		break;
-	case Calculator::MathError:
-		cout << "表达式错误！" << endl;
-		break;
-	case Calculator::ExpressionError:
-		cout << "数学错误！" << endl;
-		break;
-	}*/
+		cout << "Failed" << endl;
+		cout << program->err_log.ToString() << endl;
+	}
+	else
+	{
+		cout << "Succeed" << endl;
+		cout << program->GetResult() << endl;
+	}
+
 	cin.get();
 	cin.get();
 	return 0;

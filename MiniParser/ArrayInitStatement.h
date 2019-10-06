@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Statement.h"
+#include "Array.h"
 
 /*数组初始化语句*/
 class ArrayInitStatement :public Statement
@@ -32,19 +33,19 @@ public:
 
 private:
 
-	bool m_isFixed;
 	std::string m_varName;
 	SuffixExpression m_capacityExp;
 	std::vector<SuffixExpression> m_initExps;
 };
 bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::string& capacityStr, const std::string& initListStr)
 {
-	/*a[]=[1.2]
+	/*
+	a[]=[]
+	a[]=[1.2]
 	a[2]=[]
 	a[s+2]=[]
-	a[5]=[1.3,5,5,5]
-	a[?]=[1.5]
-	a[?]=[]*/
+	a[5]=[1.3,5,5,5]*/
+	Clear();
 	InfixExpression inf;
 	if (!(inf.ParseExpression(varStr)//转换成功
 		&& inf.GetExpression().size() == 1//数量为1
@@ -55,22 +56,17 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 		return false;
 	}
 	m_varName = varStr;
-	if (capacityStr.empty())//空的，说明是静态数组
-		m_isFixed = true;
-	else if (capacityStr == "?")//'?'，说明是动态数组
-		m_isFixed = false;
-	else //其余情况都是静态数组
+
+
+	if (!(!capacityStr.empty() && inf.ParseExpression(capacityStr) && m_capacityExp.ParseExpression(inf)))
 	{
-		m_isFixed = true;
-		if (!(inf.ParseExpression(capacityStr) && m_capacityExp.ParseExpression(inf)))
-		{
-			CompileError("[" + capacityStr + "]括号里的这堆容量表达式有问题，你再看看");
-			Clear();
-			return false;
-		}
+		CompileError("[" + capacityStr + "]括号里的这堆容量表达式有问题，你再看看");
+		Clear();
+		return false;
 	}
+
 	/*放初始化列表*/
-	for (size_t beg = 0, end = initListStr.find(',', 0); beg != initListStr.npos; beg = end + 1, end = initListStr.find(',', beg))
+	for (size_t beg = 0, end = initListStr.find(',', 0);; beg = end + 1, end = initListStr.find(',', beg))
 	{
 		std::string initExp = initListStr.substr(beg, (end == initListStr.npos ? initListStr.size() : end) - beg);
 		m_initExps.push_back(SuffixExpression());
@@ -79,10 +75,12 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 			CompileError("[" + initExp + "]初始化的参数表达式有问题...");
 			return false;
 		}
+		if (m_initExps.back().GetExpression().empty())//为空
+			m_initExps.pop_back();//删掉
+		if (end == initListStr.npos)
+			break;
 	}
 
-	if (m_isFixed && m_capacityExp.GetExpression().empty())//自动推断静态数组长度
-		m_capacityExp.AddItem(new ValueItem((double)m_initExps.size()));
 	return true;
 }
 
@@ -108,7 +106,36 @@ inline bool ArrayInitStatement::DynamicCheck()
 
 inline bool ArrayInitStatement::Execute()
 {
-	return false;
+	std::vector<double> initList;
+	double val;
+	initList.reserve(m_initExps.size());
+	/*转换参数列表*/
+	for (auto& i : m_initExps)
+		if (!CalculateExpression(i.GetExpression(), val))
+			return false;
+		else
+			initList.push_back(val);
+
+	unsigned capacity = 0;
+
+	if (!m_capacityExp.GetExpression().empty())//如果指定了容量
+		if (!CalculateToDigit(m_capacityExp.GetExpression(), capacity))
+			return false;
+
+	Array* arr = m_program->arr_pool.GetObject();
+
+	if (initList.empty())//用指定容量构造
+		arr->Replace(capacity);//如果没设置容量，默认为0，空数组
+	else if (capacity == 0)//如果容量为空，初始化列表不为空
+		arr->Replace(initList);
+	else //都不为空
+		arr->Replace(capacity, initList);
+
+	VariousBase* varBase = m_program->var_table.GetVarious(m_varName);
+	if (varBase != nullptr)
+		FreeVarious(varBase);
+	m_program->var_table.UpdateVarious(m_varName, arr);
+	return true;
 }
 
 inline void ArrayInitStatement::Clear()

@@ -22,6 +22,8 @@ public:
 
 	inline bool ExistVarious(const std::string& name);
 
+	inline void Clear();
+
 private:
 
 	std::unordered_map<std::string, VariousBase*> m_variousMap;
@@ -48,4 +50,9 @@ void VariousTable::RemoveVarious(const std::string& name)
 bool VariousTable::ExistVarious(const std::string& name)
 {
 	return m_variousMap.find(name) != m_variousMap.end();
+}
+
+inline void VariousTable::Clear()
+{
+	m_variousMap.clear();
 }

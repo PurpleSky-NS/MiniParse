@@ -25,6 +25,20 @@ protected:
 	/*动态检查，在程序中查找函数*/
 	inline bool DynamicCheck(FunctionIDF* func)const;
 
+	/*获取标识符所代表的数值*/
+	inline bool GetIDFValue(IdentificationItem* idf, double& val)const;
+	/*获取变量标识符所代表的数值*/
+	inline bool GetVarIDFValue(VariousIDF* idf, double& val)const;
+	/*获取函数标识符所代表的数值*/
+	inline bool GetFuncIDFValue(FunctionIDF* idf, double& val)const;
+
+	/*会打印错误信息并且可能会触发错误退出*/
+	inline bool CalculateExpression(const ExpressionType& exp, double& ret)const;
+	/*表达式计算出整数，如果计算错误或者不是整数会打印错误信息并触发错误退出*/
+	inline bool CalculateToDigit(const ExpressionType& exp, unsigned& ret)const;
+
+	/*释放变量*/
+	inline void FreeVarious(VariousBase* var)const;
 };
 inline void Statement::CompileError(const std::string& msg)const
 {
@@ -33,12 +47,13 @@ inline void Statement::CompileError(const std::string& msg)const
 
 inline void Statement::DynCompileError(const std::string& msg)const
 {
-	m_program->err_log.AddCompileError(msg, GetLine());
+	m_program->err_log.AddDynCompileError(msg, GetLine());
 }
 
 inline void Statement::RuntimeError(const std::string& msg)const
 {
-	m_program->err_log.AddCompileError(msg, GetLine());
+	m_program->err_log.AddRuntimeError(msg, GetLine());
+	m_program->OnErrorFinish();
 }
 
 bool Statement::CheckExpression(const SuffixExpression& expression)const
@@ -99,4 +114,89 @@ bool Statement::DynamicCheck(FunctionIDF* func)const
 				}
 			}
 	return true;
+}
+
+inline bool Statement::GetIDFValue(IdentificationItem* idf, double& val)const
+{
+	if (idf->GetIdentificationType() == IdentificationItem::VariousIDF)
+		return GetVarIDFValue((VariousIDF*)idf, val);
+	else
+		return GetFuncIDFValue((FunctionIDF*)idf, val);
+}
+
+inline bool Statement::GetVarIDFValue(VariousIDF* idf, double& val) const
+{
+	VariousBase* varBase = m_program->var_table.GetVarious(idf->GetName());
+	if (idf->IsArrayItem())
+	{
+		Array* arr = (Array*)varBase;
+		unsigned pos;
+		if (!CalculateToDigit(idf->ArrayPosExpression(), pos))
+			return false;
+		if (pos >= arr->Size())
+		{
+			RuntimeError("数组[" + idf->GetName() + "]下标越界了...[总大小:" + std::to_string(arr->Size()) + "][请求下标:" + std::to_string(pos) + "]");
+			return false;
+		}
+		val = (idf->NegSigned() ? -(*(Array*)varBase)[pos] : (*(Array*)varBase)[pos]);
+		return true;
+	}
+	if (varBase->GetType() == VariousBase::Array)
+	{
+		RuntimeError("[" + idf->GetName() + "]是个数组，并不是变量呀...给个下标如何...");
+		return false;
+	}
+	val = (idf->NegSigned() ? -((Various*)varBase)->GetValue() : ((Various*)varBase)->GetValue());
+	return true;
+}
+
+inline bool Statement::GetFuncIDFValue(FunctionIDF* idf, double& val) const
+{
+	val = 0;
+	return true;
+}
+
+inline bool Statement::CalculateExpression(const ExpressionType& exp, double& ret) const
+{
+	Calculator::CalculateResult res;
+	ret = Calculator::Calculate(exp, std::bind(&Statement::GetIDFValue, this, std::placeholders::_1, std::placeholders::_2), m_program->val_pool, res);
+	if (res == Calculator::Succeed)
+		return true;
+	else if (res == Calculator::ExpressionError)
+		RuntimeError("表达式计算错误...");
+	else if (res == Calculator::MathError)
+		RuntimeError("计算发生数学错误...");
+	else if (res == Calculator::IDFError)
+		RuntimeError("计算时遇到未知变量...");
+	else
+		RuntimeError("计算发生未知错误...");
+	return false;
+}
+
+inline bool Statement::CalculateToDigit(const ExpressionType& exp, unsigned& ret) const
+{
+	double val;
+	if (!CalculateExpression(exp, val))
+		return false;
+	if (!Calculator::IsDigit(val))
+	{
+		RuntimeError("计算结果非整数...");
+		return false;
+	}
+	ret = (unsigned)val;
+	return true;
+}
+
+inline void Statement::FreeVarious(VariousBase* var) const
+{
+	switch (var->GetType())
+	{
+	case VariousBase::Various:
+		m_program->var_pool.FreeObject((Various*)var);//回收
+		break;
+	case VariousBase::Array:
+		((Array*)var)->Clear();//先释放一些内存
+		m_program->arr_pool.FreeObject((Array*)var);//回收
+		break;
+	}
 }

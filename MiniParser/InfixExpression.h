@@ -179,9 +179,12 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 				return new ValueItem(ValueItem::VALUE_E);
 			if (exp[pos] == '[')//遇到'['则说明是数组元素
 			{
-				size_t fd = exp.find(']', ++pos);
-				if (pos == exp.npos)//没找到右括号
-					return nullptr;
+				size_t fd = ++pos;
+				for (unsigned brCount = 0; fd < exp.size() && !(exp[fd] == ']' && brCount == 0); ++fd)
+					if (exp[fd] == '[')
+						++brCount;
+					else if (exp[fd] == ']')
+						--brCount;
 				arrPosStr = exp.substr(pos, fd - pos);
 				pos = fd + 1;//跳过']'
 				isArrayItem = true;

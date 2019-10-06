@@ -13,12 +13,14 @@ public:
 	{
 		Succeed,
 		ExpressionError,
+		IDFError,
 		MathError
 	};
 
 	/*运算的表达式必须都是后缀表达式，否则计算不成功*/
-	static inline double Calculate(const ExpressionType& expression, std::function<double(IdentificationItem*)>GetVal, ObjectPool<NoFreeValueItem>& valuePool, CalculateResult& res);
-	static inline double Calculate(const ExpressionType& expression, std::function<double(IdentificationItem*)>GetVal, CalculateResult& res);
+	static inline double Calculate(const ExpressionType& expression, CalculateResult& res);
+	static inline double Calculate(const ExpressionType& expression, std::function<bool(IdentificationItem*, double&)>GetVal, CalculateResult& res);
+	static inline double Calculate(const ExpressionType& expression, std::function<bool(IdentificationItem*, double&)>GetVal, ObjectPool<NoFreeValueItem>& valuePool, CalculateResult& res);
 
 	/*对表达式模拟运算，只对表达式正确性做检查*/
 	static inline bool CheckExpression(const ExpressionType& expression);
@@ -41,16 +43,22 @@ private:
 	static inline bool IsZero(double value);
 
 };
-double Calculator::Calculate(const ExpressionType& expression, std::function<double(IdentificationItem*)>GetVal, CalculateResult& res)
+
+double Calculator::Calculate(const ExpressionType& expression, CalculateResult& res)
+{
+	return Calculate(expression, nullptr, res);
+}
+
+double Calculator::Calculate(const ExpressionType& expression, std::function<bool(IdentificationItem*, double&)>GetVal, CalculateResult& res)
 {
 	/*预留一半值对象*/
 	ObjectPool<NoFreeValueItem> valuePool((unsigned)expression.size() / 2, (unsigned)expression.size() / 4);
 	return Calculate(expression, GetVal, valuePool, res);
 }
 
-double Calculator::Calculate(const ExpressionType& expression, std::function<double(IdentificationItem*)>GetVal, ObjectPool<NoFreeValueItem>& valuePool, CalculateResult& res)
+double Calculator::Calculate(const ExpressionType& expression, std::function<bool(IdentificationItem*, double&)>GetVal, ObjectPool<NoFreeValueItem>& valuePool, CalculateResult& res)
 {
-	std::stack<ItemBase*> calcStack;//为计算栈预留空间
+	std::stack<ItemBase*> calcStack;//计算栈
 	res = Succeed;
 	for (auto& i : expression)
 	{
@@ -58,7 +66,7 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<dou
 		{
 		case ItemBase::Value:
 		{
-			ValueItem* cpValue = valuePool.GetRecordObject();
+			ValueItem* cpValue = valuePool.GetObject();
 			cpValue->Value() = ((ValueItem*)i)->Value();
 			calcStack.push(cpValue);
 		}
@@ -70,7 +78,7 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<dou
 				if (calcStack.size() < 2)//操作数不够
 				{
 					res = ExpressionError;
-					return 0;
+					break;
 				}
 				ItemBase* rightItem = calcStack.top();
 				calcStack.pop();
@@ -79,13 +87,13 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<dou
 				if (rightItem->GetType() != ItemBase::Value || leftItem->GetType() != ItemBase::Value)
 				{
 					res = ExpressionError;
-					return 0;
+					break;
 				}
 				NoFreeValueItem* leftValue = (NoFreeValueItem*)leftItem, * rightValue = (NoFreeValueItem*)rightItem;
 				/*左操作数还在栈里，不取出来了*/
 				leftValue->Value() = CalculateBinaryOperator(((BinaryOperator*)i)->GetBinaryOperatorType(), leftValue->Value(), rightValue->Value(), res);
 				if (res != Succeed)
-					return 0;
+					break;
 				valuePool.FreeObject(rightValue);
 			}
 			else
@@ -94,31 +102,62 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<dou
 				if (calcStack.empty())//操作数不够
 				{
 					res = ExpressionError;
-					return 0;
+					break;
 				}
 				ItemBase* item = calcStack.top();
 				if (item->GetType() != ItemBase::Value)
 				{
 					res = ExpressionError;
-					return 0;
+					break;
 				}
 				ValueItem* value = (ValueItem*)item;
 				value->Value() = CalculateUnaryOperator(((UnaryOperator*)i)->GetUnaryOperatorType(), value->Value(), res);
 				if (res != Succeed)
-					return 0;
+					break;
 			}
 			break;
 		case ItemBase::Identification:
 		{
-			NoFreeValueItem* value = valuePool.GetRecordObject();
-			value->Value() = GetVal((IdentificationItem*)i);
-			calcStack.push(value);
+			if (GetVal == nullptr)
+			{
+				res = IDFError;
+				break;
+			}
+			NoFreeValueItem* value = valuePool.GetObject();
+			if (GetVal((IdentificationItem*)i, value->Value()))
+				calcStack.push(value);
+			else
+			{
+				valuePool.FreeObject(value);
+				res = IDFError;
+				break;
+			}
 		}
 		break;
 		}
+		if (res != Succeed)
+			break;
 	}
+	if (res != Succeed)
+	{
+		/*释放对象池的对象*/
+		for (; !calcStack.empty(); calcStack.pop())
+			if (calcStack.top()->GetType() == ItemBase::Value)
+				valuePool.FreeObject((NoFreeValueItem*)calcStack.top());
+		return 0.0;
+	}
+
 	if (calcStack.size() == 1 && calcStack.top()->GetType() == ItemBase::Value)
-		return ((ValueItem*)calcStack.top())->Value();
+	{
+		double val = ((ValueItem*)calcStack.top())->Value();
+		/*释放对象池的对象*/
+		valuePool.FreeObject((NoFreeValueItem*)calcStack.top());
+		return val;
+	}
+	/*释放对象池的对象*/
+	for (; !calcStack.empty(); calcStack.pop())
+		if (calcStack.top()->GetType() == ItemBase::Value)
+			valuePool.FreeObject((NoFreeValueItem*)calcStack.top());
 	res = ExpressionError;
 	return 0;
 }

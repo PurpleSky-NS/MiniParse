@@ -15,6 +15,7 @@ public:
 	inline SuffixExpression() = default;
 	/*中缀表达式类构造*/
 	inline SuffixExpression(InfixExpression& expression);
+	inline SuffixExpression(InfixExpression&& expression);
 	SuffixExpression(const SuffixExpression&) = delete;
 	SuffixExpression(SuffixExpression&&) = default;
 	~SuffixExpression() = default;
@@ -22,8 +23,10 @@ public:
 	/*若失败，多半是因为括号不匹配*/
 	/*成功进行转化的中值表达式会被清空，否则会发生重复Free*/
 	inline bool ParseExpression(InfixExpression& expression);
+	inline bool ParseExpression(InfixExpression&& expression);
 	/*成功进行转化的中值表达式会被清空*/
 	inline bool ParseExpression(ExpressionType& expression);
+	inline bool ParseExpression(ExpressionType&& expression);
 
 private:
 
@@ -34,15 +37,30 @@ private:
 
 SuffixExpression::SuffixExpression(InfixExpression& expression)
 {
-	ParseExpression(expression);
+	ParseExpression(std::move(expression));
+}
+
+SuffixExpression::SuffixExpression(InfixExpression&& expression)
+{
+	ParseExpression(std::move(expression));
 }
 
 bool SuffixExpression::ParseExpression(InfixExpression& expression)
 {
-	return ParseExpression(expression.GetExpression());
+	return ParseExpression(std::move(expression.GetExpression()));
+}
+
+bool SuffixExpression::ParseExpression(InfixExpression&& expression)
+{
+	return ParseExpression(std::move(expression.GetExpression()));
 }
 
 bool SuffixExpression::ParseExpression(ExpressionType& expression)
+{
+	return ParseExpression(std::move(expression));
+}
+
+bool SuffixExpression::ParseExpression(ExpressionType&& expression)
 {
 	bool res = ParseExpression(expression, m_expression);
 	if (res)

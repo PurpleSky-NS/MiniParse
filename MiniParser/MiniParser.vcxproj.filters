@@ -60,12 +60,6 @@
     <ClInclude Include="StatementBlocks.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
-    <ClInclude Include="Array.h">
-      <Filter>头文件\Parser\Various\Array</Filter>
-    </ClInclude>
-    <ClInclude Include="FixedSizeArray.h">
-      <Filter>头文件\Parser\Various\Array</Filter>
-    </ClInclude>
     <ClInclude Include="Various.h">
       <Filter>头文件\Parser\Various\Various</Filter>
     </ClInclude>
@@ -89,9 +83,6 @@
     </ClInclude>
     <ClInclude Include="OperatorItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Operator</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicSizeArray.h">
-      <Filter>头文件\Parser\Various\Array</Filter>
     </ClInclude>
     <ClInclude Include="BracketItem.h">
       <Filter>头文件\Calculator\ExpressionItem\Bracket</Filter>
@@ -144,6 +135,12 @@
     <ClInclude Include="ProgramParser.h">
       <Filter>头文件\Parser\Program</Filter>
     </ClInclude>
+    <ClInclude Include="ReturnStatement.h">
+      <Filter>头文件\Parser\Statement</Filter>
+    </ClInclude>
+    <ClInclude Include="Array.h">
+      <Filter>头文件\Parser\Various\Array</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryOperator.cpp">
@@ -170,6 +167,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="idea_lg">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="Code.psrc">
       <Filter>资源文件</Filter>
     </None>
   </ItemGroup>

@@ -12,7 +12,8 @@ public:
 	{
 		Blocks,
 		ArrayInitStatement,
-		AssignStatement
+		AssignStatement,
+		ReturnStatement
 	};
 
 	inline void SetContext(Program* program);

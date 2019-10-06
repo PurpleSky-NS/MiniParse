@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <vector>
+#include <functional>
 #include "StatementBase.h"
 
 class StatementBlocks : public StatementBase
@@ -10,6 +11,8 @@ public:
 	inline ~StatementBlocks();
 
 	inline void Add(StatementBase* statement);
+
+	inline void SetFinishListener(std::function<bool()> onFinishListener);
 
 	inline void Clear();
 
@@ -27,6 +30,7 @@ public:
 
 private:
 	std::vector<StatementBase*> m_statementBlocks;
+	std::function<bool()> m_onFinishListener;
 };
 
 StatementBlocks::~StatementBlocks()
@@ -37,6 +41,14 @@ StatementBlocks::~StatementBlocks()
 void StatementBlocks::Add(StatementBase* statement)
 {
 	m_statementBlocks.push_back(statement);
+}
+
+inline void StatementBlocks::SetFinishListener(std::function<bool()> onFinishListener)
+{
+	m_onFinishListener = onFinishListener;
+	for (auto& i : m_statementBlocks)
+		if (i->GetType() == StatementType::Blocks)
+			((StatementBlocks*)i)->SetFinishListener(onFinishListener);
 }
 
 bool StatementBlocks::Check()
@@ -58,7 +70,9 @@ bool StatementBlocks::DynamicCheck()
 bool StatementBlocks::Execute()
 {
 	for (auto& i : m_statementBlocks)
-		if (!i->Execute())
+		if (m_onFinishListener())
+			return true;
+		else if (!i->Execute())
 			return false;
 	return true;
 }
