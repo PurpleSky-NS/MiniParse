@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include "ErrorLog.h"
@@ -37,6 +37,8 @@ public:
 	inline bool IsErrorExited()const;
 
 	inline double GetResult()const;
+	
+	inline bool IsValid()const;
 
 	/*异常退出*/
 	inline void OnErrorFinish();
@@ -57,6 +59,7 @@ private:
 	StatementBlocks* m_baseBlocks;
 	bool m_isFinished = false;
 	bool m_isErrorExit = false;
+	bool m_isValid = false;
 	double m_result = 0.0;
 
 	inline bool IsFinished()const;
@@ -101,6 +104,11 @@ inline bool Program::IsErrorExited() const
 inline double Program::GetResult() const
 {
 	return m_result;
+}
+
+inline bool Program::IsValid()const
+{
+	return m_isValid;
 }
 
 inline void Program::OnErrorFinish()
