@@ -58,7 +58,7 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 	m_varName = varStr;
 
 
-	if (!(!capacityStr.empty() && inf.ParseExpression(capacityStr) && m_capacityExp.ParseExpression(inf)))
+	if (!capacityStr.empty() && !(inf.ParseExpression(capacityStr) && m_capacityExp.ParseExpression(inf)))
 	{
 		CompileError("[" + capacityStr + "]括号里的这堆容量表达式有问题，你再看看");
 		Clear();
@@ -75,8 +75,6 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 			CompileError("[" + initExp + "]初始化的参数表达式有问题...");
 			return false;
 		}
-		if (m_initExps.back().GetExpression().empty())//为空
-			m_initExps.pop_back();//删掉
 		if (end == initListStr.npos)
 			break;
 	}
@@ -111,7 +109,9 @@ inline bool ArrayInitStatement::Execute()
 	initList.reserve(m_initExps.size());
 	/*转换参数列表*/
 	for (auto& i : m_initExps)
-		if (!CalculateExpression(i.GetExpression(), val))
+		if(i.GetExpression().empty())
+			initList.push_back(0);
+		else if (!CalculateExpression(i.GetExpression(), val))
 			return false;
 		else
 			initList.push_back(val);
