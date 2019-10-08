@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <regex>
 #include "Various.h"
@@ -170,6 +170,12 @@ int main()
 
 	ifstream in("Code.psrc");
 	Program* program = ProgramParser::Compile("Test", in);
+	if(!program->IsValid())
+	{
+		cout<<"Compile Failed"<<endl;
+		cout<<program->err_log.ToString()<<endl;
+		return -1;
+	}
 	if (!program->Execute({}))
 	{
 		cout << "Failed" << endl;
