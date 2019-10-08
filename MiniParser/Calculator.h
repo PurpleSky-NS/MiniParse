@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cmath>
 #include <functional>
@@ -60,6 +60,13 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<boo
 {
 	std::stack<ItemBase*> calcStack;//计算栈
 	res = Succeed;
+	if(expression.empty())
+	{
+		res=ExpressionError;
+		return 0;
+	}
+	else if(expression.size()==1&&expression[0]->GetType()==ItemBase::Value)
+		return ((ValueItem*)expression[0])->Value();
 	for (auto& i : expression)
 	{
 		switch (i->GetType())
