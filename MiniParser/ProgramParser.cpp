@@ -1,4 +1,4 @@
-﻿#include "ProgramParser.h"
+#include "ProgramParser.h"
 Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 {
 	std::string data;
@@ -12,6 +12,7 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 			return cxt;
 		cxt->m_baseBlocks->Add(statement);
 	}
+	cxt->m_isValid=true;
 	return cxt;
 }
 
