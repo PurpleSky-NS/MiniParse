@@ -40,9 +40,14 @@ bool ReturnStatement::SetStatement(const std::string& returnStr)
 	@a[2]+1
 	*/
 	InfixExpression inf;
-	if (!(inf.ParseExpression(returnStr) && m_returnExp.ParseExpression(inf)))//该元素是个变量
+	if (!(inf.ParseExpression(returnStr) && m_returnExp.ParseExpression(inf)))
 	{
 		CompileError("[" + returnStr + "]返回表达式有问题呀");
+		return false;
+	}
+	if (m_returnExp.GetExpression().empty())
+	{
+		CompileError("返回值表达式不能为空...");
 		return false;
 	}
 	return true;
@@ -60,7 +65,11 @@ inline bool ReturnStatement::DynamicCheck()
 
 inline bool ReturnStatement::Execute()
 {
-	return false;
+	double ret;
+	if (!CalculateExpression(m_returnExp.GetExpression(), ret))
+		return false;
+	m_program->OnFinish(ret);
+	return true;
 }
 
 inline void ReturnStatement::Clear()
@@ -70,7 +79,7 @@ inline void ReturnStatement::Clear()
 
 inline StatementBase::StatementType ReturnStatement::GetType() const
 {
-	return StatementType::ArrayInitStatement;
+	return StatementType::ReturnStatement;
 }
 
 inline void ReturnStatement::Save(std::ostream& out) const

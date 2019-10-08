@@ -12,7 +12,7 @@ public:
 	ArrayInitStatement() = default;
 	ArrayInitStatement(const ArrayInitStatement&) = delete;
 	ArrayInitStatement(ArrayInitStatement&&) = delete;
-	~ArrayInitStatement() = default;
+	~ArrayInitStatement();
 
 	inline bool SetStatement(const std::string& varStr, const std::string& capacityStr, const std::string& initListStr);
 
@@ -33,11 +33,15 @@ public:
 
 private:
 
+	SuffixExpression* m_capacityExp;
 	std::string m_varName;
-	SuffixExpression m_capacityExp;
-	std::vector<SuffixExpression> m_initExps;
+	std::vector<SuffixExpression*> m_initExps;
 };
-bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::string& capacityStr, const std::string& initListStr)
+inline ArrayInitStatement::~ArrayInitStatement()
+{
+	Clear();
+}
+inline bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::string& capacityStr, const std::string& initListStr)
 {
 	/*
 	a[]=[]
@@ -58,7 +62,7 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 	m_varName = varStr;
 
 
-	if (!capacityStr.empty() && !(inf.ParseExpression(capacityStr) && m_capacityExp.ParseExpression(inf)))
+	if (!capacityStr.empty() && !(inf.ParseExpression(capacityStr) && (m_capacityExp = new SuffixExpression)->ParseExpression(inf)))
 	{
 		CompileError("[" + capacityStr + "]括号里的这堆容量表达式有问题，你再看看");
 		Clear();
@@ -73,11 +77,17 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 	for (size_t beg = 0, end = initListStr.find(',', 0);; beg = end + 1, end = initListStr.find(',', beg))
 	{
 		std::string initExp = initListStr.substr(beg, (end == initListStr.npos ? initListStr.size() : end) - beg);
-		m_initExps.push_back(SuffixExpression());
-		if (!(inf.ParseExpression(initExp) && m_initExps.back().ParseExpression(inf)))
+		if (initExp.empty())
+			m_initExps.push_back(nullptr);
+		else
 		{
-			CompileError("[" + initExp + "]初始化的参数表达式有问题...");
-			return false;
+			m_initExps.push_back(new SuffixExpression);
+			if (!(inf.ParseExpression(initExp) && m_initExps.back()->ParseExpression(inf)))
+			{
+				CompileError("[" + initExp + "]初始化的参数表达式有问题...");
+				Clear();
+				return false;
+			}
 		}
 		if (end == initListStr.npos)
 			break;
@@ -88,20 +98,20 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 
 inline bool ArrayInitStatement::Check()
 {
-	if (!Calculator::CheckExpression(m_capacityExp.GetExpression()))
+	if (m_capacityExp != nullptr && !Calculator::CheckExpression(m_capacityExp->GetExpression()))
 		return false;
 	for (auto& i : m_initExps)
-		if (!Calculator::CheckExpression(i.GetExpression()))
+		if (i != nullptr && !Calculator::CheckExpression(i->GetExpression()))
 			return false;
 	return true;
 }
 
 inline bool ArrayInitStatement::DynamicCheck()
 {
-	if (!Statement::DynamicCheck(m_capacityExp.GetExpression()))
+	if (m_capacityExp != nullptr && !Statement::DynamicCheck(m_capacityExp->GetExpression()))
 		return false;
 	for (auto& i : m_initExps)
-		if (!Statement::DynamicCheck(i.GetExpression()))
+		if (i != nullptr && !Statement::DynamicCheck(i->GetExpression()))
 			return false;
 	return true;
 }
@@ -113,27 +123,29 @@ inline bool ArrayInitStatement::Execute()
 	initList.reserve(m_initExps.size());
 	/*转换参数列表*/
 	for (auto& i : m_initExps)
-		if (i.GetExpression().empty())
+		if (i == nullptr)
 			initList.push_back(0);
-		else if (!CalculateExpression(i.GetExpression(), val))
+		else if (!CalculateExpression(i->GetExpression(), val))
 			return false;
 		else
 			initList.push_back(val);
 
 	unsigned capacity = 0;
 
-	if (!m_capacityExp.GetExpression().empty())//如果指定了容量
-		if (!CalculateToDigit(m_capacityExp.GetExpression(), capacity))
-			return false;
+	if (m_capacityExp != nullptr && !CalculateToDigit(m_capacityExp->GetExpression(), capacity))//如果指定了容量
+	{
+		RuntimeError("容量表达式有问题...");
+		return false;
+	}
 
 	Array* arr = m_program->arr_pool.GetObject();
 
 	if (initList.empty())//用指定容量构造
 		arr->Replace(capacity);//如果没设置容量，默认为0，空数组
 	else if (capacity == 0)//如果容量为空，初始化列表不为空
-		arr->Replace(initList);
-	else //都不为空
-		arr->Replace(capacity, initList);
+		arr->Replace(std::move(initList));
+	else //都不为空，确保容量大于等于参数列表
+		arr->Replace((capacity < (unsigned)initList.size() ? (unsigned)initList.size() : capacity), std::move(initList));
 
 	VariousBase* varBase = m_program->var_table.GetVarious(m_varName);
 	if (varBase != nullptr)
@@ -145,9 +157,12 @@ inline bool ArrayInitStatement::Execute()
 inline void ArrayInitStatement::Clear()
 {
 	m_varName.clear();
-	m_capacityExp.Clear();
+	if (m_capacityExp != nullptr)
+		delete m_capacityExp;
+	m_capacityExp = nullptr;
 	for (auto& i : m_initExps)
-		i.Clear();
+		if (i != nullptr)
+			delete i;
 	m_initExps.clear();
 }
 

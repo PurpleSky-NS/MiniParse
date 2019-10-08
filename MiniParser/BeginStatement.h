@@ -10,7 +10,7 @@ public:
 	BeginStatement() = default;
 	BeginStatement(const BeginStatement&) = delete;
 	BeginStatement(BeginStatement&&) = delete;
-	~BeginStatement() = default;
+	~BeginStatement();
 
 	inline bool SetStatement(const std::string& argsStr);
 
@@ -19,6 +19,9 @@ public:
 
 	inline virtual bool DynamicCheck() override;
 
+	/*这个才是程序入口*/
+	inline bool Execute(const std::vector<double> args);
+	/*不执行任何操作直接返回true*/
 	inline virtual bool Execute() override;
 
 	inline virtual void Clear() override;
@@ -39,7 +42,11 @@ private:
 	std::vector<_ArgStruct> m_argsList;
 
 };
-bool BeginStatement::SetStatement(const std::string& argsStr)
+inline BeginStatement::~BeginStatement()
+{
+	Clear();
+}
+inline bool BeginStatement::SetStatement(const std::string& argsStr)
 {
 	/*
 	(a,b)
@@ -86,12 +93,20 @@ bool BeginStatement::SetStatement(const std::string& argsStr)
 
 inline bool BeginStatement::Check()
 {
+	for (auto& i : m_argsList)
+		if (i.capacity != nullptr && !CheckExpression(*i.capacity))
+			return false;
 	return true;
 }
 
 inline bool BeginStatement::DynamicCheck()
 {
 	return true;
+}
+
+inline bool BeginStatement::Execute(const std::vector<double> args)
+{
+	return false;
 }
 
 inline bool BeginStatement::Execute()
@@ -101,6 +116,10 @@ inline bool BeginStatement::Execute()
 
 inline void BeginStatement::Clear()
 {
+	for (auto& i : m_argsList)
+		if (i.capacity != nullptr)
+			delete i.capacity;
+	m_argsList.clear();
 }
 
 inline StatementBase::StatementType BeginStatement::GetType() const

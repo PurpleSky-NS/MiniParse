@@ -58,15 +58,29 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<boo
 
 double Calculator::Calculate(const ExpressionType& expression, std::function<bool(IdentificationItem*, double&)>GetVal, ObjectPool<NoFreeValueItem>& valuePool, CalculateResult& res)
 {
-	std::stack<ItemBase*> calcStack;//计算栈
 	res = Succeed;
-	if (expression.empty())
+	if (expression.empty())//空的算啥
 	{
 		res = ExpressionError;
 		return 0;
 	}
-	else if (expression.size() == 1 && expression[0]->GetType() == ItemBase::Value)
-		return ((ValueItem*)expression[0])->Value();
+	else if (expression.size() == 1)//只有一个还用算？
+	{
+		switch (expression[0]->GetType())
+		{
+		case ItemBase::Value:
+			return ((ValueItem*)expression[0])->Value();
+		case ItemBase::Identification:
+			double ret;
+			if (!GetVal((IdentificationItem*)expression[0], ret))
+				res = IDFError;
+			return ret;
+		default:
+			res = ExpressionError;
+			return 0;
+		}
+	}
+	std::stack<ItemBase*> calcStack;//计算栈
 	for (auto& i : expression)
 	{
 		switch (i->GetType())

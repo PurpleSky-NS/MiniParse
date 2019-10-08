@@ -9,9 +9,17 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 	while (std::getline(in, data))
 	{
 		if ((statement = Compile(data, cxt, line++)) == nullptr)
+		{
+			cxt->m_baseBlocks->Clear();
 			return cxt;
+		}
 		cxt->m_baseBlocks->Add(statement);
 	}
+	/*if (!cxt->m_baseBlocks->Check())
+	{
+		cxt->m_baseBlocks->Clear();
+		return cxt;
+	}*/
 	cxt->m_isValid = true;
 	return cxt;
 }

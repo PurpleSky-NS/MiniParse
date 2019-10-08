@@ -150,9 +150,6 @@ inline void Program::Begin()
 
 inline void Program::End()
 {
-	/*暂时以_ret作为返回值*/
-	if (!IsErrorExited())
-		m_result = ((Various*)var_table.GetVarious("_ret"))->GetValue();
 	val_pool.ClearObjects();
 	arr_pool.ClearObjects();
 	var_pool.ClearObjects();
