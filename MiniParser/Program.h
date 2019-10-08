@@ -89,6 +89,8 @@ inline const std::string& Program::GetName() const
 
 inline bool Program::Execute(std::vector<double> args)
 {
+	if(!IsValid())
+		return false;
 	Begin();
 	bool res = m_baseBlocks->Execute();
 	m_isErrorExit = !res;
