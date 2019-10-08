@@ -4,6 +4,7 @@
 #include "ArrayInitStatement.h"
 #include "AssignStatement.h"
 #include "ReturnStatement.h"
+#include "BeginStatement.h"
 
 class ProgramParser
 {

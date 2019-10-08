@@ -1,4 +1,4 @@
-#include "ProgramParser.h"
+﻿#include "ProgramParser.h"
 Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 {
 	std::string data;
@@ -12,13 +12,14 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 			return cxt;
 		cxt->m_baseBlocks->Add(statement);
 	}
-	cxt->m_isValid=true;
+	cxt->m_isValid = true;
 	return cxt;
 }
 
 StatementBase* ProgramParser::Compile(const std::string& data, Program* cxt, unsigned line)
 {
-	const std::regex arrayInitRegex("(.*)\\[(.*)\\]=\\[((?:.*,)*(?:.*))\\]");
+	const std::regex beginRegex("\\((.*)\\)");
+	const std::regex arrayInitRegex("(.*)\\[(.*)\\]=\\[(.*)\\]");
 	const std::regex assignRegex("(.*)=(.*)");
 	const std::regex returnRegex("@(.*)");
 	std::smatch match;
@@ -30,6 +31,8 @@ StatementBase* ProgramParser::Compile(const std::string& data, Program* cxt, uns
 		statement = new AssignStatement;
 	else if (std::regex_match(data, match, returnRegex))
 		statement = new ReturnStatement;
+	else if (std::regex_match(data, match, beginRegex))
+		statement = new BeginStatement;
 	else
 	{
 		cxt->err_log.AddCompileError("无法识别的语句...", line);
@@ -51,6 +54,9 @@ StatementBase* ProgramParser::Compile(const std::string& data, Program* cxt, uns
 		break;
 	case StatementBase::ReturnStatement:
 		res = ((ReturnStatement*)statement)->SetStatement(match[1]);
+		break;
+	case StatementBase::BeginStatement:
+		res = ((BeginStatement*)statement)->SetStatement(match[1]);
 		break;
 	}
 	if (!res)

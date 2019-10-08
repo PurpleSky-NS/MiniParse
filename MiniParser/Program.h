@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "ErrorLog.h"
@@ -37,7 +37,7 @@ public:
 	inline bool IsErrorExited()const;
 
 	inline double GetResult()const;
-	
+
 	inline bool IsValid()const;
 
 	/*异常退出*/
@@ -89,7 +89,7 @@ inline const std::string& Program::GetName() const
 
 inline bool Program::Execute(std::vector<double> args)
 {
-	if(!IsValid())
+	if (!IsValid())
 		return false;
 	Begin();
 	bool res = m_baseBlocks->Execute();

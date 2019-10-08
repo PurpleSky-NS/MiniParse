@@ -141,6 +141,9 @@
     <ClInclude Include="Array.h">
       <Filter>头文件\Parser\Various\Array</Filter>
     </ClInclude>
+    <ClInclude Include="BeginStatement.h">
+      <Filter>头文件\Parser\Statement</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BinaryOperator.cpp">

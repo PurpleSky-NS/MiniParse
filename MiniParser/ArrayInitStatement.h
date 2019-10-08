@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Statement.h"
 #include "Array.h"
@@ -65,6 +65,10 @@ bool ArrayInitStatement::SetStatement(const std::string& varStr, const std::stri
 		return false;
 	}
 
+	/*空列表就不做转换了*/
+	if (initListStr.empty())
+		return true;
+
 	/*放初始化列表*/
 	for (size_t beg = 0, end = initListStr.find(',', 0);; beg = end + 1, end = initListStr.find(',', beg))
 	{
@@ -109,7 +113,7 @@ inline bool ArrayInitStatement::Execute()
 	initList.reserve(m_initExps.size());
 	/*转换参数列表*/
 	for (auto& i : m_initExps)
-		if(i.GetExpression().empty())
+		if (i.GetExpression().empty())
 			initList.push_back(0);
 		else if (!CalculateExpression(i.GetExpression(), val))
 			return false;

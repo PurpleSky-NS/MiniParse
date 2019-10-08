@@ -11,6 +11,7 @@ public:
 	enum StatementType :char
 	{
 		Blocks,
+		BeginStatement,
 		ArrayInitStatement,
 		AssignStatement,
 		ReturnStatement

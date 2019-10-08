@@ -51,6 +51,7 @@ private:
 
 	template<class T>
 	static inline void Save(std::ostream& o, const T v);
+	static inline void Save(std::ostream& o, size_t v);
 	static inline void Save(std::ostream& o, ItemBase* v);
 	static inline void Save(std::ostream& o, const std::string& v);
 
@@ -153,6 +154,11 @@ void CalculatorParser::Save(std::ostream& out, const T v)
 {
 	out.write((char*)& v, sizeof(v));
 }
+void CalculatorParser::Save(std::ostream& out, size_t v)
+{
+	uint32_t size = (uint32_t)v;
+	out.write((const char*)& size, sizeof(size));
+}
 void CalculatorParser::Save(std::ostream& out, ItemBase* v)
 {
 	switch (v->GetType())
@@ -247,7 +253,7 @@ std::string CalculatorParser::LoadString(std::istream& in)
 
 size_t CalculatorParser::LoadSize(std::istream& in)
 {
-	size_t v;
+	uint32_t v;
 	in.read((char*)& v, sizeof(v));
 	return v;
 }

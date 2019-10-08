@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <regex>
 #include "Various.h"
@@ -147,15 +147,15 @@ ostream& operator<<(ostream& out, const Expression& v)
 	return out;
 }
 int main()
-{/*
-	static const std::string assignPattern = "(.*)\\[(.*)\\]=\\[((?:.*,)*(?:.*))\\]";
+{
+	/*static const std::string assignPattern = "\\((.*)\\)";
 
-	string tst = "sd[ds]=[a,,,f,g,4]";
+	string tst = "(a,,,f,g,4)";
 
 	std::regex r(assignPattern);
 
 	std::smatch sm;
-	if (std::regex_search(tst, sm, r))
+	if (std::regex_match(tst, sm, r))
 	{
 		cout << "SU" << endl;
 		for (int i = 0; i < sm.size(); ++i)
@@ -170,10 +170,10 @@ int main()
 
 	ifstream in("Code.psrc");
 	Program* program = ProgramParser::Compile("Test", in);
-	if(!program->IsValid())
+	if (!program->IsValid())
 	{
-		cout<<"Compile Failed"<<endl;
-		cout<<program->err_log.ToString()<<endl;
+		cout << "Compile Failed" << endl;
+		cout << program->err_log.ToString() << endl;
 		return -1;
 	}
 	if (!program->Execute({}))

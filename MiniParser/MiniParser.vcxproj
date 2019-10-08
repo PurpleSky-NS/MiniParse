@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="ArrayInitStatement.h" />
     <ClInclude Include="AssignStatement.h" />
+    <ClInclude Include="BeginStatement.h" />
     <ClInclude Include="BinaryOperator.h" />
     <ClInclude Include="BracketItem.h" />
     <ClInclude Include="Calculator.h" />
