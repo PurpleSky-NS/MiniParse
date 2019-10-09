@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include "ErrorLog.h"
@@ -6,6 +6,7 @@
 #include "VariousTable.h"
 #include "Various.h"
 #include "Array.h"
+#include "IBeginStatement.h"
 #include "StatementBlocks.h"
 
 class Program
@@ -32,7 +33,7 @@ public:
 
 	inline const std::string& GetName()const;
 
-	inline bool Execute(std::vector<double> args);
+	inline bool Execute(const std::vector<double> &args);
 
 	inline bool IsErrorExited()const;
 
@@ -56,7 +57,8 @@ private:
 	inline ~Program();
 
 	std::string m_name;
-	StatementBlocks* m_baseBlocks;
+	IBeginStatement* m_begin = nullptr;
+	StatementBlocks* m_baseBlocks = nullptr;
 	bool m_isFinished = false;
 	bool m_isErrorExit = false;
 	bool m_isValid = false;
@@ -87,11 +89,12 @@ inline const std::string& Program::GetName() const
 	return m_name;
 }
 
-inline bool Program::Execute(std::vector<double> args)
+inline bool Program::Execute(const std::vector<double> &args)
 {
 	if (!IsValid())
 		return false;
 	Begin();
+	m_begin->Execute(args);
 	bool res = m_baseBlocks->Execute();
 	m_isErrorExit = !res;
 	End();
@@ -132,7 +135,10 @@ inline bool Program::IsFinished() const
 
 inline void Program::Clear()
 {
-	delete m_baseBlocks;
+	if(m_begin!=nullptr)
+		delete m_begin;
+	if(m_baseBlocks!=nullptr)
+		delete m_baseBlocks;
 }
 
 inline void Program::Begin()
@@ -140,9 +146,9 @@ inline void Program::Begin()
 	m_isErrorExit = false;
 	m_isFinished = false;
 
-	val_pool.SetAllocationSize(4);
-	arr_pool.SetAllocationSize(4);
-	var_pool.SetAllocationSize(4);
+	val_pool.SetAllocationSize(16);
+	arr_pool.SetAllocationSize(8);
+	var_pool.SetAllocationSize(8);
 	val_pool.AllocObjects();
 	arr_pool.AllocObjects();
 	var_pool.AllocObjects();
