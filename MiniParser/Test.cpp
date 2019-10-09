@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <regex>
 #include "Various.h"
@@ -176,7 +176,7 @@ int main()
 		cout << program->err_log.ToString() << endl;
 		return -1;
 	}
-	if (!program->Execute({}))
+	if (!program->Execute({1,2,3}))
 	{
 		cout << "Failed" << endl;
 		cout << program->err_log.ToString() << endl;
