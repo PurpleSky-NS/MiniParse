@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <fstream>
 #include <regex>
 #include "Various.h"
@@ -168,25 +168,26 @@ int main()
 		/*Calculator::CalculateResult res;
 		cout << Calculator::Calculate(SuffixExpression(InfixExpression("1+52+2.28*(2.35%2-2/5)+5!+cos(3.14)")), res) << endl;*/
 
-	ifstream in("Code.psrc");
-	Program* program = ProgramParser::Compile("Test", in);
-	if (!program->IsValid())
 	{
-		cout << "Compile Failed" << endl;
-		cout << program->err_log.ToString() << endl;
-		return -1;
+		ifstream in("Code.psrc");
+		Program* program = ProgramParser::Compile("Test", in);
+		if (!program->IsValid())
+		{
+			cout << "Compile Failed" << endl;
+			cout << program->err_log.ToString() << endl;
+		}
+		if (!program->Execute({ 1,2,3 }))
+		{
+			cout << "Failed" << endl;
+			cout << program->err_log.ToString() << endl;
+		}
+		else
+		{
+			cout << "Succeed" << endl;
+			cout << program->GetResult() << endl;
+		}
+		program->Free();
 	}
-	if (!program->Execute({1,2,3}))
-	{
-		cout << "Failed" << endl;
-		cout << program->err_log.ToString() << endl;
-	}
-	else
-	{
-		cout << "Succeed" << endl;
-		cout << program->GetResult() << endl;
-	}
-
 	cin.get();
 	cin.get();
 	return 0;

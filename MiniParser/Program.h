@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "ErrorLog.h"
@@ -33,7 +33,7 @@ public:
 
 	inline const std::string& GetName()const;
 
-	inline bool Execute(const std::vector<double> &args);
+	inline bool Execute(const std::vector<double>& args);
 
 	inline bool IsErrorExited()const;
 
@@ -45,6 +45,9 @@ public:
 	inline void OnErrorFinish();
 
 	inline void OnFinish(double result);
+
+	/*当你用不到的时候，记得放他走*/
+	inline void Free();
 
 private:
 
@@ -89,7 +92,7 @@ inline const std::string& Program::GetName() const
 	return m_name;
 }
 
-inline bool Program::Execute(const std::vector<double> &args)
+inline bool Program::Execute(const std::vector<double>& args)
 {
 	if (!IsValid())
 		return false;
@@ -128,6 +131,11 @@ inline void Program::OnFinish(double result)
 	m_result = result;
 }
 
+inline void Program::Free()
+{
+	delete this;
+}
+
 inline bool Program::IsFinished() const
 {
 	return m_isFinished;
@@ -135,10 +143,12 @@ inline bool Program::IsFinished() const
 
 inline void Program::Clear()
 {
-	if(m_begin!=nullptr)
-		delete m_begin;
-	if(m_baseBlocks!=nullptr)
+	if (m_begin != nullptr)
+		delete dynamic_cast<StatementBase*>(m_begin);
+	if (m_baseBlocks != nullptr)
 		delete m_baseBlocks;
+	m_begin = nullptr;
+	m_baseBlocks = nullptr;
 }
 
 inline void Program::Begin()

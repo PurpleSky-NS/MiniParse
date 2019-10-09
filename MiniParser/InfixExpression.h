@@ -11,6 +11,8 @@
 #include "VariousIDF.h"
 #include "FunctionIDF.h"
 
+/*Warning：注意，在使用cctype系列库时要讲char强转为unsigned char，
+不然在非ascii环境下会引发isctype断言*/
 class InfixExpression : public Expression
 {
 public:
@@ -89,14 +91,14 @@ std::string InfixExpression::RemoveSpace(const std::string& exp) const
 	std::string newExp;
 	newExp.reserve(exp.size());
 	for (auto& i : exp)
-		if (!isspace(i))
+		if (!isspace((unsigned char)i))
 			newExp += i;
 	return newExp;
 }
 
 bool InfixExpression::IsNumber(char ch)
 {
-	return ch == '.' || isdigit(ch);
+	return ch == '.' || isdigit((unsigned char)ch);
 }
 
 bool InfixExpression::IsDivOperator(char ch)
@@ -157,7 +159,7 @@ ItemBase* InfixExpression::GetItem(const std::string& exp, size_t& pos)
 		return UnaryOperator::GetOperator(UnaryOperator::Factorial);
 	default:
 		std::string itemStr;
-		if (isdigit(exp[pos])) //数字开头有可能是数字或者标识符
+		if (isdigit((unsigned char)exp[pos])) //数字开头有可能是数字或者标识符
 			if (GetNumber(exp, pos, itemStr))//如果能取出来数字的话
 			{
 				if (hasSignedOp)//带符号位

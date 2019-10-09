@@ -93,6 +93,9 @@ void StatementBlocks::Load(std::istream& in)
 void StatementBlocks::Clear()
 {
 	for (auto& i : m_statementBlocks)
-		delete i;
+		if (i != nullptr)
+			delete i;
+		else
+			int a = 65;
 	m_statementBlocks.clear();
 }

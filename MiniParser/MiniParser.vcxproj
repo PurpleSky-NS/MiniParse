@@ -124,6 +124,7 @@
     <ClInclude Include="Array.h" />
     <ClInclude Include="Expression.h" />
     <ClInclude Include="FunctionIDF.h" />
+    <ClInclude Include="IBeginStatement.h" />
     <ClInclude Include="IdentificationItem.h" />
     <ClInclude Include="InfixExpression.h" />
     <ClInclude Include="ItemBase.h" />

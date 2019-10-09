@@ -101,6 +101,5 @@ void VariousIDF::Clear()
 
 void VariousIDF::Free()
 {
-	Clear();
 	delete this;
 }

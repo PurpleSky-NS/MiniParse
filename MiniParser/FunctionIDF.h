@@ -63,6 +63,5 @@ void FunctionIDF::Clear()
 
 void FunctionIDF::Free()
 {
-	Clear();
 	delete this;
 }

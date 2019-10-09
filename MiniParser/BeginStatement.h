@@ -1,10 +1,13 @@
-#pragma once
+﻿#pragma once
 
 #include "Statement.h"
 #include "IBeginStatement.h"
 
+/*Warning：注意，该类为多继承，所以在指针转换时要使用dynamic_cast不能强制转换
+这是一个C++的UB问题，和虚函数机制有关，所以一定要用内置转换
+另外delete的时候需要将之动态转换为Statement保证虚指针指向对象起始段*/
 /*获取输入参数的初始语句*/
-class BeginStatement :public Statement,public IBeginStatement
+class BeginStatement :public Statement, public IBeginStatement
 {
 public:
 
@@ -21,7 +24,7 @@ public:
 	inline virtual bool DynamicCheck() override;
 
 	/*这个才是程序入口*/
-	inline virtual bool Execute(const std::vector<double> &args) override;
+	inline virtual bool Execute(const std::vector<double>& args) override;
 	/*不执行任何操作直接返回true，可以不调用*/
 	inline virtual bool Execute() override;
 
@@ -105,50 +108,50 @@ inline bool BeginStatement::DynamicCheck()
 	return true;
 }
 
-inline bool BeginStatement::Execute(const std::vector<double> &args)
+inline bool BeginStatement::Execute(const std::vector<double>& args)
 {
-	unsigned argsPos=0;
-	for(auto &i:m_argsList)
+	unsigned argsPos = 0;
+	for (auto& i : m_argsList)
 	{
-		if(i.isArray)
+		if (i.isArray)
 		{
-			Array *arr;
-			if(i.capacity==nullptr)//var[]的情况
+			Array* arr;
+			if (i.capacity == nullptr)//var[]的情况
 			{
-				if(argsPos==args.size())
+				if (argsPos == args.size())
 				{
-					RuntimeError("可变参数数组["+i.argName+"]获取不到参数...");
+					RuntimeError("可变参数数组[" + i.argName + "]获取不到参数...");
 					return false;
 				}
-				arr=m_program->arr_pool.GetObject();
-				for(;argsPos!=args.size();++argsPos)
+				arr = m_program->arr_pool.GetObject();
+				for (; argsPos != args.size(); ++argsPos)
 					arr->Add(args[argsPos]);
-				m_program->var_table.UpdateVarious(i.argName,arr);
+				m_program->var_table.UpdateVarious(i.argName, arr);
 			}
 			else //var[cap]的情况
 			{
 				unsigned capacity;
-				if(!CalculateToDigit(*i.capacity,capacity))
+				if (!CalculateToDigit(*i.capacity, capacity))
 				{
-					RuntimeError("固定参数数组["+i.argName+"]获取不到足够的参数...");
+					RuntimeError("固定参数数组[" + i.argName + "]获取不到足够的参数...");
 					return false;
 				}
-				arr=m_program->arr_pool.GetObject();
-				for(;capacity!=0;++argsPos,--capacity)
+				arr = m_program->arr_pool.GetObject();
+				for (; capacity != 0; ++argsPos, --capacity)
 					arr->Add(args[argsPos]);
-				m_program->var_table.UpdateVarious(i.argName,arr);
+				m_program->var_table.UpdateVarious(i.argName, arr);
 			}
 		}
 		else
 		{
-			if(argsPos==args.size())
+			if (argsPos == args.size())
 			{
-				RuntimeError("参数变量["+i.argName+"]获取不到参数...");
+				RuntimeError("参数变量[" + i.argName + "]获取不到参数...");
 				return false;
 			}
-			Various *var=m_program->var_pool.GetObject();
-			var->GetValue()=args[argsPos++];
-			m_program->var_table.UpdateVarious(i.argName,var);
+			Various* var = m_program->var_pool.GetObject();
+			var->GetValue() = args[argsPos++];
+			m_program->var_table.UpdateVarious(i.argName, var);
 		}
 	}
 	return true;

@@ -10,6 +10,8 @@ public:
 		Array
 	};
 
+	virtual ~VariousBase() = default;
+
 	virtual VariousType GetType()const = 0;
 
 };

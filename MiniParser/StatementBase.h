@@ -17,6 +17,8 @@ public:
 		ReturnStatement
 	};
 
+	virtual ~StatementBase() = default;
+
 	inline void SetContext(Program* program);
 
 	inline void SetLine(unsigned line);

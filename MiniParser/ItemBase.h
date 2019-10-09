@@ -15,6 +15,8 @@ public:
 		Identification
 	};
 
+	virtual ~ItemBase() = default;
+
 	virtual ItemType GetType()const = 0;
 
 	/*该接口用于Expression管理内存*/
