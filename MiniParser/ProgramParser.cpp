@@ -1,4 +1,4 @@
-﻿#include "ProgramParser.h"
+#include "ProgramParser.h"
 Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 {
 	std::string data;
@@ -8,12 +8,30 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 	StatementBase* statement;
 	while (std::getline(in, data))
 	{
-		if ((statement = Compile(data, cxt, line++)) == nullptr)
+		if ((statement = Compile(data, cxt, line)) == nullptr)
 		{
-			cxt->m_baseBlocks->Clear();
+			cxt->Clear();
 			return cxt;
 		}
-		cxt->m_baseBlocks->Add(statement);
+		if(statement->GetType()==StatementBase::BeginStatement)
+		{
+			if(line!=1)
+			{
+				cxt->err_log.AddCompileError("参数获取语句必须放在第一行！",line);
+				cxt->Clear();
+				return cxt;
+			}
+			cxt->m_begin=(IBeginStatement*)statement;
+		}
+		else
+			cxt->m_baseBlocks->Add(statement);
+		++line;
+	}
+	if(cxt->m_begin==nullptr)
+	{
+		cxt->err_log.AddCompileError("没有参数获取语句，写一个放在第一行好不好",0);
+		cxt->Clear();
+		return cxt;
 	}
 	/*if (!cxt->m_baseBlocks->Check())
 	{
