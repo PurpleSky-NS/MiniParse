@@ -1,16 +1,17 @@
-﻿#pragma once
+#pragma once
 
 #include "Statement.h"
+#include "IBeginStatement.h"
 
 /*获取输入参数的初始语句*/
-class BeginStatement :public Statement
+class BeginStatement :public Statement,public IBeginStatement
 {
 public:
 
 	BeginStatement() = default;
 	BeginStatement(const BeginStatement&) = delete;
 	BeginStatement(BeginStatement&&) = delete;
-	~BeginStatement();
+	inline ~BeginStatement();
 
 	inline bool SetStatement(const std::string& argsStr);
 
@@ -20,8 +21,8 @@ public:
 	inline virtual bool DynamicCheck() override;
 
 	/*这个才是程序入口*/
-	inline bool Execute(const std::vector<double> args);
-	/*不执行任何操作直接返回true*/
+	inline virtual bool Execute(const std::vector<double> &args) override;
+	/*不执行任何操作直接返回true，可以不调用*/
 	inline virtual bool Execute() override;
 
 	inline virtual void Clear() override;
@@ -104,9 +105,53 @@ inline bool BeginStatement::DynamicCheck()
 	return true;
 }
 
-inline bool BeginStatement::Execute(const std::vector<double> args)
+inline bool BeginStatement::Execute(const std::vector<double> &args)
 {
-	return false;
+	unsigned argsPos=0;
+	for(auto &i:m_argsList)
+	{
+		if(i.isArray)
+		{
+			Array *arr;
+			if(i.capacity==nullptr)//var[]的情况
+			{
+				if(argsPos==args.size())
+				{
+					RuntimeError("可变参数数组["+i.argName+"]获取不到参数...");
+					return false;
+				}
+				arr=m_program->arr_pool.GetObject();
+				for(;argsPos!=args.size();++argsPos)
+					arr->Add(args[argsPos]);
+				m_program->var_table.UpdateVarious(i.argName,arr);
+			}
+			else //var[cap]的情况
+			{
+				unsigned capacity;
+				if(!CalculateToDigit(*i.capacity,capacity))
+				{
+					RuntimeError("固定参数数组["+i.argName+"]获取不到足够的参数...");
+					return false;
+				}
+				arr=m_program->arr_pool.GetObject();
+				for(;capacity!=0;++argsPos,--capacity)
+					arr->Add(args[argsPos]);
+				m_program->var_table.UpdateVarious(i.argName,arr);
+			}
+		}
+		else
+		{
+			if(argsPos==args.size())
+			{
+				RuntimeError("参数变量["+i.argName+"]获取不到参数...");
+				return false;
+			}
+			Various *var=m_program->var_pool.GetObject();
+			var->GetValue()=args[argsPos++];
+			m_program->var_table.UpdateVarious(i.argName,var);
+		}
+	}
+	return true;
 }
 
 inline bool BeginStatement::Execute()
