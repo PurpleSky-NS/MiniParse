@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <functional>
 #include "Statement.h"
@@ -7,7 +7,7 @@
 #include "CalculatorParser.h"
 
 /*基础的赋值语句*/
-const class AssignStatement :public Statement
+class AssignStatement :public Statement
 {
 public:
 
