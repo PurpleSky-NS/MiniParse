@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <cmath>
 #include <functional>
@@ -34,7 +34,9 @@ private:
 	Calculator(Calculator&&) = delete;
 	~Calculator() = delete;
 
+	static inline bool CheckIdentification(IdentificationItem* item);
 	static inline bool CheckFunction(FunctionIDF* item);
+	static inline bool CheckVarious(VariousIDF* item);
 
 	static inline double CalculateBinaryOperator(BinaryOperator::BinaryOperatorType type, double left, double right, CalculateResult& res);
 
@@ -185,6 +187,22 @@ double Calculator::Calculate(const ExpressionType& expression, std::function<boo
 
 bool Calculator::CheckExpression(const ExpressionType& expression)
 {
+	if (expression.empty())//空的算啥
+		return false;
+	else if (expression.size() == 1)//只有一个还用算？
+	{
+		switch (expression[0]->GetType())
+		{
+		case ItemBase::Value:
+			return true;
+		case ItemBase::Identification:
+			if(!CheckIdentification((IdentificationItem*)expression[0]))
+				return false;
+			return true;
+		default:
+			return false;
+		}
+	}
 	std::stack<ItemBase::ItemType> calcStack;
 	for (auto& i : expression)
 	{
@@ -194,6 +212,8 @@ bool Calculator::CheckExpression(const ExpressionType& expression)
 			/*如果是函数，检查成功后当成普通数值处理*/
 			if (((IdentificationItem*)i)->GetIdentificationType() == IdentificationItem::FunctionIDF)
 				if (!CheckFunction((FunctionIDF*)i))
+					return false;
+			else if (!CheckExpression(((VariousIDF*)i)->ArrayPosExpression()))
 					return false;
 		case ItemBase::Value:
 			calcStack.push(ItemBase::Value);
@@ -234,11 +254,25 @@ bool Calculator::IsDigit(double v)
 	return v - (int)v == 0.0;
 }
 
+bool Calculator::CheckIdentification(IdentificationItem* item)
+{
+	if(item->GetIdentificationType()==IdentificationItem::VariousIDF)
+		return CheckVarious((VariousIDF*)item);
+	return CheckFunction((FunctionIDF*)item);
+}
+
 bool Calculator::CheckFunction(FunctionIDF* item)
 {
 	for (auto& i : item->Params())
 		if (!CheckExpression(i))
 			return false;
+	return true;
+}
+
+bool Calculator::CheckVarious(VariousIDF* item)
+{
+	if (item->IsArrayItem()&&!CheckExpression(item->ArrayPosExpression()))
+		return false;
 	return true;
 }
 
