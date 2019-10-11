@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Program.h"
 #include "Array.h"
@@ -39,6 +39,7 @@ protected:
 
 	/*释放变量*/
 	inline void FreeVarious(VariousBase* var)const;
+	
 };
 inline void Statement::CompileError(const std::string& msg)const
 {
