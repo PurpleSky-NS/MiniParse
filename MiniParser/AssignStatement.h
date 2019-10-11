@@ -69,9 +69,9 @@ bool AssignStatement::SetStatement(const std::string& leftStr, const std::string
 
 bool AssignStatement::Check()
 {
-	if (m_leftVar.IsArrayItem() && !Calculator::CheckExpression(m_leftVar.ArrayPosExpression()))
+	if (m_leftVar.IsArrayItem() && !CheckExpression(m_leftVar.ArrayPosExpression()))
 		return false;
-	return Calculator::CheckExpression(m_rightExpression);
+	return CheckExpression(m_rightExpression);
 }
 
 bool AssignStatement::DynamicCheck()

@@ -55,7 +55,7 @@ bool ReturnStatement::SetStatement(const std::string& returnStr)
 
 inline bool ReturnStatement::Check()
 {
-	return Calculator::CheckExpression(m_returnExp.GetExpression());
+	return CheckExpression(m_returnExp);
 }
 
 inline bool ReturnStatement::DynamicCheck()

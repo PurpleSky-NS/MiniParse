@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <cmath>
 #include <functional>
@@ -196,7 +196,7 @@ bool Calculator::CheckExpression(const ExpressionType& expression)
 		case ItemBase::Value:
 			return true;
 		case ItemBase::Identification:
-			if(!CheckIdentification((IdentificationItem*)expression[0]))
+			if (!CheckIdentification((IdentificationItem*)expression[0]))
 				return false;
 			return true;
 		default:
@@ -210,11 +210,8 @@ bool Calculator::CheckExpression(const ExpressionType& expression)
 		{
 		case ItemBase::Identification:
 			/*如果是函数，检查成功后当成普通数值处理*/
-			if (((IdentificationItem*)i)->GetIdentificationType() == IdentificationItem::FunctionIDF)
-				if (!CheckFunction((FunctionIDF*)i))
-					return false;
-			else if (!CheckExpression(((VariousIDF*)i)->ArrayPosExpression()))
-					return false;
+			if (!CheckIdentification((IdentificationItem*)i))
+				return false;
 		case ItemBase::Value:
 			calcStack.push(ItemBase::Value);
 			break;
@@ -256,7 +253,7 @@ bool Calculator::IsDigit(double v)
 
 bool Calculator::CheckIdentification(IdentificationItem* item)
 {
-	if(item->GetIdentificationType()==IdentificationItem::VariousIDF)
+	if (item->GetIdentificationType() == IdentificationItem::VariousIDF)
 		return CheckVarious((VariousIDF*)item);
 	return CheckFunction((FunctionIDF*)item);
 }
@@ -271,7 +268,7 @@ bool Calculator::CheckFunction(FunctionIDF* item)
 
 bool Calculator::CheckVarious(VariousIDF* item)
 {
-	if (item->IsArrayItem()&&!CheckExpression(item->ArrayPosExpression()))
+	if (item->IsArrayItem() && !CheckExpression(item->ArrayPosExpression()))
 		return false;
 	return true;
 }

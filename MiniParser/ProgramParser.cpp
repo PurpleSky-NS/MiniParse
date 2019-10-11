@@ -13,6 +13,11 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 			cxt->Clear();
 			return cxt;
 		}
+		if (!statement->Check())
+		{
+			cxt->Clear();
+			return cxt;
+		}
 		if (statement->GetType() == StatementBase::BeginStatement)
 		{
 			if (line != 1)

@@ -175,6 +175,9 @@ int main()
 		{
 			cout << "Compile Failed" << endl;
 			cout << program->err_log.ToString() << endl;
+			cin.get();
+			cin.get();
+			return 0;
 		}
 		if (!program->Execute({ 1,2,3 }))
 		{

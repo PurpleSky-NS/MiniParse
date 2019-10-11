@@ -98,10 +98,10 @@ inline bool ArrayInitStatement::SetStatement(const std::string& varStr, const st
 
 inline bool ArrayInitStatement::Check()
 {
-	if (m_capacityExp != nullptr && !Calculator::CheckExpression(m_capacityExp->GetExpression()))
+	if (m_capacityExp != nullptr && !CheckExpression(*m_capacityExp))
 		return false;
 	for (auto& i : m_initExps)
-		if (i != nullptr && !Calculator::CheckExpression(i->GetExpression()))
+		if (i != nullptr && !CheckExpression(*i))
 			return false;
 	return true;
 }

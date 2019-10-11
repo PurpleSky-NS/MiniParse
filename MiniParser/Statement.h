@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Program.h"
 #include "Array.h"
@@ -14,7 +14,7 @@ protected:
 	inline void RuntimeError(const std::string& msg)const;
 
 	/*静态检查*/
-	inline bool CheckExpression(const SuffixExpression& expression)const;
+	inline bool CheckExpression(const ExpressionType& expression)const;
 
 	/*动态检查，在程序中查找标识符*/
 	inline bool DynamicCheck(const ExpressionType& exp)const;
@@ -39,7 +39,7 @@ protected:
 
 	/*释放变量*/
 	inline void FreeVarious(VariousBase* var)const;
-	
+
 };
 inline void Statement::CompileError(const std::string& msg)const
 {
@@ -57,11 +57,11 @@ inline void Statement::RuntimeError(const std::string& msg)const
 	m_program->OnErrorFinish();
 }
 
-bool Statement::CheckExpression(const SuffixExpression& expression)const
+bool Statement::CheckExpression(const ExpressionType& expression)const
 {
 	if (!Calculator::CheckExpression(expression))
 	{
-		CompileError("表达式都能写错，唉~");
+		CompileError("你这个表达式写的有问题呀~");
 		return false;
 	}
 	return true;
