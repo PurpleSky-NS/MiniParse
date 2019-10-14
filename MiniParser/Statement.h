@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Program.h"
 #include "Array.h"
@@ -133,7 +133,10 @@ inline bool Statement::GetVarIDFValue(VariousIDF* idf, double& val) const
 		Array* arr = (Array*)varBase;
 		unsigned pos;
 		if (!CalculateToDigit(idf->ArrayPosExpression(), pos))
+		{
+			RuntimeError("数组["+idf->GetName()+"]下标请求非整数呀");
 			return false;
+		}
 		if (pos >= arr->Size())
 		{
 			RuntimeError("数组[" + idf->GetName() + "]下标越界了...[总大小:" + std::to_string(arr->Size()) + "][请求下标:" + std::to_string(pos) + "]");
