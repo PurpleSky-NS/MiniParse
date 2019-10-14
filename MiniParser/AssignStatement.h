@@ -102,7 +102,7 @@ bool AssignStatement::Execute()
 		}
 		Array* arr = (Array*)varBase;
 		unsigned pos;
-		if (!CalculateToDigit(m_leftVar.ArrayPosExpression(), pos))
+		if (!CalculateToUnsigned(m_leftVar.ArrayPosExpression(), pos))
 			return false;
 		if (pos >= arr->Size())
 		{

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Program.h"
 #include "Array.h"
@@ -34,8 +34,8 @@ protected:
 
 	/*会打印错误信息并且可能会触发错误退出*/
 	inline bool CalculateExpression(const ExpressionType& exp, double& ret)const;
-	/*表达式计算出整数，如果计算错误或者不是整数会打印错误信息并触发错误退出*/
-	inline bool CalculateToDigit(const ExpressionType& exp, unsigned& ret)const;
+	/*表达式计算出整数，如果计算错误或者不是无符号整数会打印错误信息并触发错误退出*/
+	inline bool CalculateToUnsigned(const ExpressionType& exp, unsigned& ret)const;
 
 	/*释放变量*/
 	inline void FreeVarious(VariousBase* var)const;
@@ -132,9 +132,9 @@ inline bool Statement::GetVarIDFValue(VariousIDF* idf, double& val) const
 	{
 		Array* arr = (Array*)varBase;
 		unsigned pos;
-		if (!CalculateToDigit(idf->ArrayPosExpression(), pos))
+		if (!CalculateToUnsigned(idf->ArrayPosExpression(), pos))
 		{
-			RuntimeError("数组["+idf->GetName()+"]下标请求非整数呀");
+			RuntimeError("数组[" + idf->GetName() + "]下标不是正整数或0呀");
 			return false;
 		}
 		if (pos >= arr->Size())
@@ -177,7 +177,7 @@ inline bool Statement::CalculateExpression(const ExpressionType& exp, double& re
 	return false;
 }
 
-inline bool Statement::CalculateToDigit(const ExpressionType& exp, unsigned& ret) const
+inline bool Statement::CalculateToUnsigned(const ExpressionType& exp, unsigned& ret) const
 {
 	double val;
 	if (!CalculateExpression(exp, val))
@@ -185,6 +185,11 @@ inline bool Statement::CalculateToDigit(const ExpressionType& exp, unsigned& ret
 	if (!Calculator::IsDigit(val))
 	{
 		RuntimeError("计算结果非整数...");
+		return false;
+	}
+	if (val < 0)
+	{
+		RuntimeError("计算结果是负数...");
 		return false;
 	}
 	ret = (unsigned)val;

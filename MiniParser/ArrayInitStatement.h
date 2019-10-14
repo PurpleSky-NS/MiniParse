@@ -132,7 +132,7 @@ inline bool ArrayInitStatement::Execute()
 
 	unsigned capacity = 0;
 
-	if (m_capacityExp != nullptr && !CalculateToDigit(m_capacityExp->GetExpression(), capacity))//如果指定了容量
+	if (m_capacityExp != nullptr && !CalculateToUnsigned(m_capacityExp->GetExpression(), capacity))//如果指定了容量
 	{
 		RuntimeError("容量表达式有问题...");
 		return false;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <vector>
 #include "ErrorLog.h"
@@ -97,9 +97,9 @@ inline bool Program::Execute(const std::vector<double>& args)
 	if (!IsValid())
 		return false;
 	Begin();
-	if(!m_begin->Execute(args))
+	if (!m_begin->Execute(args))
 	{
-		m_isErrorExit=true;
+		m_isErrorExit = true;
 		return false;
 	}
 	bool res = m_baseBlocks->Execute();

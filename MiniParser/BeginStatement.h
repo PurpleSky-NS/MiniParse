@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Statement.h"
 #include "IBeginStatement.h"
@@ -80,9 +80,9 @@ inline bool BeginStatement::SetStatement(const std::string& argsStr)
 			m_argsList.push_back({ false,nullptr,argStr });
 		else
 		{
-			std::string capacityStr=argStr.substr(bgBr + 1, edBr - bgBr - 1);
-			SuffixExpression *suf=(capacityStr.empty()?nullptr:new SuffixExpression);
-			if (suf!=nullptr && !(inf.ParseExpression(capacityStr) && suf->ParseExpression(inf)))
+			std::string capacityStr = argStr.substr(bgBr + 1, edBr - bgBr - 1);
+			SuffixExpression* suf = (capacityStr.empty() ? nullptr : new SuffixExpression);
+			if (suf != nullptr && !(inf.ParseExpression(capacityStr) && suf->ParseExpression(inf)))
 			{
 				delete suf;
 				CompileError("参数数组[" + argStr + "]容量的表达式写错了吧...");
@@ -132,7 +132,7 @@ inline bool BeginStatement::Execute(const std::vector<double>& args)
 			else //var[cap]的情况
 			{
 				unsigned capacity;
-				if (!CalculateToDigit(*i.capacity, capacity))
+				if (!CalculateToUnsigned(*i.capacity, capacity))
 				{
 					RuntimeError("固定参数数组[" + i.argName + "]获取不到足够的参数...");
 					return false;
