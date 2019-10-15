@@ -18,10 +18,7 @@ public:
 
 	inline bool SetStatement(const std::string& argsStr);
 
-	/*静态检查语句错误*/
 	inline virtual bool Check() override;
-
-	inline virtual bool DynamicCheck() override;
 
 	/*这个才是程序入口*/
 	inline virtual bool Execute(const std::vector<double>& args) override;
@@ -99,13 +96,11 @@ inline bool BeginStatement::SetStatement(const std::string& argsStr)
 inline bool BeginStatement::Check()
 {
 	for (auto& i : m_argsList)
-		if (i.capacity != nullptr && !CheckExpression(*i.capacity))
+	{
+		if (i.capacity != nullptr && !Statement::Check(*i.capacity))
 			return false;
-	return true;
-}
-
-inline bool BeginStatement::DynamicCheck()
-{
+		m_program->var_table.UpdateVarious(i.argName, nullptr);
+	}
 	return true;
 }
 

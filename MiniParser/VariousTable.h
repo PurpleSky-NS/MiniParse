@@ -15,7 +15,7 @@ public:
 
 	inline void UpdateVarious(const std::string& name, VariousBase* various);
 
-	/*没找到返回nullptr*/
+	/*不检查是否存在，没有的话就是OOR异常*/
 	inline VariousBase* GetVarious(const std::string& name)const;
 
 	inline void RemoveVarious(const std::string& name);
@@ -31,15 +31,12 @@ private:
 };
 void VariousTable::UpdateVarious(const std::string& name, VariousBase* various)
 {
-	m_variousMap.insert({ name, various });
+	m_variousMap[name] = various;
 }
 
 VariousBase* VariousTable::GetVarious(const std::string& name) const
 {
-	auto fd = m_variousMap.find(name);
-	if (fd == m_variousMap.end())
-		return nullptr;
-	return fd->second;
+	return m_variousMap.at(name);
 }
 
 void VariousTable::RemoveVarious(const std::string& name)

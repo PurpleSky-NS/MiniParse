@@ -18,10 +18,7 @@ public:
 
 	inline bool SetStatement(const std::string& leftStr, const std::string& rightStr);
 
-	/*静态检查语句错误*/
 	inline virtual bool Check() override;
-
-	inline virtual bool DynamicCheck() override;
 
 	inline virtual bool Execute() override;
 
@@ -69,16 +66,10 @@ bool AssignStatement::SetStatement(const std::string& leftStr, const std::string
 
 bool AssignStatement::Check()
 {
-	if (m_leftVar.IsArrayItem() && !CheckExpression(m_leftVar.ArrayPosExpression()))
+	if (m_leftVar.IsArrayItem() && !Statement::Check(m_leftVar.ArrayPosExpression()) || Statement::Check(m_rightExpression))
 		return false;
-	return CheckExpression(m_rightExpression);
-}
-
-bool AssignStatement::DynamicCheck()
-{
-	if (m_leftVar.IsArrayItem() && !Statement::DynamicCheck(m_leftVar.ArrayPosExpression()))
-		return false;
-	return Statement::DynamicCheck(m_rightExpression.GetExpression());
+	m_program->var_table.UpdateVarious(m_leftVar.GetName(), nullptr);
+	return true;
 }
 
 bool AssignStatement::Execute()

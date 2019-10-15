@@ -8,12 +8,7 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 	StatementBase* statement;
 	while (std::getline(in, data))
 	{
-		if ((statement = Compile(data, cxt, line)) == nullptr)
-		{
-			cxt->Clear();
-			return cxt;
-		}
-		if (!statement->Check())
+		if (!((statement = Compile(data, cxt, line)) != nullptr && statement->Check()))
 		{
 			cxt->Clear();
 			return cxt;
@@ -38,11 +33,6 @@ Program* ProgramParser::Compile(const std::string& name, std::istream& in)
 		cxt->Clear();
 		return cxt;
 	}
-	/*if (!cxt->m_baseBlocks->Check())
-	{
-		cxt->m_baseBlocks->Clear();
-		return cxt;
-	}*/
 	cxt->m_isValid = true;
 	return cxt;
 }

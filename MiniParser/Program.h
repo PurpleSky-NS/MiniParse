@@ -153,6 +153,10 @@ inline void Program::Clear()
 		delete m_baseBlocks;
 	m_begin = nullptr;
 	m_baseBlocks = nullptr;
+	var_pool.ClearObjects();
+	val_pool.ClearObjects();
+	arr_pool.ClearObjects();
+	var_table.Clear();
 }
 
 inline void Program::Begin()

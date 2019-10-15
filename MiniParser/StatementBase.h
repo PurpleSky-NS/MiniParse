@@ -26,10 +26,8 @@ public:
 
 	inline unsigned GetLine()const;
 
+	/*编译检查，查表达式，查变量（动态）*/
 	virtual bool Check() = 0;
-
-	/*动态检查(假运行)，主要检查变量的作用域以及调用函数是否存在*/
-	virtual bool DynamicCheck() = 0;
 
 	virtual bool Execute() = 0;
 

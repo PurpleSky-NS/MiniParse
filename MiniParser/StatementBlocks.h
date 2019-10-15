@@ -18,8 +18,6 @@ public:
 
 	inline virtual bool Check() override;
 
-	inline virtual bool DynamicCheck() override;
-
 	inline virtual bool Execute() override;
 
 	inline virtual StatementType GetType() const override;
@@ -55,14 +53,6 @@ bool StatementBlocks::Check()
 {
 	for (auto& i : m_statementBlocks)
 		if (!i->Check())
-			return false;
-	return true;
-}
-
-bool StatementBlocks::DynamicCheck()
-{
-	for (auto& i : m_statementBlocks)
-		if (!i->DynamicCheck())
 			return false;
 	return true;
 }

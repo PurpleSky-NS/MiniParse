@@ -16,10 +16,7 @@ public:
 
 	inline bool SetStatement(const std::string& varStr, const std::string& capacityStr, const std::string& initListStr);
 
-	/*静态检查语句错误*/
 	inline virtual bool Check() override;
-
-	inline virtual bool DynamicCheck() override;
 
 	inline virtual bool Execute() override;
 
@@ -98,21 +95,12 @@ inline bool ArrayInitStatement::SetStatement(const std::string& varStr, const st
 
 inline bool ArrayInitStatement::Check()
 {
-	if (m_capacityExp != nullptr && !CheckExpression(*m_capacityExp))
+	if (m_capacityExp != nullptr && !Statement::Check(*m_capacityExp))
 		return false;
 	for (auto& i : m_initExps)
-		if (i != nullptr && !CheckExpression(*i))
+		if (i != nullptr && !Statement::Check(*i))
 			return false;
-	return true;
-}
-
-inline bool ArrayInitStatement::DynamicCheck()
-{
-	if (m_capacityExp != nullptr && !Statement::DynamicCheck(m_capacityExp->GetExpression()))
-		return false;
-	for (auto& i : m_initExps)
-		if (i != nullptr && !Statement::DynamicCheck(i->GetExpression()))
-			return false;
+	m_program->var_table.UpdateVarious(m_varName, nullptr);
 	return true;
 }
 

@@ -15,10 +15,7 @@ public:
 
 	inline bool SetStatement(const std::string& returnStr);
 
-	/*静态检查语句错误*/
 	inline virtual bool Check() override;
-
-	inline virtual bool DynamicCheck() override;
 
 	inline virtual bool Execute() override;
 
@@ -55,12 +52,7 @@ bool ReturnStatement::SetStatement(const std::string& returnStr)
 
 inline bool ReturnStatement::Check()
 {
-	return CheckExpression(m_returnExp);
-}
-
-inline bool ReturnStatement::DynamicCheck()
-{
-	return Statement::DynamicCheck(m_returnExp.GetExpression());
+	return Statement::Check(m_returnExp.GetExpression());
 }
 
 inline bool ReturnStatement::Execute()
