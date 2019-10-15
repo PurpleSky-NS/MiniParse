@@ -14,7 +14,8 @@ public:
 		BeginStatement,
 		ArrayInitStatement,
 		AssignStatement,
-		ReturnStatement
+		ReturnStatement,
+		ConditionStatement
 	};
 
 	virtual ~StatementBase() = default;

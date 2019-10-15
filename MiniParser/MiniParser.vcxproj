@@ -122,6 +122,7 @@
     <ClInclude Include="BracketItem.h" />
     <ClInclude Include="Calculator.h" />
     <ClInclude Include="Array.h" />
+    <ClInclude Include="ConditionBase.h" />
     <ClInclude Include="Expression.h" />
     <ClInclude Include="FunctionIDF.h" />
     <ClInclude Include="IBeginStatement.h" />
@@ -129,6 +130,7 @@
     <ClInclude Include="InfixExpression.h" />
     <ClInclude Include="ItemBase.h" />
     <ClInclude Include="CalculatorParser.h" />
+    <ClInclude Include="ConditionStatement.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OperatorItem.h" />
     <ClInclude Include="ErrorLog.h" />

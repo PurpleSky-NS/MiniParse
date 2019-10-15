@@ -2,7 +2,7 @@
 
 #include "Statement.h"
 
-/*数组初始化语句*/
+/*返回语句*/
 class ReturnStatement :public Statement
 {
 

@@ -55,6 +55,12 @@
     <Filter Include="头文件\Parser\Program">
       <UniqueIdentifier>{ba5cc075-7e90-482a-9d35-01b0822cbc9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Parser\Statement\ImplStatement">
+      <UniqueIdentifier>{dc34e00b-12cd-4e03-abe7-3cba71eb69ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Parser\Statement\Interface">
+      <UniqueIdentifier>{11789adf-4185-4d9c-b9b1-891a8837d22b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StatementBlocks.h">
@@ -68,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="VariousBase.h">
       <Filter>头文件\Parser\Various</Filter>
-    </ClInclude>
-    <ClInclude Include="AssignStatement.h">
-      <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
     <ClInclude Include="InfixExpression.h">
       <Filter>头文件\Calculator\Expression</Filter>
@@ -129,22 +132,31 @@
     <ClInclude Include="Statement.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
-    <ClInclude Include="ArrayInitStatement.h">
-      <Filter>头文件\Parser\Statement</Filter>
-    </ClInclude>
     <ClInclude Include="ProgramParser.h">
       <Filter>头文件\Parser\Program</Filter>
-    </ClInclude>
-    <ClInclude Include="ReturnStatement.h">
-      <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
     <ClInclude Include="Array.h">
       <Filter>头文件\Parser\Various\Array</Filter>
     </ClInclude>
+    <ClInclude Include="ArrayInitStatement.h">
+      <Filter>头文件\Parser\Statement\ImplStatement</Filter>
+    </ClInclude>
+    <ClInclude Include="AssignStatement.h">
+      <Filter>头文件\Parser\Statement\ImplStatement</Filter>
+    </ClInclude>
     <ClInclude Include="BeginStatement.h">
-      <Filter>头文件\Parser\Statement</Filter>
+      <Filter>头文件\Parser\Statement\ImplStatement</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionStatement.h">
+      <Filter>头文件\Parser\Statement\ImplStatement</Filter>
+    </ClInclude>
+    <ClInclude Include="ReturnStatement.h">
+      <Filter>头文件\Parser\Statement\ImplStatement</Filter>
     </ClInclude>
     <ClInclude Include="IBeginStatement.h">
+      <Filter>头文件\Parser\Statement\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionBase.h">
       <Filter>头文件\Parser\Statement</Filter>
     </ClInclude>
   </ItemGroup>
