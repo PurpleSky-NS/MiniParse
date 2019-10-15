@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include "Program.h"
 #include "Array.h"
@@ -92,6 +92,14 @@ bool Statement::DynamicCheck(VariousIDF* var)const
 	return true;
 }
 
+inline bool Statement::GetIDFValue(IdentificationItem* idf, double& val)const
+{
+	if (idf->GetIdentificationType() == IdentificationItem::VariousIDF)
+		return GetVarIDFValue((VariousIDF*)idf, val);
+	else
+		return GetFuncIDFValue((FunctionIDF*)idf, val);
+}
+
 bool Statement::DynamicCheck(FunctionIDF* func)const
 {
 	if (!Program::ExistProgram(func->GetName()))//如果不存在就报错
@@ -115,14 +123,6 @@ bool Statement::DynamicCheck(FunctionIDF* func)const
 				}
 			}
 	return true;
-}
-
-inline bool Statement::GetIDFValue(IdentificationItem* idf, double& val)const
-{
-	if (idf->GetIdentificationType() == IdentificationItem::VariousIDF)
-		return GetVarIDFValue((VariousIDF*)idf, val);
-	else
-		return GetFuncIDFValue((FunctionIDF*)idf, val);
 }
 
 inline bool Statement::GetVarIDFValue(VariousIDF* idf, double& val) const
