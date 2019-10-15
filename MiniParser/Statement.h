@@ -102,7 +102,7 @@ inline bool Statement::GetIDFValue(IdentificationItem* idf, double& val)const
 
 bool Statement::DynamicCheck(FunctionIDF* func)const
 {
-	if (!Program::ExistProgram(func->GetName()))//如果不存在就报错
+	if (func->GetName()!=m_program->GetName()&&!Program::ExistProgram(func->GetName()))//如果不存在就报错
 	{
 		CompileError("[" + func->GetName() + "]这调用的啥，原谅我智商低识别不出来...");
 		return false;
